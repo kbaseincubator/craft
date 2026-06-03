@@ -1,11 +1,28 @@
-# CRAFT Phase 2 — Cross-Skill Smoke Test (full smoke)
+# CRAFT Phase 2 — Cross-Skill Smoke Test
 #
-# Runs the actual end-to-end CRAFT workflow against a real BERIL
-# project: adversarial review → paper-writer draft → presentation-
-# maker draft → verify all artifacts produced.
+# As of v0.1.4 (2026-06-03), narrowed to adversarial-only on a real
+# BERIL project. paper-writer + presentation-maker invocations are
+# descoped pending upstream skill CI-portability fixes:
 #
-# Cost: ~$10-15 per run (LLM stages). Wall-clock: ~30-60 min.
-# Behind manual-trigger + quarterly schedule to keep cost bounded.
+#   - paper-writer issue:
+#     https://github.com/ArkinLaboratory/beril-paper-writer-skill/issues/1
+#     (CI/unattended needs --auto-pick TL1 or equivalent; the draft
+#     command halts at the throughline-pick gate by architectural
+#     intent — "Never auto-pick; the user picks").
+#
+#   - presentation-maker issue:
+#     https://github.com/ArkinLaboratory/beril-presentation-maker-skill/issues/1
+#     (orchestrator can't discover the pipx-installed Python
+#     interpreter on a fresh GitHub Actions runner — works on the
+#     hub but not in clean CI).
+#
+# When both land, restore the full three-skill end-to-end smoke +
+# the matching artifact verification + cost summary loop. See
+# CRAFT-DEPENDENCIES.md §6 for the watchlist entry.
+#
+# Current cost: ~$1-2 per run (just adversarial review on a real
+# project). Wall-clock: ~10-15 min. Behind manual-trigger +
+# quarterly schedule.
 #
 # Triggers:
 #   - Manual via GitHub UI ("Run workflow") — the typical path
@@ -196,13 +213,20 @@ jobs:
           git init -q
           git remote add origin "https://github.com/${SMOKE_BERIL_REPO}.git"
           git config core.sparseCheckout true
-          # Patterns: the project + .claude/skills/ + top-level meta
-          cat > .git/info/sparse-checkout <<EOF
-          projects/${EFFECTIVE_PROJECT}/
-          .claude/skills/
-          .env.template
-          README.md
-          EOF
+          # Patterns: the project + .claude/skills/ + top-level meta.
+          # Write the patterns one per line via printf — heredocs inside
+          # YAML `|` blocks preserve YAML indentation as literal
+          # whitespace, which sparse-checkout treats as part of the
+          # pattern + matches everything (the bug observed in run
+          # 26904057672 that pulled in all 100+ projects).
+          {
+            printf 'projects/%s/*\n' "$EFFECTIVE_PROJECT"
+            printf '.claude/skills/\n'
+            printf '.env.template\n'
+            printf 'README.md\n'
+          } > .git/info/sparse-checkout
+          echo "── sparse-checkout patterns:"
+          cat .git/info/sparse-checkout
           git fetch --depth 1 origin "$SMOKE_BERIL_COMMIT"
           git checkout FETCH_HEAD
           echo ""
@@ -242,55 +266,44 @@ jobs:
             "$EFFECTIVE_PROJECT" \
             --beril-root /tmp/beril-smoke
 
-      - name: Smoke — paper-writer draft
-        run: |
-          cd /tmp/beril-smoke
-          beril-paper-writer draft "$EFFECTIVE_PROJECT" \
-            --auto-advance \
-            --no-adversarial \
-            --max-revise-cost-usd 5 \
-            2>&1 | tail -30
-
-      - name: Smoke — presentation-maker draft
-        run: |
-          cd /tmp/beril-smoke
-          beril-presentation-maker draft "$EFFECTIVE_PROJECT" \
-            --tier STRONG --mode talk-30 \
-            --auto-advance \
-            --auto-approve-images \
-            --no-adversarial \
-            --max-image-cost-usd 0.20 \
-            --max-revise-cost-usd 5 \
-            2>&1 | tail -30
+      # ────────────────────────────────────────────────────────────────
+      # v0.1.4 scope narrowing: paper-writer + presentation-maker
+      # invocations descoped pending upstream skill fixes (see CRAFT-
+      # DEPENDENCIES.md §6). When the linked skill issues land, restore
+      # the full three-skill end-to-end smoke + the matching artifact
+      # verification + the cost summary loop.
+      #
+      #   paper-writer: needs --auto-pick TL1 (or equivalent CI mode)
+      #     because `draft` halts at the throughline-pick gate by
+      #     design ("Never auto-pick; the user picks" — plan.v1.md).
+      #     Issue: https://github.com/ArkinLaboratory/beril-paper-writer-skill/issues/1
+      #
+      #   presentation-maker: bash orchestrator can't discover the
+      #     pipx-installed Python interpreter on a fresh GH Actions
+      #     runner. Works on Adam's hub deployment but not in clean
+      #     CI.
+      #     Issue: https://github.com/ArkinLaboratory/beril-presentation-maker-skill/issues/1
+      # ────────────────────────────────────────────────────────────────
 
       - name: Verify artifacts produced
         run: |
           PROJECT_DIR="/tmp/beril-smoke/projects/$EFFECTIVE_PROJECT"
           set -e
 
-          # Paper-writer deliverable
-          PAPER_DRAFT=$(find "$PROJECT_DIR/papers" -name "*.docx" 2>/dev/null | head -1 || echo "")
-          if [ -z "$PAPER_DRAFT" ] || [ ! -s "$PAPER_DRAFT" ]; then
-            echo "❌ paper-writer did not produce a non-empty .docx"
+          # Adversarial review markdown (--type project writes
+          # ADVERSARIAL_REVIEW_N.md to the project root, not a JSON
+          # under audit/. The JSON output is for --type paper +
+          # --type presentation; project-level review is markdown.)
+          ADV_MD=$(find "$PROJECT_DIR" -maxdepth 1 -name "ADVERSARIAL_REVIEW_*.md" 2>/dev/null | head -1 || echo "")
+          if [ -z "$ADV_MD" ] || [ ! -s "$ADV_MD" ]; then
+            echo "❌ adversarial did not produce ADVERSARIAL_REVIEW_N.md"
             exit 1
           fi
-          echo "✓ paper draft at: $PAPER_DRAFT ($(wc -c < "$PAPER_DRAFT") bytes)"
+          echo "✓ adversarial review at: $ADV_MD ($(wc -c < "$ADV_MD") bytes)"
 
-          # Presentation-maker deliverable
-          PRES_DRAFT=$(find "$PROJECT_DIR/talks" -name "draft.pptx" 2>/dev/null | head -1 || echo "")
-          if [ -z "$PRES_DRAFT" ] || [ ! -s "$PRES_DRAFT" ]; then
-            echo "❌ presentation-maker did not produce a non-empty draft.pptx"
-            exit 1
-          fi
-          echo "✓ presentation draft at: $PRES_DRAFT ($(wc -c < "$PRES_DRAFT") bytes)"
-
-          # Adversarial review JSON
-          ADV_JSON=$(find "$PROJECT_DIR" -name "adversarial_review.json" 2>/dev/null | head -1 || echo "")
-          if [ -z "$ADV_JSON" ] || [ ! -s "$ADV_JSON" ]; then
-            echo "❌ adversarial did not produce adversarial_review.json"
-            exit 1
-          fi
-          echo "✓ adversarial review at: $ADV_JSON"
+          # v0.1.4 narrowed scope: paper-writer + presentation-maker
+          # deliverable verification descoped (see above). Re-enable when
+          # the linked skill issues land.
 
       - name: Report cost summary
         if: always()
@@ -312,5 +325,9 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: cross-skill-smoke-failure-${{ github.run_id }}
-          path: /tmp/beril-smoke/projects/
+          # v0.1.4: narrow to just the smoke target project (the
+          # sparse-checkout pulls in more than just the named project;
+          # uploading the whole projects/ tree inflates the artifact to
+          # hundreds of MB for forensics that only need ~10 MB).
+          path: /tmp/beril-smoke/projects/${{ vars.SMOKE_BERIL_PROJECT_ID }}/
           retention-days: 14

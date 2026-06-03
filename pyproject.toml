@@ -21,7 +21,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "craft"
-version = "0.1.3"
+version = "0.1.4"
 description = "CRAFT — Co-Scientist Research Assessment & Framing Tools. Platform meta-package for the BERIL research-assessment skill stack."
 readme = "README.md"
 requires-python = ">=3.10"

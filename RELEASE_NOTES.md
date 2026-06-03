@@ -1,5 +1,73 @@
 # CRAFT — Release Notes
 
+## v0.1.4 (2026-06-03) — Smoke narrowed to adversarial-only + fixture cleanup
+
+First end-to-end cross-skill smoke run (26904057672) succeeded
+at adversarial review on a real BERIL project but surfaced two
+skill-level CI-portability gaps:
+
+  paper-writer issue #1 — `draft` halts at the throughline-pick
+    gate by architectural intent. No `--auto-pick` flag exists
+    for unattended runs. The CRAFT smoke can't drive paper-writer
+    end-to-end until the skill adds a CI/unattended mode.
+    Filed: https://github.com/ArkinLaboratory/beril-paper-writer-skill/issues/1
+
+  presentation-maker issue #1 — bash orchestrator can't discover
+    the pipx-installed Python interpreter on a fresh GitHub
+    Actions runner. The orchestrator works on Adam's hub
+    deployment but fails in clean CI.
+    Filed: https://github.com/ArkinLaboratory/beril-presentation-maker-skill/issues/1
+
+This release narrows the cross-skill smoke to adversarial-only +
+documents the limitations as known cross-skill-smoke caveats.
+
+### What changed in v0.1.4
+
+`.github/workflows/cross-skill-smoke.yml`:
+
+- Removed the `Smoke — paper-writer draft` + `Smoke —
+  presentation-maker draft` steps (commented out with linked
+  issue markers + a comment explaining the descope).
+- Narrowed `Verify artifacts produced` to check only
+  `ADVERSARIAL_REVIEW_*.md` (the actual output format for
+  `--type project`; the original verify step was looking for a
+  JSON file that only `--type paper` and `--type presentation`
+  produce).
+- Fixed the failure-artifact-upload step to target only the
+  smoke project subdir, not the entire `projects/` tree (the
+  upstream BERIL repo has 100+ projects; the v0.1.3 upload was
+  hundreds of MB).
+- Fixed the sparse-checkout pattern bug: YAML heredocs preserve
+  YAML indentation as literal whitespace in the heredoc content,
+  which sparse-checkout treated as part of the pattern + matched
+  everything. Switched to `printf` with explicit newlines.
+
+`CRAFT-DEPENDENCIES.md`:
+
+- New §6 "Known cross-skill-smoke limitations" documenting both
+  open skill issues + the "when these land, re-broaden the smoke"
+  checklist.
+
+`pyproject.toml` + `src/craft/__init__.py`: version 0.1.3 → 0.1.4.
+
+### Current smoke cost + scope
+
+- Cost: ~$1-2 per run (just adversarial review on a real BERIL
+  project)
+- Wall-clock: ~10-15 min
+- What it validates: adversarial CLI works on a clean runner;
+  CRAFT install-platform deploys all three skills cleanly;
+  sparse-checkout against the pinned BERIL commit works; CRAFT
+  doctor passes
+- What it does NOT validate (pending skill issues): paper-writer
+  end-to-end, presentation-maker end-to-end, full Tier-0 workflow
+
+### When the skill issues land
+
+Per CRAFT-DEPENDENCIES.md §6, restoration is a 5-step process:
+bump pin → restore smoke steps → restore artifact checks →
+restore cost-summary loop → tag a CRAFT minor release.
+
 ## v0.1.3 (2026-06-03) — Cross-skill smoke: live BERIL repo via sparse-checkout
 
 Pivots the cross-skill smoke from a static tarball fixture to a

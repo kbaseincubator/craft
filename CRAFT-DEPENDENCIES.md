@@ -146,7 +146,41 @@ draft production.
 
 ---
 
-## 6. Cross-skill dependencies
+## 6. Known cross-skill-smoke limitations
+
+The cross-skill smoke test (`.github/workflows/cross-skill-smoke.yml`)
+was narrowed to **adversarial-only** in CRAFT v0.1.4 (2026-06-03)
+after the first end-to-end run surfaced two skill-level CI-portability
+gaps. Documented here so the limitation is visible + the smoke can
+be re-broadened when the upstream fixes land.
+
+| Skill | Issue | Filed | Status | Workaround |
+|---|---|---|---|---|
+| beril-paper-writer-skill | `draft` halts at the throughline-pick gate by design; no `--auto-pick` flag for CI/unattended runs | [issue #1](https://github.com/ArkinLaboratory/beril-paper-writer-skill/issues/1) | Open as of 2026-06-03 | Two-stage invocation (`draft` → parse handoff JSON → `continue --pick TL1`); not currently in smoke |
+| beril-presentation-maker-skill | Bash orchestrator can't discover the pipx-installed Python interpreter on a fresh GitHub Actions runner | [issue #1](https://github.com/ArkinLaboratory/beril-presentation-maker-skill/issues/1) | Open as of 2026-06-03 | None viable from CRAFT side; the orchestrator's interpreter-discovery logic needs to read the `beril-presentation-maker` shim's shebang |
+
+**When these land:**
+
+1. Bump the affected skill's pinned version in CRAFT's
+   `pyproject.toml` + the submodule.
+2. Restore the smoke's `Smoke — paper-writer draft` +
+   `Smoke — presentation-maker draft` steps (commented out in
+   the workflow with anchor markers).
+3. Restore the matching artifact checks in `Verify artifacts
+   produced` (paper `.docx` + presentation `.pptx`).
+4. Restore the cost summary's `papers/` + `talks/` aggregation.
+5. Tag a CRAFT minor release noting the smoke surface expansion.
+
+**Architectural note:** these are not CRAFT bugs. The cross-skill
+smoke is doing exactly what it's designed to do — surface
+clean-room-CI-vs-hub-deployment drift before it hits operators.
+The paper-writer issue is a design-vs-CI tension; the
+presentation-maker issue is a portability bug. Both belong in the
+skill repos, not CRAFT.
+
+---
+
+## 7. Cross-skill dependencies
 
 The internal CRAFT contract surface. See `CRAFT-CONTRACT.md` §2
 for the full schema list; this section is the operational
@@ -163,7 +197,7 @@ table is the snapshot of currently-pinned versions.
 
 ---
 
-## 7. Operating-system + tooling
+## 8. Operating-system + tooling
 
 | Item | Used for | Last verified | Risk |
 |---|---|---|---|
@@ -176,7 +210,7 @@ table is the snapshot of currently-pinned versions.
 
 ---
 
-## 8. Review log
+## 9. Review log
 
 | Date | Reviewer | Changes | Action items |
 |---|---|---|---|
