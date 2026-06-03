@@ -257,7 +257,31 @@ For honesty + future planning:
 
 ---
 
-## 6. Troubleshooting
+## 6. Node.js version policy (third-party actions)
+
+GitHub Actions third-party actions (the `uses:` entries) are
+implemented in Node.js. GitHub periodically deprecates older
+Node versions; the action authors release new major versions
+that target the newer Node.
+
+CRAFT's policy: **use the latest Node-supported major version**
+of each action. Currently (as of CRAFT v0.1.2):
+
+  actions/checkout@v5         (Node 24)
+  actions/setup-python@v6     (Node 24)
+  actions/setup-node@v5       (Node 24)
+  actions/upload-artifact@v5  (Node 24)
+
+When a deprecation warning surfaces in CI output, bump the
+affected action to its new major version + tag a CRAFT patch
+release. Document in RELEASE_NOTES.md.
+
+This is a small recurring maintenance task (~once per year
+typical, more during transitions like the June 2026 Node 20 →
+Node 24 cut-over). The cost is reading the action's release
+notes + verifying no behavioral changes affect our use.
+
+## 7. Troubleshooting
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
