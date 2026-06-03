@@ -75,7 +75,7 @@ def cmd_install_platform(args: argparse.Namespace) -> int:
         if shutil.which(cli) is None:
             print(
                 f"   SKIP: `{cli}` not on PATH. Install with: "
-                f"pipx install git+https://github.com/ArkinLaboratory/{name}.git",
+                f"pipx install git+https://github.com/kbaseincubator/{name}.git",
                 file=sys.stderr,
             )
             n_missing += 1

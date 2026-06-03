@@ -5,13 +5,13 @@
 # descoped pending upstream skill CI-portability fixes:
 #
 #   - paper-writer issue:
-#     https://github.com/ArkinLaboratory/beril-paper-writer-skill/issues/1
+#     https://github.com/kbaseincubator/beril-paper-writer-skill/issues/1
 #     (CI/unattended needs --auto-pick TL1 or equivalent; the draft
 #     command halts at the throughline-pick gate by architectural
 #     intent — "Never auto-pick; the user picks").
 #
 #   - presentation-maker issue:
-#     https://github.com/ArkinLaboratory/beril-presentation-maker-skill/issues/1
+#     https://github.com/kbaseincubator/beril-presentation-maker-skill/issues/1
 #     (orchestrator can't discover the pipx-installed Python
 #     interpreter on a fresh GitHub Actions runner — works on the
 #     hub but not in clean CI).
@@ -180,9 +180,9 @@ jobs:
           # CRAFT were on PyPI; here we install each skill explicitly
           # to keep the install-step visible in CI logs.
           for skill_repo in \
-            "git+https://github.com/ArkinLaboratory/beril-adversarial-skill.git" \
-            "git+https://github.com/ArkinLaboratory/beril-paper-writer-skill.git" \
-            "git+https://github.com/ArkinLaboratory/beril-presentation-maker-skill.git"
+            "git+https://github.com/kbaseincubator/beril-adversarial-skill.git" \
+            "git+https://github.com/kbaseincubator/beril-paper-writer-skill.git" \
+            "git+https://github.com/kbaseincubator/beril-presentation-maker-skill.git"
           do
             echo "── pipx install $skill_repo"
             pipx install "$skill_repo"
@@ -276,13 +276,13 @@ jobs:
       #   paper-writer: needs --auto-pick TL1 (or equivalent CI mode)
       #     because `draft` halts at the throughline-pick gate by
       #     design ("Never auto-pick; the user picks" — plan.v1.md).
-      #     Issue: https://github.com/ArkinLaboratory/beril-paper-writer-skill/issues/1
+      #     Issue: https://github.com/kbaseincubator/beril-paper-writer-skill/issues/1
       #
       #   presentation-maker: bash orchestrator can't discover the
       #     pipx-installed Python interpreter on a fresh GH Actions
       #     runner. Works on Adam's hub deployment but not in clean
       #     CI.
-      #     Issue: https://github.com/ArkinLaboratory/beril-presentation-maker-skill/issues/1
+      #     Issue: https://github.com/kbaseincubator/beril-presentation-maker-skill/issues/1
       # ────────────────────────────────────────────────────────────────
 
       - name: Verify artifacts produced

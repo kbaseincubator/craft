@@ -1,9 +1,9 @@
 [submodule "skills/beril-adversarial-skill"]
 	path = skills/beril-adversarial-skill
-	url = https://github.com/ArkinLaboratory/beril-adversarial-skill.git
+	url = https://github.com/kbaseincubator/beril-adversarial-skill.git
 [submodule "skills/beril-paper-writer-skill"]
 	path = skills/beril-paper-writer-skill
-	url = https://github.com/ArkinLaboratory/beril-paper-writer-skill.git
+	url = https://github.com/kbaseincubator/beril-paper-writer-skill.git
 [submodule "skills/beril-presentation-maker-skill"]
 	path = skills/beril-presentation-maker-skill
-	url = https://github.com/ArkinLaboratory/beril-presentation-maker-skill.git
+	url = https://github.com/kbaseincubator/beril-presentation-maker-skill.git

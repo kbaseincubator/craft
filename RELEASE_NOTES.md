@@ -1,5 +1,99 @@
 # CRAFT — Release Notes
 
+## v0.2.1 (2026-06-03) — Skill repos migrated to kbaseincubator + flipped public
+
+The three skill repos transferred from `ArkinLaboratory` to
+`kbaseincubator` and flipped public. With CRAFT already public
+(v0.2.0), `pipx install` of CRAFT is now fully unauthenticated
+— external operators no longer need read access to any
+ArkinLaboratory repo.
+
+This is a coordination-layer release (no skill version bumps;
+no contract change). The skill versions CRAFT pins are
+unchanged from v0.2.0:
+
+- `beril-adversarial-skill @ v0.7.0.9`
+- `beril-paper-writer-skill @ v1.0.1`
+- `beril-presentation-maker-skill @ v1.0.0`
+
+### What changed in v0.2.1
+
+`pyproject.toml`:
+
+- Three `dependencies` URLs flipped to `kbaseincubator/<skill>`.
+- Comment updated to note the migration.
+
+`.gitmodules`:
+
+- Three submodule URLs flipped to `kbaseincubator/<skill>`.
+- `git submodule sync` applied locally + committed.
+
+`src/craft/cli.py`:
+
+- `craft doctor`'s "install with pipx install ..." hint now
+  points at `kbaseincubator` URLs.
+
+`.github/workflows/cross-skill-smoke.yml`:
+
+- Skill install URLs + filed-issue links flipped to
+  `kbaseincubator`.
+
+`README.md`:
+
+- Removed the "skill repos are private" note from the install
+  section.
+- Skill repo table now points at `kbaseincubator/...`.
+- pipx install example bumped to `@v0.2.1`.
+
+`docs/quick-start/install.md`:
+
+- Removed the "skill repo access" note.
+- pipx install example bumped to `@v0.2.1`.
+
+`docs/operations/troubleshooting.md`:
+
+- Per-skill issue-tracker links + install commands updated to
+  `kbaseincubator`.
+
+`CRAFT-DEPENDENCIES.md`:
+
+- Open-issue links updated to `kbaseincubator/...` (where the
+  issues now live after the transfer).
+
+`PLATFORM-PROPOSAL.md`:
+
+- Tier-1 substrate's example repo URL + docs site URL updated
+  to `kbaseincubator/...` to match the executed plan (was
+  `ArkinLaboratory/...` in the proposal). The other
+  ArkinLaboratory mentions in §4 are illustrations of "skill
+  can live in any org" and stay as is.
+
+### What's NOT in v0.2.1
+
+- **No change to skill versions.** The CRAFT pins are still
+  `adversarial v0.7.0.9 / paper-writer v1.0.1 /
+  presentation-maker v1.0.0`. The two skill-side CI-portability
+  issues (paper-writer `--auto-pick`, presentation-maker
+  orchestrator Python discovery) remain open at their new
+  `kbaseincubator` tracker locations.
+- **No atlas migration.** `beril-atlas-skill` stays at
+  `ArkinLaboratory` per the platform proposal — it's separable
+  metrology, not in CRAFT.
+- **No `AUGMENTATION-STREAM-RETROSPECTIVE.md` skill-table
+  update.** The retrospective's per-skill table captures the
+  state at the time of the retrospective (skill repos were at
+  `ArkinLaboratory` then). It's a historical snapshot, not a
+  current pointer.
+
+### Verification
+
+Local `pipx install --force git+https://github.com/kbaseincubator/craft.git@v0.2.1`
+from a fresh shell with no `gh auth` should now succeed
+end-to-end. The cross-skill smoke (next CI run) exercises the
+same install path on a fresh Ubuntu runner.
+
+---
+
 ## v0.2.0 (2026-06-03) — Unified MkDocs documentation site
 
 Ships the Tier-3 presentation layer the platform proposal calls

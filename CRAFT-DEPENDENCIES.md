@@ -156,8 +156,8 @@ be re-broadened when the upstream fixes land.
 
 | Skill | Issue | Filed | Status | Workaround |
 |---|---|---|---|---|
-| beril-paper-writer-skill | `draft` halts at the throughline-pick gate by design; no `--auto-pick` flag for CI/unattended runs | [issue #1](https://github.com/ArkinLaboratory/beril-paper-writer-skill/issues/1) | Open as of 2026-06-03 | Two-stage invocation (`draft` → parse handoff JSON → `continue --pick TL1`); not currently in smoke |
-| beril-presentation-maker-skill | Bash orchestrator can't discover the pipx-installed Python interpreter on a fresh GitHub Actions runner | [issue #1](https://github.com/ArkinLaboratory/beril-presentation-maker-skill/issues/1) | Open as of 2026-06-03 | None viable from CRAFT side; the orchestrator's interpreter-discovery logic needs to read the `beril-presentation-maker` shim's shebang |
+| beril-paper-writer-skill | `draft` halts at the throughline-pick gate by design; no `--auto-pick` flag for CI/unattended runs | [issue #1](https://github.com/kbaseincubator/beril-paper-writer-skill/issues/1) | Open as of 2026-06-03 | Two-stage invocation (`draft` → parse handoff JSON → `continue --pick TL1`); not currently in smoke |
+| beril-presentation-maker-skill | Bash orchestrator can't discover the pipx-installed Python interpreter on a fresh GitHub Actions runner | [issue #1](https://github.com/kbaseincubator/beril-presentation-maker-skill/issues/1) | Open as of 2026-06-03 | None viable from CRAFT side; the orchestrator's interpreter-discovery logic needs to read the `beril-presentation-maker` shim's shebang |
 
 **When these land:**
 

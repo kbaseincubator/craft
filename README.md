@@ -11,9 +11,9 @@ CRAFT consists of three skills that compose:
 
 | Skill | Purpose | Repo |
 |---|---|---|
-| **beril-adversarial-skill** | Review-as-data (Tier-0 assessment of research artifacts) | [ArkinLaboratory/beril-adversarial-skill](https://github.com/ArkinLaboratory/beril-adversarial-skill) |
-| **beril-paper-writer-skill** | ICMJE-conformant manuscript drafting | [ArkinLaboratory/beril-paper-writer-skill](https://github.com/ArkinLaboratory/beril-paper-writer-skill) |
-| **beril-presentation-maker-skill** | KBase-branded presentation drafting (talks + posters) | [ArkinLaboratory/beril-presentation-maker-skill](https://github.com/ArkinLaboratory/beril-presentation-maker-skill) |
+| **beril-adversarial-skill** | Review-as-data (Tier-0 assessment of research artifacts) | [kbaseincubator/beril-adversarial-skill](https://github.com/kbaseincubator/beril-adversarial-skill) |
+| **beril-paper-writer-skill** | ICMJE-conformant manuscript drafting | [kbaseincubator/beril-paper-writer-skill](https://github.com/kbaseincubator/beril-paper-writer-skill) |
+| **beril-presentation-maker-skill** | KBase-branded presentation drafting (talks + posters) | [kbaseincubator/beril-presentation-maker-skill](https://github.com/kbaseincubator/beril-presentation-maker-skill) |
 
 The platform pins specific compatible versions of the three +
 provides:
@@ -56,17 +56,9 @@ synthesis skills across BERDL projects.
 After cloning a BERIL deployment + verifying `claude` is on
 PATH:
 
-> **Note on skill repo access.** This CRAFT repo is public, but
-> the three skill repos at `ArkinLaboratory/beril-*-skill` are
-> currently private. `pipx install` of CRAFT (below) will fail
-> to fetch the skill deps unless your git is authenticated to
-> the `ArkinLaboratory` org (typically: `gh auth login` with
-> read access to that org). External operators should contact
-> the Arkin Lab for access.
-
 ```bash
 # 1. Install CRAFT + its three skills (pipx transitively pulls them in)
-pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.0
+pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.1
 
 # 2. Deploy all three skills into the BERIL deployment
 craft install-platform <BERIL_ROOT>

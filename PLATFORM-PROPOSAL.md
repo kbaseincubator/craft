@@ -89,7 +89,7 @@ coordination + presentation + governance.
 
 ### Tier 1 — the platform substrate
 
-**Repo:** new at `ArkinLaboratory/craft`. Independent git
+**Repo:** new at `kbaseincubator/craft`. Independent git
 history from the skill repos.
 
 **Contains:**
@@ -224,7 +224,7 @@ For end users, DOE leadership, future contributors. Built once,
 reused continuously.
 
 **(a) Platform landing page** at
-`ArkinLaboratory.github.io/craft/`:
+`kbaseincubator.github.io/craft/`:
 
 - One-paragraph "what is this platform" framing
 - The Tier-0 workflow diagram (review → paper → presentation
@@ -419,13 +419,13 @@ proceed:
 **Phase 0 (decision, ~1 day):**
 - Name selected: **CRAFT** (Co-Scientist Research Assessment &
   Framing Tools), 2026-06-03.
-- Repo location TBD (`ArkinLaboratory/craft` is the default;
+- Repo location TBD (`kbaseincubator/craft` is the default;
   alternatives: new GitHub org like `KBaseResearchAssessment`).
 - Adam confirms whether to proceed with the three-tier structure
   as proposed.
 
 **Phase 1 (substrate, ~3-5 days):**
-- Create `ArkinLaboratory/craft` repo.
+- Create `kbaseincubator/craft` repo.
 - Add three skills as git submodules pointing at their v1.0.0
   tags.
 - Write meta-package pyproject.toml + `install-platform` CLI.
@@ -442,7 +442,7 @@ proceed:
   all three skills via the platform).
 
 **Phase 3 (presentation, ~1-2 days):**
-- Set up MkDocs site at `ArkinLaboratory.github.io/craft/`.
+- Set up MkDocs site at `kbaseincubator.github.io/craft/`.
 - Draft architectural diagrams.
 - Write the Tier-0 workflow page.
 - Auto-include per-skill docs.

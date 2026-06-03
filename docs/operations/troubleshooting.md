@@ -29,8 +29,8 @@ itself. Common failures:
 
 | `craft doctor` output | Cause | Fix |
 |---|---|---|
-| `✗ Skill CLI not on PATH: beril-adversarial` | pipx install partially failed | `pipx install --force git+https://github.com/ArkinLaboratory/beril-adversarial-skill.git@<tag>` |
-| `beril-adversarial: version mismatch (installed: 0.7.0.7, CRAFT pins: 0.7.0.9)` | Skill installed but not at the CRAFT-pinned version | `pipx install --force git+https://github.com/ArkinLaboratory/beril-adversarial-skill.git@v0.7.0.9` |
+| `✗ Skill CLI not on PATH: beril-adversarial` | pipx install partially failed | `pipx install --force git+https://github.com/kbaseincubator/beril-adversarial-skill.git@<tag>` |
+| `beril-adversarial: version mismatch (installed: 0.7.0.7, CRAFT pins: 0.7.0.9)` | Skill installed but not at the CRAFT-pinned version | `pipx install --force git+https://github.com/kbaseincubator/beril-adversarial-skill.git@v0.7.0.9` |
 | Per-skill `configure` step reports `claude CLI not on PATH` | Claude Code CLI not installed | Install Claude Code; see [code.claude.com/docs](https://code.claude.com/docs) |
 | Per-skill `configure` step reports `CBORG_API_KEY missing` | `<BERIL_ROOT>/.env` doesn't have the key | Add `CBORG_API_KEY=<token>` to `<BERIL_ROOT>/.env` |
 | Per-skill `configure` step reports `python-pptx not importable` | Skill's pipx venv missing a dep | `pipx install --force` the affected skill |
@@ -42,9 +42,9 @@ issue trackers:
 
 | Symptom | Skill | Repo for issues |
 |---|---|---|
-| Adversarial review produces empty / malformed JSON | adversarial | [ArkinLaboratory/beril-adversarial-skill/issues](https://github.com/ArkinLaboratory/beril-adversarial-skill/issues) |
-| Paper-writer draft.docx malformed; throughline-pick hangs | paper-writer | [ArkinLaboratory/beril-paper-writer-skill/issues](https://github.com/ArkinLaboratory/beril-paper-writer-skill/issues) |
-| Presentation-maker draft.pptx render issues, layout overlaps, image-gen failures | presentation-maker | [ArkinLaboratory/beril-presentation-maker-skill/issues](https://github.com/ArkinLaboratory/beril-presentation-maker-skill/issues) |
+| Adversarial review produces empty / malformed JSON | adversarial | [kbaseincubator/beril-adversarial-skill/issues](https://github.com/kbaseincubator/beril-adversarial-skill/issues) |
+| Paper-writer draft.docx malformed; throughline-pick hangs | paper-writer | [kbaseincubator/beril-paper-writer-skill/issues](https://github.com/kbaseincubator/beril-paper-writer-skill/issues) |
+| Presentation-maker draft.pptx render issues, layout overlaps, image-gen failures | presentation-maker | [kbaseincubator/beril-presentation-maker-skill/issues](https://github.com/kbaseincubator/beril-presentation-maker-skill/issues) |
 
 If the bug clearly crosses skills (e.g., adversarial schema
 change breaks paper-writer's revise), file at

@@ -21,7 +21,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "craft"
-version = "0.2.0"
+version = "0.2.1"
 description = "CRAFT — Co-Scientist Research Assessment & Framing Tools. Platform meta-package for the BERIL research-assessment skill stack."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -53,13 +53,13 @@ classifiers = [
 # platform level.
 #
 # Install path (via pipx): the dependencies install from GitHub
-# release tags. When skills migrate from ArkinLaboratory to
-# kbaseincubator, update these URLs (one PR; no other changes
-# needed).
+# release tags. All three skills migrated from ArkinLaboratory
+# to kbaseincubator on 2026-06-03 + flipped public, so CRAFT
+# install is now unauthenticated for external operators.
 dependencies = [
-    "beril-adversarial-skill @ git+https://github.com/ArkinLaboratory/beril-adversarial-skill.git@v0.7.0.9",
-    "beril-paper-writer-skill @ git+https://github.com/ArkinLaboratory/beril-paper-writer-skill.git@v1.0.1",
-    "beril-presentation-maker-skill @ git+https://github.com/ArkinLaboratory/beril-presentation-maker-skill.git@v1.0.0",
+    "beril-adversarial-skill @ git+https://github.com/kbaseincubator/beril-adversarial-skill.git@v0.7.0.9",
+    "beril-paper-writer-skill @ git+https://github.com/kbaseincubator/beril-paper-writer-skill.git@v1.0.1",
+    "beril-presentation-maker-skill @ git+https://github.com/kbaseincubator/beril-presentation-maker-skill.git@v1.0.0",
 ]
 
 [project.optional-dependencies]
