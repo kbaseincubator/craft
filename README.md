@@ -56,9 +56,17 @@ synthesis skills across BERDL projects.
 After cloning a BERIL deployment + verifying `claude` is on
 PATH:
 
+> **Note on skill repo access.** This CRAFT repo is public, but
+> the three skill repos at `ArkinLaboratory/beril-*-skill` are
+> currently private. `pipx install` of CRAFT (below) will fail
+> to fetch the skill deps unless your git is authenticated to
+> the `ArkinLaboratory` org (typically: `gh auth login` with
+> read access to that org). External operators should contact
+> the Arkin Lab for access.
+
 ```bash
 # 1. Install CRAFT + its three skills (pipx transitively pulls them in)
-pipx install git+https://github.com/kbaseincubator/craft.git@v0.1.0
+pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.0
 
 # 2. Deploy all three skills into the BERIL deployment
 craft install-platform <BERIL_ROOT>

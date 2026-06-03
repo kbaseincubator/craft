@@ -31,12 +31,21 @@ invocations into one command.
 ## Install command
 
 ```bash
-pipx install git+https://github.com/kbaseincubator/craft.git@v0.1.4
+pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.0
 ```
 
-Replace `v0.1.4` with the latest tag if you want the current
+Replace `v0.2.0` with the latest tag if you want the current
 release; see [release notes](../reference/release-notes.md) for
 what each version ships.
+
+!!! note "Skill repo access"
+    The CRAFT repo itself is public, but the three skill repos
+    at `ArkinLaboratory/beril-*-skill` are currently private.
+    The `pipx install` above will fail to fetch the skill deps
+    unless your git is authenticated to the `ArkinLaboratory`
+    org (typically: `gh auth login` with read access to that
+    org). External operators should contact the Arkin Lab for
+    access.
 
 CRAFT's `pyproject.toml` pins the three skill versions, so this
 single `pipx install` transitively installs:
