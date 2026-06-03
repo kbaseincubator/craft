@@ -1,0 +1,131 @@
+####################################################################
+# CRAFT — Co-Scientist Research Assessment & Framing Tools
+#
+# Platform meta-package that coordinates the three CRAFT skills:
+#   - beril-adversarial-skill (review-as-data)
+#   - beril-paper-writer-skill (ICMJE-conformant manuscript drafter)
+#   - beril-presentation-maker-skill (KBase-branded presentation drafter)
+#
+# Pipx-installable; depends on the three skills as pinned versions.
+# Provides `craft install-platform <BERIL_ROOT>` and `craft doctor`
+# commands for unified deployment + verification.
+#
+# The skills themselves ship from their own repos; this package
+# pins the platform's view of which versions compose into a
+# coherent release.
+####################################################################
+
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "craft"
+version = "0.1.0"
+description = "CRAFT — Co-Scientist Research Assessment & Framing Tools. Platform meta-package for the BERIL research-assessment skill stack."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+
+authors = [
+    {name = "Arkin Laboratory", email = "aparkin@lbl.gov"},
+]
+
+keywords = [
+    "kbase", "beril", "research", "assessment", "review",
+    "presentation", "manuscript", "co-scientist",
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+
+# Platform deps: the three CRAFT skills, pinned at their current
+# v0.1.0 platform release. Bumping these pins is the load-bearing
+# "what version of CRAFT is this" decision; coordinated at the
+# platform level.
+#
+# Install path (via pipx): the dependencies install from GitHub
+# release tags. When skills migrate from ArkinLaboratory to
+# kbaseincubator, update these URLs (one PR; no other changes
+# needed).
+dependencies = [
+    "beril-adversarial-skill @ git+https://github.com/ArkinLaboratory/beril-adversarial-skill.git@v0.7.0.9",
+    "beril-paper-writer-skill @ git+https://github.com/ArkinLaboratory/beril-paper-writer-skill.git@v1.0.1",
+    "beril-presentation-maker-skill @ git+https://github.com/ArkinLaboratory/beril-presentation-maker-skill.git@v1.0.0",
+]
+
+[project.optional-dependencies]
+
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.4.0",
+    "build>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/kbaseincubator/craft"
+Issues = "https://github.com/kbaseincubator/craft/issues"
+Repository = "https://github.com/kbaseincubator/craft.git"
+
+# ----------------------------------------------------------------------
+# Console scripts
+# ----------------------------------------------------------------------
+#
+# Exposes the `craft` CLI with subcommands:
+#   craft install-platform <BERIL_ROOT>    — runs all three install-skills
+#   craft doctor [<BERIL_ROOT>]            — verifies platform health
+#   craft version                          — prints CRAFT + skill versions
+
+[project.scripts]
+craft = "craft.cli:main"
+
+# ----------------------------------------------------------------------
+# Build configuration
+# ----------------------------------------------------------------------
+
+[tool.hatch.metadata]
+# Allow direct GitHub URLs in `dependencies` (the three CRAFT
+# skills are not on PyPI; they install via git+https URLs at
+# their tagged releases). Standard pattern for meta-packages
+# that depend on private / unpublished repos.
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/craft"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/craft",
+    "README.md",
+    "CRAFT-CONTRACT.md",
+    "CRAFT-DEPENDENCIES.md",
+    "CROSS-SKILL-RELEASE.md",
+    "LICENSE",
+    "pyproject.toml",
+]
+exclude = [
+    "**/__pycache__",
+    "**/*.pyc",
+    "**/.DS_Store",
+    "skills/",   # submodules are dev-time only; not bundled in sdist
+    "docs/",
+    "tests/",
+]
+
+# ----------------------------------------------------------------------
+# Tool configurations
+# ----------------------------------------------------------------------
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra --strict-markers"
