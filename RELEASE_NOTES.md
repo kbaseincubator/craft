@@ -1,5 +1,59 @@
 # CRAFT — Release Notes
 
+## v0.1.1 (2026-06-03) — Phase 2 CI
+
+Adds GitHub Actions workflows for continuous platform health-
+checking + manual cross-skill smoke testing.
+
+### What ships in v0.1.1
+
+- **`.github/workflows/platform-ci.yml`** — Platform CI (cheap
+  smoke). Runs on every push to main + every PR. Verifies:
+  - Submodule pins resolve to tagged releases (strict policy)
+  - Meta-package installs cleanly
+  - `craft` CLI commands work
+  - `pytest tests/` passes
+  - Ruff lint + format clean
+
+  Cost: $0 LLM, ~3 min wall-clock per run.
+
+- **`.github/workflows/cross-skill-smoke.yml`** — Cross-Skill
+  Smoke Test (full smoke). Behind manual trigger + quarterly
+  cron + repository-dispatch event. Exercises:
+  - Adversarial review on a BERIL fixture project
+  - Paper-writer draft consuming the review
+  - Presentation-maker draft consuming the review
+  - Cross-artifact verification (all three deliverables produced)
+
+  Cost: ~$10-15 LLM per run, ~60 min wall-clock. 90-min timeout
+  + per-skill cost caps + `max_cost_usd` workflow input as
+  guardrails. Requires repo secrets:
+  `CBORG_API_KEY`, `SMOKE_BERIL_FIXTURE_TARBALL_URL`.
+
+- **`.github/workflows/README.md`** — Maintainer notes
+  explaining what each workflow does, when it fires, what it
+  catches, what it doesn't, how to set up the secrets, and
+  troubleshooting.
+
+### Maintainer setup required (first-time)
+
+The platform CI runs immediately (no secrets needed). The
+cross-skill smoke requires two repo secrets to be configured
+before it can run. See `.github/workflows/README.md` §3 for
+the step-by-step setup. Both are optional for v0.1.1 ship — the
+platform-CI is the active gating workflow; cross-skill-smoke is
+behind manual trigger.
+
+### What does NOT ship in v0.1.1
+
+- **Repository-dispatch trigger from submodule repos** —
+  deferred to v0.2.0. Until then, cross-skill smoke fires
+  manually OR via the quarterly cron.
+- **Code coverage tracking** — not in v0.1.x scope.
+- **PyPI publishing automation** — CRAFT installs from git URLs;
+  PyPI not required.
+- **Python version matrix testing** — pinned to 3.12 for v0.1.x.
+
 ## v0.1.0 (2026-06-03) — Initial platform release
 
 First CRAFT platform release. Substrate-only ship — the

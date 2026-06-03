@@ -8,12 +8,12 @@ each skill's own test suite.
 Cross-skill integration tests (the actual "does this end-to-end
 work?") live in Phase 2's CI smoke test, not here.
 """
+
 from __future__ import annotations
 
 import argparse
 import sys
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
@@ -64,9 +64,7 @@ def test_cli_parser_builds() -> None:
 def test_install_platform_missing_beril_root() -> None:
     """install-platform must error cleanly when BERIL_ROOT
     doesn't exist."""
-    rc = cli.cmd_install_platform(argparse.Namespace(
-        beril_root="/no/such/path"
-    ))
+    rc = cli.cmd_install_platform(argparse.Namespace(beril_root="/no/such/path"))
     assert rc == 1
 
 
@@ -75,9 +73,11 @@ def test_install_platform_skips_missing_clis(tmp_path, capsys, monkeypatch):
     skips that skill + reports it (doesn't crash)."""
     # Make all three CLIs "missing"
     monkeypatch.setattr("shutil.which", lambda _: None)
-    rc = cli.cmd_install_platform(argparse.Namespace(
-        beril_root=str(tmp_path),
-    ))
+    rc = cli.cmd_install_platform(
+        argparse.Namespace(
+            beril_root=str(tmp_path),
+        )
+    )
     captured = capsys.readouterr()
     # rc=2 when all three are missing (no skills installed)
     assert rc == 2

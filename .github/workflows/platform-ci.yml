@@ -1,0 +1,110 @@
+# CRAFT Phase 2 — Platform CI (cheap smoke)
+#
+# Runs on every push to main + every PR. Verifies:
+#   - The meta-package installs cleanly with pinned submodule deps
+#   - The `craft` CLI commands work
+#   - The smoke test suite passes
+#   - Submodule pins resolve to real tags
+#
+# Does NOT exercise the LLM stack (that's the `full-smoke` workflow).
+# Cost: $0; wall-clock ~2-3 min.
+#
+# Triggers:
+#   - Every PR against main
+#   - Every push to main (e.g., after PR merge)
+#   - Manual via the GitHub UI ("Run workflow")
+
+name: Platform CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  platform-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive   # pulls in the three skill repos at pinned tags
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Verify submodule tag pinning
+        # Each submodule must be at a tagged release (not a branch HEAD).
+        # Detached HEAD on a tag is what we want; anything else fails the
+        # CRAFT-CONTRACT.md §3 strict-pinning policy.
+        run: |
+          set -e
+          for sm in skills/beril-adversarial-skill skills/beril-paper-writer-skill skills/beril-presentation-maker-skill; do
+            echo "── $sm"
+            cd "$sm"
+            CURRENT_TAG=$(git describe --tags --exact-match 2>/dev/null || echo "")
+            if [ -z "$CURRENT_TAG" ]; then
+              echo "  ERROR: $sm is not on a tagged commit (CRAFT requires strict tag pinning)"
+              exit 1
+            fi
+            echo "  ✓ pinned at $CURRENT_TAG"
+            cd - > /dev/null
+          done
+
+      - name: Install CRAFT meta-package
+        run: |
+          # --no-deps because the submodule deps install from git+https URLs
+          # which would require network + auth at install time. The smoke
+          # tests work without the actual skills being pip-installed; they
+          # exercise CRAFT's coordination logic, not the skills themselves.
+          pip install -e ".[dev]" --no-deps
+
+      - name: Verify version
+        run: |
+          python -c "import craft; print('CRAFT version:', craft.__version__)"
+          # Pin: v0.1.0+ at all times
+          python -c "import craft; v = craft.__version__; assert v[0].isdigit(), f'invalid version {v}'"
+
+      - name: Verify `craft --help` works
+        run: craft --help
+
+      - name: Verify `craft version` works (skills not installed → reports NOT INSTALLED)
+        run: craft version
+
+      - name: Verify `craft doctor` runs cleanly (without BERIL_ROOT)
+        run: |
+          # rc=1 expected because skill CLIs aren't on PATH in CI;
+          # the test pins that doctor doesn't crash.
+          craft doctor || true
+
+      - name: Run smoke test suite
+        run: pytest tests/ -v
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # No submodules needed for lint
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install ruff
+        run: pip install ruff>=0.4.0
+
+      - name: Lint src/craft + tests
+        run: |
+          ruff check src/craft tests/
+          ruff format --check src/craft tests/

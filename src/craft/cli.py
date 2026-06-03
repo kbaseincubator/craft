@@ -10,6 +10,7 @@ Each subcommand is a thin coordinator over the underlying per-skill
 CLIs. The skills do the actual work; CRAFT orchestrates the
 sequence + reports a unified summary.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -49,6 +50,7 @@ _SKILLS: list[dict[str, str]] = [
 # install-platform
 # ---------------------------------------------------------------------------
 
+
 def cmd_install_platform(args: argparse.Namespace) -> int:
     """Run all three skills' install-skill commands in sequence."""
     beril_root = Path(args.beril_root).resolve()
@@ -71,9 +73,11 @@ def cmd_install_platform(args: argparse.Namespace) -> int:
         print(f"── {name}", file=sys.stderr)
 
         if shutil.which(cli) is None:
-            print(f"   SKIP: `{cli}` not on PATH. Install with: "
-                  f"pipx install git+https://github.com/ArkinLaboratory/{name}.git",
-                  file=sys.stderr)
+            print(
+                f"   SKIP: `{cli}` not on PATH. Install with: "
+                f"pipx install git+https://github.com/ArkinLaboratory/{name}.git",
+                file=sys.stderr,
+            )
             n_missing += 1
             skipped_reasons.append(f"{name}: CLI not on PATH")
             continue
@@ -94,17 +98,18 @@ def cmd_install_platform(args: argparse.Namespace) -> int:
         else:
             n_failed += 1
             skipped_reasons.append(
-                f"{name}: install-skill exited rc={result.returncode}")
+                f"{name}: install-skill exited rc={result.returncode}"
+            )
 
     print("", file=sys.stderr)
     print("═" * 60, file=sys.stderr)
-    print(f"CRAFT install-platform summary:", file=sys.stderr)
+    print("CRAFT install-platform summary:", file=sys.stderr)
     print(f"  Installed OK: {n_ok}/{len(_SKILLS)}", file=sys.stderr)
     print(f"  Missing CLIs: {n_missing}", file=sys.stderr)
     print(f"  Failed:       {n_failed}", file=sys.stderr)
     if skipped_reasons:
-        print(f"", file=sys.stderr)
-        print(f"Issues:", file=sys.stderr)
+        print("", file=sys.stderr)
+        print("Issues:", file=sys.stderr)
         for r in skipped_reasons:
             print(f"  - {r}", file=sys.stderr)
     print("═" * 60, file=sys.stderr)
@@ -113,18 +118,17 @@ def cmd_install_platform(args: argparse.Namespace) -> int:
         print("All CRAFT skills installed cleanly.", file=sys.stderr)
         return 0
     elif n_ok > 0:
-        print("Partial install. Resolve the issues above + re-run.",
-              file=sys.stderr)
+        print("Partial install. Resolve the issues above + re-run.", file=sys.stderr)
         return 1
     else:
-        print("No CRAFT skills installed. Verify pipx + PATH first.",
-              file=sys.stderr)
+        print("No CRAFT skills installed. Verify pipx + PATH first.", file=sys.stderr)
         return 2
 
 
 # ---------------------------------------------------------------------------
 # doctor
 # ---------------------------------------------------------------------------
+
 
 def cmd_doctor(args: argparse.Namespace) -> int:
     """Verify platform health: skills installed, configure passes,
@@ -157,26 +161,27 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         try:
             result = subprocess.run(
                 [cli, "--version"],
-                capture_output=True, text=True, timeout=5,
+                capture_output=True,
+                text=True,
+                timeout=5,
             )
             version_str = (result.stdout + result.stderr).strip().split()[-1]
             print(f"   {cli}: {version_str}", file=sys.stderr)
         except Exception as exc:  # noqa: BLE001
-            print(f"   {cli}: ERROR reading version: {exc}",
-                  file=sys.stderr)
+            print(f"   {cli}: ERROR reading version: {exc}", file=sys.stderr)
             n_warnings += 1
 
     # Check 3: each skill's configure (if a BERIL_ROOT was supplied)
     if args.beril_root:
         beril_root = Path(args.beril_root).resolve()
         if not beril_root.is_dir():
-            print(f"\n   ✗ BERIL_ROOT not found: {beril_root}",
-                  file=sys.stderr)
+            print(f"\n   ✗ BERIL_ROOT not found: {beril_root}", file=sys.stderr)
             n_warnings += 1
         else:
             print("", file=sys.stderr)
-            print(f"── Per-skill `configure` (BERIL_ROOT={beril_root})",
-                  file=sys.stderr)
+            print(
+                f"── Per-skill `configure` (BERIL_ROOT={beril_root})", file=sys.stderr
+            )
             for skill in _SKILLS:
                 cli = skill["cli"]
                 if shutil.which(cli) is None:
@@ -185,7 +190,8 @@ def cmd_doctor(args: argparse.Namespace) -> int:
                 try:
                     subprocess.run(
                         [cli, "configure", str(beril_root)],
-                        capture_output=False, timeout=30,
+                        capture_output=False,
+                        timeout=30,
                     )
                 except Exception as exc:  # noqa: BLE001
                     print(f"   ERROR: {exc}", file=sys.stderr)
@@ -194,7 +200,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     # Summary
     print("", file=sys.stderr)
     print("═" * 60, file=sys.stderr)
-    print(f"CRAFT doctor summary:", file=sys.stderr)
+    print("CRAFT doctor summary:", file=sys.stderr)
     print(f"  Checks passed: {n_ok}/{len(_SKILLS)}", file=sys.stderr)
     print(f"  Warnings:      {n_warnings}", file=sys.stderr)
     print("═" * 60, file=sys.stderr)
@@ -205,6 +211,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
 # ---------------------------------------------------------------------------
 # version
 # ---------------------------------------------------------------------------
+
 
 def cmd_version(args: argparse.Namespace) -> int:
     """Print CRAFT + each skill's version."""
@@ -219,7 +226,9 @@ def cmd_version(args: argparse.Namespace) -> int:
         try:
             result = subprocess.run(
                 [cli, "--version"],
-                capture_output=True, text=True, timeout=5,
+                capture_output=True,
+                text=True,
+                timeout=5,
             )
             v = (result.stdout + result.stderr).strip().split()[-1]
             print(f"  {skill['name']}: {v}")
@@ -232,6 +241,7 @@ def cmd_version(args: argparse.Namespace) -> int:
 # argparse setup + dispatch
 # ---------------------------------------------------------------------------
 
+
 def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="craft",
@@ -242,7 +252,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         ),
     )
     parser.add_argument(
-        "--version", action="version",
+        "--version",
+        action="version",
         version=f"craft {__version__}",
     )
     subparsers = parser.add_subparsers(dest="cmd", required=True)
@@ -264,7 +275,9 @@ def main(argv: Optional[list[str]] = None) -> int:
         help="Verify platform health (skill CLIs, versions, config).",
     )
     p_doctor.add_argument(
-        "beril_root", nargs="?", default=None,
+        "beril_root",
+        nargs="?",
+        default=None,
         help="Optional BERIL_ROOT for per-skill configure checks.",
     )
     p_doctor.set_defaults(func=cmd_doctor)
