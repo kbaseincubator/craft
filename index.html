@@ -1533,7 +1533,7 @@ into a coherent Tier-0 research assessment workflow:</p>
 <li><strong>Cross-skill smoke testing</strong> in CI</li>
 </ul>
 <h2 id="the-tier-0-workflow">The Tier-0 workflow<a class="headerlink" href="#the-tier-0-workflow" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>flowchart LR
+<div class="mermaid">flowchart LR
     A[BERIL project&lt;br/&gt;artifacts] --&gt; B[beril-adversarial&lt;br/&gt;Tier-0 review]
     B --&gt; C[adversarial_review.&lt;br/&gt;{json,md}]
     A --&gt; D[beril-paper-writer&lt;br/&gt;holistic draft]
@@ -1552,7 +1552,7 @@ into a coherent Tier-0 research assessment workflow:</p>
     class A artifact
     class B,D,E skill
     class C output
-    class F,G output</code></pre>
+    class F,G output</div>
 <p>The platform's <strong>first delivery</strong> is the Tier-0 workflow as
 shown. Future deliveries extend it with new review systems,
 feedback-incorporation skills, research-quality-improvement
@@ -1688,6 +1688,8 @@ rationale.</p>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="assets/javascripts/mermaid-init.js"></script>
       
     
   </body>

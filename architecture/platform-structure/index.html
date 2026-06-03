@@ -1597,7 +1597,7 @@ skills. Each tier exists for a specific reason — substrate
 (install + meta-package), coordination (contract + release
 runbook), and presentation (this docs site).</p>
 <h2 id="the-three-tiers">The three tiers<a class="headerlink" href="#the-three-tiers" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>flowchart TB
+<div class="mermaid">flowchart TB
     subgraph T3["Tier 3 — Unified presentation"]
         D[Docs site]
         I[Install runbook]
@@ -1621,7 +1621,7 @@ runbook), and presentation (this docs site).</p>
 
     classDef tier fill:#e8e8ff,stroke:#333
     classDef artifact fill:#fff,stroke:#333
-    class T1,T2,T3 tier</code></pre>
+    class T1,T2,T3 tier</div>
 <h3 id="tier-1-substrate">Tier 1 — substrate<a class="headerlink" href="#tier-1-substrate" title="Permanent link">&para;</a></h3>
 <p>The thing you <code>pipx install</code>. Lives in this repo's
 <code>pyproject.toml</code>, <code>src/craft/</code>, and the three git submodules
@@ -1907,6 +1907,8 @@ It does NOT subsume the skills.</p>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../assets/javascripts/mermaid-init.js"></script>
       
     
   </body>

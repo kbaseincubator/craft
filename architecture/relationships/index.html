@@ -1563,7 +1563,7 @@ data-flow contract — who produces what, who consumes what, what
 sits behind the workflow that the <a href="../../">home page diagram</a>
 shows.</p>
 <h2 id="data-flow-contract">Data-flow contract<a class="headerlink" href="#data-flow-contract" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>flowchart TB
+<div class="mermaid">flowchart TB
     subgraph BERIL["BERIL project artifacts (input)"]
         R[REPORT.md]
         RP[RESEARCH_PLAN.md]
@@ -1634,7 +1634,7 @@ shows.</p>
     class R,RP,NB,FG input
     class ADV,PW,PM skill
     class ART_ADV art
-    class ART_PW,ART_PM output</code></pre>
+    class ART_PW,ART_PM output</div>
 <h2 id="who-produces-what">Who produces what<a class="headerlink" href="#who-produces-what" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1714,11 +1714,11 @@ conventions inside each zone.</p>
 <h2 id="the-review-rewrite-loop">The review-rewrite loop<a class="headerlink" href="#the-review-rewrite-loop" title="Permanent link">&para;</a></h2>
 <p>Both drafter skills (paper-writer + presentation-maker) consume
 adversarial review the same way:</p>
-<pre class="mermaid"><code>flowchart LR
+<div class="mermaid">flowchart LR
     D[draft_N/&lt;br/&gt;working/spec.json] --&gt; A[adversarial review]
     A --&gt; R[audit/&lt;br/&gt;adversarial_review.json]
     R --&gt; REV[revise loop:&lt;br/&gt;read findings →&lt;br/&gt;route to fix targets →&lt;br/&gt;regenerate]
-    REV --&gt; D2[draft_N+1/&lt;br/&gt;or in-place rewrite]</code></pre>
+    REV --&gt; D2[draft_N+1/&lt;br/&gt;or in-place rewrite]</div>
 <p>The drafter:</p>
 <ol>
 <li>Produces a draft with full audit trail in <code>audit/</code>.</li>
@@ -1750,7 +1750,7 @@ output; the consumers do the routing.</p>
 testable</strong>. The skills' independence is preserved.</p>
 <h2 id="the-tier-0-workflow">The Tier-0 workflow<a class="headerlink" href="#the-tier-0-workflow" title="Permanent link">&para;</a></h2>
 <p>Putting it together — the platform's first delivery:</p>
-<pre class="mermaid"><code>sequenceDiagram
+<div class="mermaid">sequenceDiagram
     participant U as User / orchestrator
     participant A as beril-adversarial
     participant P as beril-paper-writer
@@ -1774,7 +1774,7 @@ testable</strong>. The skills' independence is preserved.</p>
 
     U-&gt;&gt;A: review --type paper &lt;papers/draft_1&gt;
     U-&gt;&gt;A: review --type presentation &lt;talks/draft_1&gt;
-    A--&gt;&gt;U: per-artifact adversarial review (for final assessment)</code></pre>
+    A--&gt;&gt;U: per-artifact adversarial review (for final assessment)</div>
 <p>The platform doesn't <em>enforce</em> this sequence; the skills
 coordinate via the artifacts they write under the project's
 draft directories. See <a href="../../quick-start/first-run/">first run</a>
@@ -1900,6 +1900,8 @@ for the actual commands.</p>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../assets/javascripts/mermaid-init.js"></script>
       
     
   </body>
