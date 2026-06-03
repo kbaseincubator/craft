@@ -29,7 +29,7 @@ The platform provides:
 ```mermaid
 flowchart LR
     A[BERIL project<br/>artifacts] --> B[beril-adversarial<br/>Tier-0 review]
-    B --> C[adversarial_review.<br/>{json,md}]
+    B --> C["adversarial_review.<br/>{json,md}"]
     A --> D[beril-paper-writer<br/>holistic draft]
     A --> E[beril-presentation-maker<br/>per-substory compose]
     C --> D
