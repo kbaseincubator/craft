@@ -1539,11 +1539,21 @@ invocations into one command.</p>
 </span></code></pre></div></li>
 </ul>
 <h2 id="install-command">Install command<a class="headerlink" href="#install-command" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>git+https://github.com/kbaseincubator/craft.git@v0.1.4
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>git+https://github.com/kbaseincubator/craft.git@v0.2.0
 </span></code></pre></div>
-<p>Replace <code>v0.1.4</code> with the latest tag if you want the current
+<p>Replace <code>v0.2.0</code> with the latest tag if you want the current
 release; see <a href="../../reference/release-notes/">release notes</a> for
 what each version ships.</p>
+<div class="admonition note">
+<p class="admonition-title">Skill repo access</p>
+<p>The CRAFT repo itself is public, but the three skill repos
+at <code>ArkinLaboratory/beril-*-skill</code> are currently private.
+The <code>pipx install</code> above will fail to fetch the skill deps
+unless your git is authenticated to the <code>ArkinLaboratory</code>
+org (typically: <code>gh auth login</code> with read access to that
+org). External operators should contact the Arkin Lab for
+access.</p>
+</div>
 <p>CRAFT's <code>pyproject.toml</code> pins the three skill versions, so this
 single <code>pipx install</code> transitively installs:</p>
 <ul>
