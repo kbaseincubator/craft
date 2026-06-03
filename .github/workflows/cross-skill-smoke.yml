@@ -208,9 +208,11 @@ jobs:
         run: |
           echo "Using project: $EFFECTIVE_PROJECT"
           cd /tmp/beril-smoke
+          # adversarial joins <beril-root>/projects/<arg> internally —
+          # pass just the project_id, NOT "projects/<id>"
           beril-adversarial review \
             --type project \
-            "projects/$EFFECTIVE_PROJECT" \
+            "$EFFECTIVE_PROJECT" \
             --beril-root /tmp/beril-smoke
 
       - name: Smoke — paper-writer draft
