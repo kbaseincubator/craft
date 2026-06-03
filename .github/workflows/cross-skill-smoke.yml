@@ -70,6 +70,7 @@ jobs:
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       CBORG_API_KEY: ${{ secrets.CBORG_API_KEY }}
+      GOOGLE_AI_STUDIO_API_KEY: ${{ secrets.GOOGLE_AI_STUDIO_API_KEY }}
       SMOKE_BERIL_REPO: ${{ vars.SMOKE_BERIL_REPO }}
       SMOKE_BERIL_COMMIT: ${{ vars.SMOKE_BERIL_COMMIT }}
       SMOKE_BERIL_PROJECT_ID: ${{ vars.SMOKE_BERIL_PROJECT_ID }}
@@ -213,7 +214,17 @@ jobs:
 
           # Ensure .env carries the LLM key (sparse-checkout won't pull
           # .env since it's gitignored upstream + we don't want to)
-          echo "CBORG_API_KEY=$CBORG_API_KEY" > /tmp/beril-smoke/.env
+          # Write all three API keys into the fixture's .env so the
+          # skills find them. presentation-maker's image_client.py
+          # reads CBORG_API_KEY + GOOGLE_AI_STUDIO_API_KEY from .env
+          # for image-gen; claude -p picks up ANTHROPIC_API_KEY from
+          # the runner env directly (set in the job env block above).
+          {
+            echo "CBORG_API_KEY=$CBORG_API_KEY"
+            if [ -n "$GOOGLE_AI_STUDIO_API_KEY" ]; then
+              echo "GOOGLE_AI_STUDIO_API_KEY=$GOOGLE_AI_STUDIO_API_KEY"
+            fi
+          } > /tmp/beril-smoke/.env
           # Ensure .claude/skills/ exists even if sparse-checkout came up empty
           mkdir -p /tmp/beril-smoke/.claude/skills
 
