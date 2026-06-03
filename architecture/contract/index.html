@@ -1,0 +1,2462 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Co-Scientist Research Assessment & Framing Tools — KBase | BERIL platform">
+      
+      
+      
+        <link rel="canonical" href="https://kbaseincubator.github.io/craft/architecture/contract/">
+      
+      
+        <link rel="prev" href="../platform-structure/">
+      
+      
+        <link rel="next" href="../relationships/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Cross-skill contract - CRAFT</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cross-skill-contract" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CRAFT" class="md-header__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CRAFT
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Cross-skill contract
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quick-start/install/" class="md-tabs__link">
+          
+  
+  
+  Quick Start
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../platform-structure/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../skills/adversarial/" class="md-tabs__link">
+          
+  
+  
+  Skills
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../operations/release-runbook/" class="md-tabs__link">
+          
+  
+  
+  Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../extending/adding-a-skill/" class="md-tabs__link">
+          
+  
+  
+  Extending
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/release-notes/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CRAFT" class="md-nav__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CRAFT
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/first-run/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First run
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/verify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platform-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-skill contract
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-skill contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-the-contract-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the contract exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-contract-full-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The contract — full text
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-schema-commitments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Schema commitments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Schema commitments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-producer-schemas-other-skills-consume-these" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Producer schemas (other skills consume these)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-schema-bump-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Schema-bump policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-specific-schema-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Specific schema details
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-operational-commitments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Operational commitments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Operational commitments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-the-4-zone-draft-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 The 4-zone draft layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-the-claude-p-subagent-invocation-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 The claude -p subagent invocation pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-install-skill-discoverability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Install-skill discoverability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-environment-variable-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Environment variable contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-auto-memory-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Auto-memory convention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-the-tiered-review-cascade-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 The tiered review cascade pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-joining-the-platform-for-future-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Joining the platform (for future skills)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Joining the platform (for future skills)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#craft-does-not-require" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CRAFT does NOT require
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joining-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Joining process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#departing-the-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Departing the platform
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-contract-version-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Contract version history
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-contract-review-cadence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Contract review cadence
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skill relationships
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../retrospective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Augmentation stream retrospective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skills
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Skills
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/adversarial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-adversarial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/paper-writer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-paper-writer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/presentation-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-presentation-maker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/release-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coordinated release runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstream dependencies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/github-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Actions setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extending
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Extending
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/adding-a-skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a skill
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/external-contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/release-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/platform-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-the-contract-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the contract exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-contract-full-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The contract — full text
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-schema-commitments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Schema commitments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Schema commitments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-producer-schemas-other-skills-consume-these" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Producer schemas (other skills consume these)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-schema-bump-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Schema-bump policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-specific-schema-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Specific schema details
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-operational-commitments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Operational commitments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Operational commitments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-the-4-zone-draft-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 The 4-zone draft layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-the-claude-p-subagent-invocation-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 The claude -p subagent invocation pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-install-skill-discoverability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Install-skill discoverability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-environment-variable-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Environment variable contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-auto-memory-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Auto-memory convention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-the-tiered-review-cascade-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 The tiered review cascade pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-joining-the-platform-for-future-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Joining the platform (for future skills)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Joining the platform (for future skills)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#craft-does-not-require" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CRAFT does NOT require
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joining-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Joining process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#departing-the-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Departing the platform
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-contract-version-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Contract version history
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-contract-review-cadence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Contract review cadence
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/kbaseincubator/craft/edit/main/docs/architecture/contract.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="cross-skill-contract">Cross-skill contract<a class="headerlink" href="#cross-skill-contract" title="Permanent link">&para;</a></h1>
+<p>The CRAFT contract is the <strong>interface pin</strong> that lets the three
+skills release independently without breaking each other. It
+codifies the schemas they share, the operational invariants
+they all uphold, and the process for evolving them.</p>
+<p>The full contract lives at <code>CRAFT-CONTRACT.md</code> in the platform
+repo root and is included below verbatim. The platform
+maintainer is the source of truth for contract evolution; this
+page is auto-rendered from that file.</p>
+<h2 id="why-the-contract-exists">Why the contract exists<a class="headerlink" href="#why-the-contract-exists" title="Permanent link">&para;</a></h2>
+<p>The three skills work independently — each has its own CLI,
+its own install, its own release cycle. But they also
+<strong>explicitly compose</strong>:</p>
+<ul>
+<li><code>beril-adversarial-skill</code> produces structured review findings
+  (the <code>adversarial-review-{paper,presentation}.v3</code> schemas).</li>
+<li><code>beril-paper-writer-skill</code> consumes those findings in its
+  review-rewrite loop.</li>
+<li><code>beril-presentation-maker-skill</code> consumes those findings in
+  its review-rewrite loop AND consumes paper-writer's
+  <code>citation_pool.json</code> via the reuse-from-paper path.</li>
+</ul>
+<p>The contract pins:</p>
+<ol>
+<li><strong>Schema versioning.</strong> Producer schemas have stability
+   guarantees through the current CRAFT major version. Breaking
+   changes require a dual-version support window.</li>
+<li><strong>The 4-zone draft layout</strong> (<code>deliverable/</code>, <code>narrative/</code>,
+   <code>working/</code>, <code>audit/</code>) — what every skill produces under
+   <code>&lt;BERIL_ROOT&gt;/projects/&lt;project_id&gt;/{papers,talks}/draft_N/</code>.</li>
+<li><strong>The <code>claude -p</code> subagent invocation pattern</strong> + stream-json
+   output parsing — the load-bearing primitive.</li>
+<li><strong>The <code>install-skill</code> discoverability convention</strong> — every
+   skill stays independently installable; <code>craft install-platform</code>
+   is a coordinator, not a replacement.</li>
+<li><strong>The environment-variable contract</strong> (<code>CBORG_API_KEY</code>,
+   <code>GOOGLE_AI_STUDIO_API_KEY</code>, <code>BERIL_ROOT</code>).</li>
+<li><strong>The auto-memory convention</strong> for cross-skill discoveries.</li>
+<li><strong>The tiered review cascade pattern</strong> for skills with quality
+   gates.</li>
+</ol>
+<p>For the rationale see the <a href="../../reference/platform-proposal/">platform proposal</a>;
+for the join/depart process for future skills see <a href="../../extending/adding-a-skill/">Adding a
+skill</a>.</p>
+<hr />
+<h2 id="the-contract-full-text">The contract — full text<a class="headerlink" href="#the-contract-full-text" title="Permanent link">&para;</a></h2>
+<p>CRAFT consists of three skills that are <strong>explicitly designed
+to compose</strong>:</p>
+<ul>
+<li><strong>beril-adversarial-skill</strong> (review-as-data; the producer of
+  structured review findings)</li>
+<li><strong>beril-paper-writer-skill</strong> (manuscript drafter; consumes
+  adversarial review for review-rewrite loop)</li>
+<li><strong>beril-presentation-maker-skill</strong> (presentation drafter;
+  consumes adversarial review for review-rewrite loop;
+  consumes paper-writer's citation pool for reuse-from-paper)</li>
+</ul>
+<p>This document pins the <strong>interface contract</strong> between them +
+the <strong>operational invariants</strong> they share. The contract is the
+load-bearing piece that lets each skill release independently
+without breaking the others.</p>
+<p><strong>Versioning:</strong> the contract itself is versioned at the platform
+level. Today: <strong>CRAFT contract v0.1</strong>. Bumping the contract
+version requires platform-level review + a dual-version
+support window (typically 1-2 minor releases per skill).</p>
+<hr />
+<h2 id="2-schema-commitments">2. Schema commitments<a class="headerlink" href="#2-schema-commitments" title="Permanent link">&para;</a></h2>
+<h3 id="21-producer-schemas-other-skills-consume-these">2.1 Producer schemas (other skills consume these)<a class="headerlink" href="#21-producer-schemas-other-skills-consume-these" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Schema</th>
+<th>Producer</th>
+<th>Version</th>
+<th>Consumers</th>
+<th>Stability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>adversarial-review-paper.v3</code></td>
+<td>adversarial</td>
+<td>v3 (since v0.7.0)</td>
+<td>paper-writer</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>adversarial-review-presentation.v3</code></td>
+<td>adversarial</td>
+<td>v3 (since v0.7.0)</td>
+<td>presentation-maker</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>adversarial-review-plan.v3</code></td>
+<td>adversarial</td>
+<td>v3</td>
+<td>(external; no CRAFT consumer yet)</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>adversarial-review-project.v3</code></td>
+<td>adversarial</td>
+<td>v3</td>
+<td>(external; no CRAFT consumer yet)</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>claim_inventory.tsv</code></td>
+<td>paper-writer</td>
+<td>v1</td>
+<td>(external integrators)</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>citation_pool.json</code></td>
+<td>paper-writer</td>
+<td>v1</td>
+<td>presentation-maker (reuse-from-paper path; D-009)</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>slide_spec.v1</code></td>
+<td>presentation-maker</td>
+<td>v1</td>
+<td>(external integrators)</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>compose-fragment.v1</code> / <code>compose-fragment.v2</code></td>
+<td>presentation-maker</td>
+<td>v1 + v2 (v0.4 fused-notes shape)</td>
+<td>(internal to presentation-maker; documented for forensics)</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>layout-overlaps.v1</code></td>
+<td>presentation-maker</td>
+<td>v1 (v0.8.0 G.10-A)</td>
+<td>(cascade Tier-1; external integrators)</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>content-overflow.v1</code></td>
+<td>presentation-maker</td>
+<td>v1 (v0.8.0 G.10-C)</td>
+<td>(cascade Tier-1 + revise_loop)</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>review-cascade.v1</code></td>
+<td>paper-writer + presentation-maker</td>
+<td>v1 (M4b pattern)</td>
+<td>(external integrators; future review systems)</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22-schema-bump-policy">2.2 Schema-bump policy<a class="headerlink" href="#22-schema-bump-policy" title="Permanent link">&para;</a></h3>
+<p><strong>Non-breaking additions</strong> (new fields, new finding kinds, new
+optional content) ship at patch-version-bump of the producer
+skill. No contract version bump. Consumer skills MAY adopt the
+new field on their own cadence.</p>
+<p><strong>Breaking changes</strong> (renamed fields, changed semantics, removed
+fields) require:</p>
+<ol>
+<li>Discussion at the platform-level review (PR against
+   <code>CRAFT-CONTRACT.md</code>).</li>
+<li><strong>Dual-version support window</strong> in the producer skill: emit
+   BOTH old and new schema shape for at least one minor release
+   cycle (~3 months typical).</li>
+<li>Coordinated bump of all consumers within the support window.</li>
+<li>CRAFT contract version bump (v0.1 → v0.2, etc.).</li>
+<li>Entry in <code>CROSS-SKILL-RELEASE.md</code> documenting the migration.</li>
+</ol>
+<p><strong>Deprecation notice convention:</strong> when a field is being deprecated,
+the producer schema's <code>schema_version</code> field accepts a hint
+suffix (<code>v3</code> → <code>v3.deprecated-field-X-removed-at-v4</code>) for
+operator visibility. Consumers should warn-on-deprecated-field-use
+during the support window.</p>
+<h3 id="23-specific-schema-details">2.3 Specific schema details<a class="headerlink" href="#23-specific-schema-details" title="Permanent link">&para;</a></h3>
+<p>The full schema specifications live in each producer skill's
+repo (<code>CONTRACT.md</code> and <code>SPEC.md</code>). What follows is the
+cross-skill-visible surface only.</p>
+<p><strong><code>adversarial-review-{type}.v3</code> shape:</strong></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;schema_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;adversarial-review-{paper,presentation,plan,project}.v3&quot;</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;tier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;STRONG&quot;</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">&quot;THIN&quot;</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">&quot;EXPLORATORY&quot;</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">&quot;findings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F001&quot;</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="nt">&quot;class&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w">        </span><span class="c1">// see §2.3.1 below</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P0&quot;</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">&quot;P1&quot;</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">&quot;P2&quot;</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;high&quot;</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">&quot;medium&quot;</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">&quot;low&quot;</span><span class="p">,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="nt">&quot;slide_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">  </span><span class="c1">// for presentation</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">      </span><span class="nt">&quot;claim_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;string&gt;&quot;</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">  </span><span class="c1">// for paper</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="nt">&quot;issue&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;operator-readable description&gt;&quot;</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="nt">&quot;fix_hint&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;actionable guidance&gt;&quot;</span><span class="p">,</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="nt">&quot;fix_target&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;prompt-name or stage-name&gt;&quot;</span><span class="p">,</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="nt">&quot;report_evidence&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="err">...</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="err">...</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="p">],</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="nt">&quot;summary&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="nt">&quot;by_severity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;P0&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;P1&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="p">},</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="nt">&quot;by_class&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;&lt;class&gt;&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="p">}</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Finding class enum (v3):</strong></p>
+<p>For <code>--type paper</code>:
+- <code>register_drift</code>, <code>claim_evidence</code>, <code>central_objection</code>,
+  <code>citation_reality</code>, <code>unbacked_quantitative</code>, <code>methods_gap</code>,
+  <code>figure_provenance</code>, <code>discussion_overreach</code>, <code>compliance</code>,
+  <code>narrative_weakness</code> (legacy v2 alias; routes to
+  <code>central_objection</code> in v3).</p>
+<p>For <code>--type presentation</code>:
+- <code>register_drift</code>, <code>claim_evidence</code>, <code>qa_softball</code>,
+  <code>substory_arc</code>, <code>throughline</code>, <code>missing_slide</code>,
+  <code>citation_reality</code>, <code>unbacked_quantitative</code>,
+  <code>central_objection</code>, <code>content_overflow</code> (v0.8.0+; routes via
+  presentation-maker's REVISE_CLASSES).</p>
+<p>For <code>--type plan</code> + <code>--type project</code>: see beril-adversarial-skill
+CONTRACT.md.</p>
+<p><strong>Synthetic-id prefixes (assigned by consumer skills):</strong></p>
+<ul>
+<li><code>F###</code> — adversarial-produced findings (the canonical source)</li>
+<li><code>CO###</code> — content_overflow findings (presentation-maker; v0.8.1)</li>
+<li><code>VQ###</code> — visual-QA findings (presentation-maker; v0.8.0 G.7)</li>
+<li>Future skills SHOULD use a similar 2-letter prefix for their
+  synthetic findings to keep the namespace clean.</li>
+</ul>
+<hr />
+<h2 id="3-operational-commitments">3. Operational commitments<a class="headerlink" href="#3-operational-commitments" title="Permanent link">&para;</a></h2>
+<h3 id="31-the-4-zone-draft-layout">3.1 The 4-zone draft layout<a class="headerlink" href="#31-the-4-zone-draft-layout" title="Permanent link">&para;</a></h3>
+<p>All three skills produce drafts under the KBase | BERIL 4-zone
+convention:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&lt;BERIL_ROOT&gt;/projects/&lt;project_id&gt;/{papers,talks}/draft_N/
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── deliverable/           # audience-facing artifacts
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>├── narrative/             # decision artifacts (throughline, substory, etc.)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>├── working/               # machine-readable intermediates
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>└── audit/                 # logs, cost, review outputs
+</span></code></pre></div>
+<p>This convention is <strong>non-negotiable</strong> for CRAFT membership.
+External integrators reading CRAFT outputs can rely on this
+layout being stable.</p>
+<p><strong>Naming conventions inside the layout:</strong></p>
+<ul>
+<li><code>deliverable/draft.{pptx,docx}</code> — the audience-facing artifact</li>
+<li><code>deliverable/speaker-notes.md</code> (presentation-maker) /
+  <code>deliverable/draft.md</code> (paper-writer) — secondary deliverable</li>
+<li><code>narrative/00_throughline.md</code>, <code>narrative/02_substories.md</code> —
+  decision sequence (per-skill specifics)</li>
+<li><code>working/slide_spec.json</code> (presentation-maker) /
+  <code>working/claim_inventory.tsv</code> (paper-writer) — canonical
+  machine-readable spec</li>
+<li><code>working/citation_pool.json</code> — citation source (paper-writer
+  produces; presentation-maker consumes via D-009 reuse path)</li>
+<li><code>audit/adversarial_review.{json,md}</code> — review output</li>
+<li><code>audit/review_cascade.{json,md}</code> — cascade aggregate</li>
+<li><code>audit/runs/run-N/summary.json</code> — per-run metadata</li>
+<li><code>audit/state.json</code> — pipeline state for <code>--resume-from</code></li>
+</ul>
+<h3 id="32-the-claude-p-subagent-invocation-pattern">3.2 The <code>claude -p</code> subagent invocation pattern<a class="headerlink" href="#32-the-claude-p-subagent-invocation-pattern" title="Permanent link">&para;</a></h3>
+<p>Each CRAFT skill invokes Claude via <code>claude -p</code> subagents,
+parsing stream-json output for cost + tool-use accounting. This
+is the load-bearing primitive — the pattern that lets each skill
+stand on its own without an Anthropic SDK dependency or auth
+federation.</p>
+<p><strong>Invariants:</strong></p>
+<ul>
+<li>Skills invoke <code>claude</code> via the user's <code>$PATH</code> (no hard-coded
+  paths).</li>
+<li>Skills pass prompts as <code>claude -p &lt;prompt-file&gt;</code> invocations
+  with structured input via stdin or named file paths.</li>
+<li>Skills parse stream-json output via a per-skill <code>stream_progress.py</code>-
+  shaped parser. (Cross-skill consolidation of this parser is a
+  v0.9+ candidate; not committed.)</li>
+<li>Skills RESPECT the user's existing Anthropic / CBORG auth
+  configuration; they don't manage auth themselves.</li>
+</ul>
+<p><strong>Coordinated response to upstream changes:</strong> if Anthropic
+deprecates or modifies the <code>claude -p</code> flag or the stream-json
+output shape, CRAFT skills must coordinate a response. The
+mechanism is <code>CRAFT-DEPENDENCIES.md</code> + the cross-skill release
+runbook.</p>
+<h3 id="33-install-skill-discoverability">3.3 Install-skill discoverability<a class="headerlink" href="#33-install-skill-discoverability" title="Permanent link">&para;</a></h3>
+<p>Each CRAFT skill MUST be independently installable:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>&lt;skill-package-name&gt;
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>&lt;skill-cli&gt;<span class="w"> </span>install-skill<span class="w"> </span>&lt;BERIL_ROOT&gt;
+</span></code></pre></div>
+<p>regardless of CRAFT presence. The platform's <code>craft install-platform</code>
+command IS a coordinator over the per-skill <code>install-skill</code>
+invocations, not a replacement. A user can still install one
+skill in isolation.</p>
+<p><strong>Idempotency:</strong> every <code>install-skill</code> must be safe to re-run.
+Re-installing doesn't damage user-edited files outside the
+skill's <code>.claude/skills/&lt;name&gt;/</code> deployment dir.</p>
+<h3 id="34-environment-variable-contract">3.4 Environment variable contract<a class="headerlink" href="#34-environment-variable-contract" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Required by</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CBORG_API_KEY</code></td>
+<td>paper-writer, presentation-maker (image-gen)</td>
+<td>LLM access via LBL CBORG gateway</td>
+</tr>
+<tr>
+<td><code>GOOGLE_AI_STUDIO_API_KEY</code></td>
+<td>presentation-maker (image-gen, optional)</td>
+<td>Direct Google AI Studio for image generation</td>
+</tr>
+<tr>
+<td><code>BERIL_ROOT</code></td>
+<td>all three (or explicit <code>--beril-root &lt;path&gt;</code> per invocation)</td>
+<td>BERIL deployment location</td>
+</tr>
+</tbody>
+</table>
+<p>Skills read env vars from <code>&lt;BERIL_ROOT&gt;/.env</code> automatically (via
+python-dotenv). Users do NOT need to <code>export</code> them in their
+shell.</p>
+<p><strong>Future variables MUST be added to this table</strong> before any skill
+starts depending on them.</p>
+<h3 id="35-auto-memory-convention">3.5 Auto-memory convention<a class="headerlink" href="#35-auto-memory-convention" title="Permanent link">&para;</a></h3>
+<p>Each skill reads <code>.auto-memory/MEMORY.md</code> (workspace-level) on
+startup, picking up cross-skill discoveries.</p>
+<p>Categories of memory entries that cross-skill consumers should
+expect:</p>
+<ul>
+<li><code>reference_beril_*</code> — BERIL operational pitfalls + project-
+  artifact conventions</li>
+<li><code>reference_kberdl_*</code> — K-BERDL schema details + database
+  conventions</li>
+<li><code>project_&lt;skill&gt;_*</code> — per-skill ongoing state pointers</li>
+<li><code>reference_adversarial_*</code> — adversarial schema/CLI behavior
+  notes</li>
+</ul>
+<p><strong>Auto-memory hygiene:</strong> when a skill makes a cross-skill-
+relevant discovery (e.g., BERIL produces a new artifact type,
+adversarial introduces a new finding class), the discovery
+SHOULD be written to auto-memory as a <code>reference_*</code> entry so
+other skills + future conversations pick it up.</p>
+<h3 id="36-the-tiered-review-cascade-pattern">3.6 The tiered review cascade pattern<a class="headerlink" href="#36-the-tiered-review-cascade-pattern" title="Permanent link">&para;</a></h3>
+<p>Skills that have quality gates (paper-writer + presentation-maker
+today; future review-system skills tomorrow) converge on the
+same tiered cascade structure:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Tier 1: ~$0    Deterministic validators + read-if-present audit-JSONs
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>               P3-P5 short-circuit; P0 fails the tier
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Tier 2: ~$0.05 Narrative-light Haiku review (advisory; never gates)
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Tier 3: ~$0.50 Canonical adversarial review (the load-bearing tier)
+</span></code></pre></div>
+<p><strong>For new skills joining CRAFT:</strong> if you produce findings that
+should flow through the cascade, write them to a versioned
+audit JSON at <code>audit/&lt;your-skill&gt;.json</code>. The platform's existing
+cascade readers will (eventually) lift them at Tier 1 via
+the read-if-present pattern.</p>
+<hr />
+<h2 id="4-joining-the-platform-for-future-skills">4. Joining the platform (for future skills)<a class="headerlink" href="#4-joining-the-platform-for-future-skills" title="Permanent link">&para;</a></h2>
+<p>A new skill joins CRAFT when:</p>
+<ol>
+<li><strong>It produces or consumes a CRAFT contract.</strong> Examples:</li>
+<li>A domain-specific reviewer that produces
+     <code>adversarial-review-&lt;type&gt;.v3</code>-shape findings</li>
+<li>A feedback-incorporation skill that consumes adversarial
+     findings + drafter outputs</li>
+<li>A research-quality-improvement skill that produces audit
+     JSON consumed by the cascade</li>
+<li>A cross-artifact reconciliation skill (paper-vs-presentation
+     consistency)</li>
+<li>
+<p>A domain-translation skill (lay-audience versions)</p>
+</li>
+<li>
+<p><strong>It conforms to §3 operational commitments:</strong></p>
+</li>
+<li>4-zone draft layout</li>
+<li><code>claude -p</code> invocation pattern</li>
+<li>Independently installable via <code>pipx install</code> +
+     <code>&lt;skill&gt; install-skill &lt;BERIL_ROOT&gt;</code></li>
+<li>Env var contract (additions added to §3.4 table BEFORE
+     adoption)</li>
+<li>
+<p>Auto-memory convention</p>
+</li>
+<li>
+<p><strong>It maintains its own repo + release cycle.</strong> Joining CRAFT
+   does NOT require giving up the skill's independence. The
+   platform references the skill via git submodule pinned to
+   tagged releases.</p>
+</li>
+<li>
+<p><strong>It commits to the platform's coordination mechanism:</strong></p>
+</li>
+<li>PRs against the platform repo when contract-touching
+     changes happen</li>
+<li>Participation in <code>CROSS-SKILL-RELEASE.md</code> runbook for
+     coordinated releases</li>
+<li>Updates to <code>CRAFT-DEPENDENCIES.md</code> when new external
+     dependencies arise</li>
+</ol>
+<h3 id="craft-does-not-require">CRAFT does NOT require<a class="headerlink" href="#craft-does-not-require" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Membership in any specific GitHub org.</strong> The skill can live
+  in any org (kbaseincubator, ArkinLaboratory, an external
+  contributor's org, etc.) as long as the platform repo can
+  reference it as a submodule.</li>
+<li><strong>A specific tech stack.</strong> The skill can be Python + bash
+  today; could be Rust or Go tomorrow as long as the
+  install-skill pattern is respected + the <code>claude -p</code>
+  invocation pattern works.</li>
+<li><strong>Surrendering the skill's independent identity.</strong> Skills
+  retain their own README + brand + release cadence.</li>
+</ul>
+<h3 id="joining-process">Joining process<a class="headerlink" href="#joining-process" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Skill author drafts a "CRAFT membership proposal" describing
+   what contract the skill produces/consumes + how it conforms
+   to §3.</li>
+<li>PR against the platform repo adding the skill as a candidate
+   submodule.</li>
+<li>Platform-level review by existing CRAFT skill maintainers +
+   Adam (as panel-of-one for v0.x; broadened later).</li>
+<li>Acceptance: PR merged; skill becomes a CRAFT submodule; first
+   CRAFT release including the new skill bumps platform minor
+   version (CRAFT v0.X → v0.(X+1)).</li>
+<li>Skill author commits to ongoing participation per §4.4 above.</li>
+</ol>
+<h3 id="departing-the-platform">Departing the platform<a class="headerlink" href="#departing-the-platform" title="Permanent link">&para;</a></h3>
+<p>A skill that no longer fits the contract (significant divergence;
+no longer maintained; org migration breaking the submodule
+reference) can be removed from CRAFT. Process:</p>
+<ol>
+<li>Removal proposal as a PR against the platform repo.</li>
+<li>CRAFT contract review: which schemas does the departing skill
+   produce? Are there CRAFT consumers? If yes, the consumers
+   either (a) migrate to a replacement, (b) accept the schema
+   becoming external/unsupported, or (c) the skill's removal
+   is gated on a replacement being ready.</li>
+<li>Platform major-version bump (CRAFT v0.X → v1.0 if the
+   departure is significant) documenting the removal.</li>
+<li>The skill continues to exist as a standalone skill; just no
+   longer under the CRAFT platform's coordination.</li>
+</ol>
+<hr />
+<h2 id="5-contract-version-history">5. Contract version history<a class="headerlink" href="#5-contract-version-history" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0.1 (draft)</td>
+<td>2026-06-03</td>
+<td>Initial draft. Captures the contract as it exists across adversarial v0.7.0.8, paper-writer v1.0.0, presentation-maker v1.0.0.</td>
+</tr>
+</tbody>
+</table>
+<p>(Future entries appended as the contract evolves.)</p>
+<hr />
+<h2 id="6-contract-review-cadence">6. Contract review cadence<a class="headerlink" href="#6-contract-review-cadence" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Quarterly:</strong> review <code>CRAFT-DEPENDENCIES.md</code> for upstream
+  changes (Anthropic deprecations, KBase | BERIL contract
+  updates, image-gen provider shifts).</li>
+<li><strong>On schema bump:</strong> review the affected section here + bump
+  the contract version if breaking.</li>
+<li><strong>On new skill joining:</strong> review §4 process + update §2.1
+  table.</li>
+<li><strong>Annually:</strong> review the operational commitments in §3 against
+  actual practice; codify drift.</li>
+</ul>
+<hr />
+<p><em>This document is the CRAFT platform's interface pin. The
+load-bearing operational invariants live here. Changes require
+platform-level review.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../platform-structure/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Platform structure">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Platform structure
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../relationships/" class="md-footer__link md-footer__link--next" aria-label="Next: Skill relationships">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Skill relationships
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/kbaseincubator/craft" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

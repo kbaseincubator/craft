@@ -1,0 +1,2303 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Co-Scientist Research Assessment & Framing Tools — KBase | BERIL platform">
+      
+      
+      
+        <link rel="canonical" href="https://kbaseincubator.github.io/craft/operations/dependencies/">
+      
+      
+        <link rel="prev" href="../release-runbook/">
+      
+      
+        <link rel="next" href="../github-actions/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Upstream dependencies - CRAFT</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#upstream-dependencies" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CRAFT" class="md-header__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CRAFT
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Upstream dependencies
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quick-start/install/" class="md-tabs__link">
+          
+  
+  
+  Quick Start
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/platform-structure/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../skills/adversarial/" class="md-tabs__link">
+          
+  
+  
+  Skills
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../release-runbook/" class="md-tabs__link">
+          
+  
+  
+  Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../extending/adding-a-skill/" class="md-tabs__link">
+          
+  
+  
+  Extending
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/release-notes/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CRAFT" class="md-nav__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CRAFT
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/first-run/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First run
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/verify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/platform-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-skill contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skill relationships
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/retrospective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Augmentation stream retrospective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skills
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Skills
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/adversarial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-adversarial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/paper-writer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-paper-writer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/presentation-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-presentation-maker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coordinated release runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstream dependencies
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstream dependencies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-operators-use-this-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How operators use this page
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How operators use this page">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anthropic-side-coordination-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anthropic-side coordination notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-kbase-beril" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. KBase | BERIL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. KBase | BERIL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kbase-beril-coordination-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KBase | BERIL coordination notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-python-ecosystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Python ecosystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-image-gen-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Image-gen providers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Image-gen providers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#image-gen-coordination-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Image-gen coordination notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-bibtex-citation-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. BibTeX + citation databases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-known-cross-skill-smoke-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Known cross-skill-smoke limitations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-cross-skill-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Cross-skill dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-operating-system-tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Operating-system + tooling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-review-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Review log
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Actions setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extending
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Extending
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/adding-a-skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a skill
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/external-contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/release-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/platform-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-operators-use-this-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How operators use this page
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How operators use this page">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anthropic-side-coordination-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anthropic-side coordination notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-kbase-beril" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. KBase | BERIL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. KBase | BERIL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kbase-beril-coordination-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KBase | BERIL coordination notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-python-ecosystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Python ecosystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-image-gen-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Image-gen providers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Image-gen providers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#image-gen-coordination-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Image-gen coordination notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-bibtex-citation-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. BibTeX + citation databases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-known-cross-skill-smoke-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Known cross-skill-smoke limitations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-cross-skill-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Cross-skill dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-operating-system-tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Operating-system + tooling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-review-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Review log
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/kbaseincubator/craft/edit/main/docs/operations/dependencies.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="upstream-dependencies">Upstream dependencies<a class="headerlink" href="#upstream-dependencies" title="Permanent link">&para;</a></h1>
+<p>CRAFT skills lean on external dependencies that can change:
+Anthropic Claude Code's <code>claude -p</code> invocation, KBase | BERIL
+contracts, image-gen provider APIs, Python ecosystem libraries.
+The dependencies watchlist tracks each with version notes + a
+"last verified working with" date.</p>
+<p>The full watchlist lives at <code>CRAFT-DEPENDENCIES.md</code> in the
+platform repo and is included verbatim below. The platform
+maintainer reviews it quarterly + on any vendor deprecation
+notice.</p>
+<h2 id="how-operators-use-this-page">How operators use this page<a class="headerlink" href="#how-operators-use-this-page" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Before a coordinated release:</strong> check that no entry needs an
+  urgent action.</li>
+<li><strong>When something breaks unexpectedly:</strong> check the "Last
+  verified" dates. Anything stale (&gt;1 quarter) is a suspect.</li>
+<li><strong>When a vendor announces a deprecation:</strong> open an issue at
+  <code>kbaseincubator/craft</code> referencing the affected entry; the
+  <a href="../release-runbook/">release runbook</a> coordinates the response.</li>
+</ul>
+<p>For the troubleshooting decision tree on user-reported issues
+see <a href="../troubleshooting/">Troubleshooting</a>.</p>
+<hr />
+<p>The load-bearing dependency. Every CRAFT skill invokes Claude via
+<code>claude -p</code> subagents. Anthropic's Claude Code CLI is the
+substrate.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Current state</th>
+<th>Last verified</th>
+<th>Risk level</th>
+<th>Watch for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>claude -p</code> flag (one-shot LLM invocation)</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>Deprecation or flag rename. Anthropic announces deprecations 30-90 days ahead in the <a href="https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md">claude-code changelog</a>.</td>
+</tr>
+<tr>
+<td>stream-json output shape</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>Schema additions are non-breaking; renames/removals are. Each skill has a <code>stream_progress.py</code> parser that would break on a shape change.</td>
+</tr>
+<tr>
+<td>Model availability (Sonnet 4.6, Opus 4.7)</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Medium</td>
+<td>Model deprecations; CBORG mirror lag (~1-2 weeks behind direct Anthropic).</td>
+</tr>
+<tr>
+<td>MCP tool surface</td>
+<td>Evolving</td>
+<td>2026-06-03</td>
+<td>Low for CRAFT</td>
+<td>The three skills don't currently consume MCP tools at runtime; if a skill adopts MCP, this row becomes load-bearing.</td>
+</tr>
+<tr>
+<td>Auth model (Anthropic direct + CBORG gateway)</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>CBORG token policy changes; per-user quota shifts.</td>
+</tr>
+<tr>
+<td><code>CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE</code> env var</td>
+<td><strong>DEPRECATED 06/01/2026</strong></td>
+<td>2026-06-03</td>
+<td>None</td>
+<td>Removed; no CRAFT skill uses this env var, so no action needed. Listed here as a historical example of Anthropic's 30-90 day deprecation cadence.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="anthropic-side-coordination-notes">Anthropic-side coordination notes<a class="headerlink" href="#anthropic-side-coordination-notes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The <code>claude-code</code> GitHub repo's <code>CHANGELOG.md</code> is the
+  authoritative source for breaking changes.</li>
+<li>The platform's quarterly review should grep the changelog for
+  the last 90 days of entries + cross-reference against the
+  table above.</li>
+<li>If a deprecation lands that affects CRAFT skills, the
+  <code>CROSS-SKILL-RELEASE.md</code> runbook coordinates the response.</li>
+</ul>
+<hr />
+<h2 id="2-kbase-beril">2. KBase | BERIL<a class="headerlink" href="#2-kbase-beril" title="Permanent link">&para;</a></h2>
+<p>CRAFT skills install into <code>&lt;BERIL_ROOT&gt;/.claude/skills/</code> + read
+KBase | BERIL project artifacts. The KBase | BERIL contract is
+implicit but load-bearing.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Current state</th>
+<th>Last verified</th>
+<th>Risk level</th>
+<th>Watch for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.claude/skills/</code> discovery convention</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>Claude Code controls this; documented at the skill-loader level.</td>
+</tr>
+<tr>
+<td>4-zone draft layout (<code>deliverable / narrative / working / audit</code>)</td>
+<td>Stable since BERIL v0.3.1</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>Multiple CRAFT skills depend on this; BERIL changes would ripple through.</td>
+</tr>
+<tr>
+<td>Project artifact conventions (<code>REPORT.md</code>, <code>RESEARCH_PLAN.md</code>, <code>notebooks/</code>, <code>figures/</code>)</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>New artifact types (e.g., <code>experiments/</code>) being added are non-breaking; renaming existing ones would be.</td>
+</tr>
+<tr>
+<td>K-BERDL database conventions</td>
+<td>Evolving (Adam noted BERDL nomenclature being deprecated)</td>
+<td>2026-06-03</td>
+<td>Medium</td>
+<td>The "BERDL" → "KBase</td>
+</tr>
+<tr>
+<td><code>&lt;BERIL_ROOT&gt;/.env</code> env-var convention</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>Any change to where env vars come from.</td>
+</tr>
+<tr>
+<td>Sibling-skill discovery (e.g., paper-writer finds presentation-maker's draft)</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>Used by presentation-maker's D-009 "reuse-from-paper" path.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="kbase-beril-coordination-notes">KBase | BERIL coordination notes<a class="headerlink" href="#kbase-beril-coordination-notes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>BERIL's release cadence is not directly visible to CRAFT
+  maintainers. The quarterly review should check the BERIL
+  repo for recent commits to the skill-loader + draft-layout
+  conventions.</li>
+<li>"BERDL deprecation" is a known long-term consideration; CRAFT
+  prompts + docs reference BERDL in places. v0.x doesn't
+  block on the nomenclature change; v1.x of CRAFT may include
+  a coordinated rename pass.</li>
+</ul>
+<hr />
+<h2 id="3-python-ecosystem">3. Python ecosystem<a class="headerlink" href="#3-python-ecosystem" title="Permanent link">&para;</a></h2>
+<p>The three skills' direct Python dependencies. Listed by the
+package name + which skill uses it.</p>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Used by</th>
+<th>Constraint</th>
+<th>Last verified</th>
+<th>Risk level</th>
+<th>Watch for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python-pptx&gt;=0.6.23</code></td>
+<td>presentation-maker</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>python-pptx 1.0 release (currently 0.6.x; long-anticipated 1.0 jump).</td>
+</tr>
+<tr>
+<td><code>python-docx&gt;=1.1.0</code></td>
+<td>paper-writer</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td><code>lxml</code> transitively bound; rare breaks.</td>
+</tr>
+<tr>
+<td><code>nbformat&gt;=5.7.0</code></td>
+<td>paper-writer + presentation-maker</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>New cell-id requirement in future major; non-blocking for our use.</td>
+</tr>
+<tr>
+<td><code>Pillow&gt;=10.0.0</code></td>
+<td>presentation-maker</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>Image-gen depends on Pillow for post-processing.</td>
+</tr>
+<tr>
+<td><code>requests&gt;=2.31.0</code></td>
+<td>presentation-maker (image-gen client)</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Low</td>
+<td>TLS / proxy behavior changes.</td>
+</tr>
+<tr>
+<td><code>lxml</code> (transitive via python-docx)</td>
+<td>paper-writer</td>
+<td>Stable</td>
+<td>2026-06-03</td>
+<td>Medium</td>
+<td>Periodic compile / wheel issues on new Python releases.</td>
+</tr>
+<tr>
+<td><code>duckdb</code>, <code>pandas</code>, <code>numpy</code>, etc.</td>
+<td>atlas-skill (NOT IN CRAFT)</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Out of CRAFT's scope; managed separately.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-image-gen-providers">4. Image-gen providers<a class="headerlink" href="#4-image-gen-providers" title="Permanent link">&para;</a></h2>
+<p>CRAFT presentation-maker generates AI illustrations for select
+slides. Two providers + their auth models.</p>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Endpoint</th>
+<th>Auth</th>
+<th>Cost calibration</th>
+<th>Last verified</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CBORG-Gemini</strong></td>
+<td>LBL CBORG gateway</td>
+<td><code>CBORG_API_KEY</code></td>
+<td>~$0.014/image (calibrated v0.3.3.2)</td>
+<td>2026-06-03</td>
+<td>Medium — CBORG quota policy + tenant model evolves</td>
+</tr>
+<tr>
+<td><strong>Google AI Studio direct</strong></td>
+<td>Google AI Studio API</td>
+<td><code>GOOGLE_AI_STUDIO_API_KEY</code></td>
+<td>~$0.03/image (gemini-3-pro-image-preview)</td>
+<td>2026-06-03</td>
+<td>Medium — Google model availability + pricing changes; <code>gemini-3-pro-image-preview</code> is a preview-tier model</td>
+</tr>
+</tbody>
+</table>
+<h3 id="image-gen-coordination-notes">Image-gen coordination notes<a class="headerlink" href="#image-gen-coordination-notes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>M5b's auto-discovery probe at <code>image_client.py</code> resolves the
+  active model from the configured provider; if the model is
+  renamed (e.g., <code>gemini-3-pro-image-preview</code> → <code>gemini-3-pro-image</code>
+  GA), the probe surfaces the change at runtime.</li>
+<li>Provider deprecations are coordinated at the
+  presentation-maker patch level; CRAFT bumps if the provider
+  set materially changes.</li>
+</ul>
+<hr />
+<h2 id="5-bibtex-citation-databases">5. BibTeX + citation databases<a class="headerlink" href="#5-bibtex-citation-databases" title="Permanent link">&para;</a></h2>
+<p>Paper-writer's citation pool resolves bibliographic references
+via multiple paths.</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Used for</th>
+<th>Last verified</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pubmed.gov</code> API</td>
+<td>DOI + PMID resolution</td>
+<td>2026-06-03</td>
+<td>Low — NCBI API stable; rate-limited</td>
+</tr>
+<tr>
+<td><code>crossref.org</code> API</td>
+<td>DOI resolution + metadata</td>
+<td>2026-06-03</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Local BibTeX files in project artifacts</td>
+<td>Citation extraction</td>
+<td>2026-06-03</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<p>Paper-writer handles failures gracefully (citations marked TBD
+when resolution fails); citation-database outages don't block
+draft production.</p>
+<hr />
+<h2 id="6-known-cross-skill-smoke-limitations">6. Known cross-skill-smoke limitations<a class="headerlink" href="#6-known-cross-skill-smoke-limitations" title="Permanent link">&para;</a></h2>
+<p>The cross-skill smoke test (<code>.github/workflows/cross-skill-smoke.yml</code>)
+was narrowed to <strong>adversarial-only</strong> in CRAFT v0.1.4 (2026-06-03)
+after the first end-to-end run surfaced two skill-level CI-portability
+gaps. Documented here so the limitation is visible + the smoke can
+be re-broadened when the upstream fixes land.</p>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Issue</th>
+<th>Filed</th>
+<th>Status</th>
+<th>Workaround</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>beril-paper-writer-skill</td>
+<td><code>draft</code> halts at the throughline-pick gate by design; no <code>--auto-pick</code> flag for CI/unattended runs</td>
+<td><a href="https://github.com/ArkinLaboratory/beril-paper-writer-skill/issues/1">issue #1</a></td>
+<td>Open as of 2026-06-03</td>
+<td>Two-stage invocation (<code>draft</code> → parse handoff JSON → <code>continue --pick TL1</code>); not currently in smoke</td>
+</tr>
+<tr>
+<td>beril-presentation-maker-skill</td>
+<td>Bash orchestrator can't discover the pipx-installed Python interpreter on a fresh GitHub Actions runner</td>
+<td><a href="https://github.com/ArkinLaboratory/beril-presentation-maker-skill/issues/1">issue #1</a></td>
+<td>Open as of 2026-06-03</td>
+<td>None viable from CRAFT side; the orchestrator's interpreter-discovery logic needs to read the <code>beril-presentation-maker</code> shim's shebang</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When these land:</strong></p>
+<ol>
+<li>Bump the affected skill's pinned version in CRAFT's
+   <code>pyproject.toml</code> + the submodule.</li>
+<li>Restore the smoke's <code>Smoke — paper-writer draft</code> +
+   <code>Smoke — presentation-maker draft</code> steps (commented out in
+   the workflow with anchor markers).</li>
+<li>Restore the matching artifact checks in <code>Verify artifacts
+   produced</code> (paper <code>.docx</code> + presentation <code>.pptx</code>).</li>
+<li>Restore the cost summary's <code>papers/</code> + <code>talks/</code> aggregation.</li>
+<li>Tag a CRAFT minor release noting the smoke surface expansion.</li>
+</ol>
+<p><strong>Architectural note:</strong> these are not CRAFT bugs. The cross-skill
+smoke is doing exactly what it's designed to do — surface
+clean-room-CI-vs-hub-deployment drift before it hits operators.
+The paper-writer issue is a design-vs-CI tension; the
+presentation-maker issue is a portability bug. Both belong in the
+skill repos, not CRAFT.</p>
+<hr />
+<h2 id="7-cross-skill-dependencies">7. Cross-skill dependencies<a class="headerlink" href="#7-cross-skill-dependencies" title="Permanent link">&para;</a></h2>
+<p>The internal CRAFT contract surface. See <code>CRAFT-CONTRACT.md</code> §2
+for the full schema list; this section is the operational
+"what version of X does CRAFT pin" view.</p>
+<table>
+<thead>
+<tr>
+<th>Producer</th>
+<th>Schema</th>
+<th>Pinned in CRAFT v0.1.0</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>beril-adversarial-skill</td>
+<td><code>adversarial-review-{paper,presentation}.v3</code></td>
+<td>v0.7.0.9</td>
+<td>paper-writer (v1.0.1) + presentation-maker (v1.0.0)</td>
+</tr>
+<tr>
+<td>beril-paper-writer-skill</td>
+<td><code>claim_inventory.tsv</code>, <code>citation_pool.json</code></td>
+<td>v1.0.1</td>
+<td>presentation-maker via D-009 reuse-from-paper</td>
+</tr>
+<tr>
+<td>beril-presentation-maker-skill</td>
+<td><code>slide_spec.v1</code>, <code>layout-overlaps.v1</code>, <code>content-overflow.v1</code>, <code>review-cascade.v1</code></td>
+<td>v1.0.0</td>
+<td>(external integrators)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Schema-bump policy</strong> lives in <code>CRAFT-CONTRACT.md §2.2</code>. This
+table is the snapshot of currently-pinned versions.</p>
+<hr />
+<h2 id="8-operating-system-tooling">8. Operating-system + tooling<a class="headerlink" href="#8-operating-system-tooling" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Used for</th>
+<th>Last verified</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pipx</code></td>
+<td>Skill install path</td>
+<td>2026-06-03</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>bash 4+</code></td>
+<td>Orchestrator scripts (each skill ships <code>presentation_maker.sh</code>, etc.)</td>
+<td>2026-06-03</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>LibreOffice</code> (<code>soffice</code>)</td>
+<td>Optional: PDF render + visual-QA</td>
+<td>2026-06-03</td>
+<td>Low (optional path; skills fall back gracefully)</td>
+</tr>
+<tr>
+<td><code>pdftoppm</code> (poppler)</td>
+<td>Optional: visual-QA PNG rendering</td>
+<td>2026-06-03</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Python 3.10+</td>
+<td>Required for all three skills</td>
+<td>2026-06-03</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>git</code> 2.0+</td>
+<td>Submodule operations</td>
+<td>2026-06-03</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="9-review-log">9. Review log<a class="headerlink" href="#9-review-log" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Reviewer</th>
+<th>Changes</th>
+<th>Action items</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-06-03</td>
+<td>Initial draft</td>
+<td>Created document with current state</td>
+<td>None (snapshot)</td>
+</tr>
+</tbody>
+</table>
+<p>(Future entries appended on each quarterly review or coordinated
+release.)</p>
+<hr />
+<p><em>This document is updated whenever an upstream item changes
+state. Last "Last verified" dates should never drift more than
+90 days past the most recent quarterly review.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../release-runbook/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Coordinated release runbook">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Coordinated release runbook
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../github-actions/" class="md-footer__link md-footer__link--next" aria-label="Next: GitHub Actions setup">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                GitHub Actions setup
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/kbaseincubator/craft" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

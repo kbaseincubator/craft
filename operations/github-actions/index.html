@@ -1,0 +1,2206 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Co-Scientist Research Assessment & Framing Tools — KBase | BERIL platform">
+      
+      
+      
+        <link rel="canonical" href="https://kbaseincubator.github.io/craft/operations/github-actions/">
+      
+      
+        <link rel="prev" href="../dependencies/">
+      
+      
+        <link rel="next" href="../troubleshooting/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>GitHub Actions setup - CRAFT</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#github-actions-setup" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CRAFT" class="md-header__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CRAFT
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GitHub Actions setup
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quick-start/install/" class="md-tabs__link">
+          
+  
+  
+  Quick Start
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/platform-structure/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../skills/adversarial/" class="md-tabs__link">
+          
+  
+  
+  Skills
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../release-runbook/" class="md-tabs__link">
+          
+  
+  
+  Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../extending/adding-a-skill/" class="md-tabs__link">
+          
+  
+  
+  Extending
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/release-notes/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CRAFT" class="md-nav__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CRAFT
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/first-run/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First run
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/verify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/platform-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-skill contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skill relationships
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/retrospective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Augmentation stream retrospective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skills
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Skills
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/adversarial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-adversarial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/paper-writer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-paper-writer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/presentation-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-presentation-maker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coordinated release runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstream dependencies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Actions setup
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Actions setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#2-cross-skill-smokeyml-cross-skill-smoke-test-full-smoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. cross-skill-smoke.yml — Cross-Skill Smoke Test (full smoke)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-setting-up-the-cross-skill-smoke-first-time-walk-through" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Setting up the cross-skill smoke — first-time walk-through
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Setting up the cross-skill smoke — first-time walk-through">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1a-anthropic_api_key-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1a — ANTHROPIC_API_KEY (secret)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1b-cborg_api_key-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1b — CBORG_API_KEY (secret)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-smoke_beril_repo-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — SMOKE_BERIL_REPO (variable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-smoke_beril_commit-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — SMOKE_BERIL_COMMIT (variable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-smoke_beril_project_id-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — SMOKE_BERIL_PROJECT_ID (variable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-verify-by-running-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Verify by running the workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deferring-the-cross-skill-smoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deferring the cross-skill smoke
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-repository-dispatch-trigger-deferred-phase-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Repository-dispatch trigger (deferred — Phase 2.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-whats-not-in-v010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. What's NOT in v0.1.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-nodejs-version-policy-third-party-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Node.js version policy (third-party actions)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extending
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Extending
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/adding-a-skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a skill
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/external-contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/release-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/platform-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#2-cross-skill-smokeyml-cross-skill-smoke-test-full-smoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. cross-skill-smoke.yml — Cross-Skill Smoke Test (full smoke)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-setting-up-the-cross-skill-smoke-first-time-walk-through" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Setting up the cross-skill smoke — first-time walk-through
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Setting up the cross-skill smoke — first-time walk-through">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1a-anthropic_api_key-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1a — ANTHROPIC_API_KEY (secret)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1b-cborg_api_key-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1b — CBORG_API_KEY (secret)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-smoke_beril_repo-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — SMOKE_BERIL_REPO (variable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-smoke_beril_commit-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — SMOKE_BERIL_COMMIT (variable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-smoke_beril_project_id-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — SMOKE_BERIL_PROJECT_ID (variable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-verify-by-running-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Verify by running the workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deferring-the-cross-skill-smoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deferring the cross-skill smoke
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-repository-dispatch-trigger-deferred-phase-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Repository-dispatch trigger (deferred — Phase 2.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-whats-not-in-v010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. What's NOT in v0.1.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-nodejs-version-policy-third-party-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Node.js version policy (third-party actions)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/kbaseincubator/craft/edit/main/docs/operations/github-actions.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="github-actions-setup">GitHub Actions setup<a class="headerlink" href="#github-actions-setup" title="Permanent link">&para;</a></h1>
+<p>CRAFT runs two GitHub Actions workflows:</p>
+<ul>
+<li><strong><code>platform-ci.yml</code></strong> — cheap unit/lint smoke on every PR and
+  push. ~3 minutes wall-clock, $0 LLM, ~3 Actions-minutes.</li>
+<li><strong><code>cross-skill-smoke.yml</code></strong> — end-to-end Tier-0 workflow smoke
+  against a real BERIL fixture. Manual + quarterly cron. ~60
+  minutes wall-clock, $10-15 LLM, ~60 Actions-minutes.</li>
+</ul>
+<p>The maintainer notes below are the load-bearing operator
+documentation: what each workflow does, what secrets/variables
+it needs, and how to set it up the first time.</p>
+<p>This content lives at <code>.github/workflows/README.md</code> in the
+platform repo and is included verbatim below — that's the
+canonical maintainer doc; this docs page is the discoverable
+mirror.</p>
+<hr />
+<p><strong>What it does:</strong> verifies the meta-package + CLI work after
+every push to main or PR. Catches "submodule pin broken" /
+"pyproject borked" / "CLI broken" without exercising the LLM
+stack.</p>
+<p><strong>Triggers:</strong>
+- Every PR against main
+- Every push to main (after PR merge OR direct push)
+- Manual via "Actions" tab → "Platform CI" → "Run workflow"</p>
+<p><strong>Cost:</strong> $0 LLM, ~3 min wall-clock per run, ~3 GitHub-Actions-
+minutes per run.</p>
+<p><strong>What this catches:</strong>
+- Submodule pins resolving to commits that aren't tagged
+  (violates CRAFT-CONTRACT.md §3 strict-pinning policy)
+- <code>pyproject.toml</code> syntax errors
+- <code>craft</code> CLI imports broken
+- <code>pytest tests/</code> regressions
+- Lint errors (ruff)</p>
+<p><strong>What this does NOT catch:</strong>
+- LLM-stack regressions (paper-writer can't produce a draft;
+  adversarial schema drift; etc.) — that's <code>cross-skill-smoke.yml</code>
+- Hub deployment issues (claude CLI not on PATH; CBORG token
+  missing) — those manifest at production install time, not CI</p>
+<p><strong>Maintainer actions:</strong>
+- Watch for the green checkmark on each PR + push.
+- If it goes red, click into the workflow run + read the failing
+  step's log.
+- The failing step's name (e.g., "Verify submodule tag pinning")
+  tells you which contract is broken.</p>
+<hr />
+<h2 id="2-cross-skill-smokeyml-cross-skill-smoke-test-full-smoke">2. <code>cross-skill-smoke.yml</code> — Cross-Skill Smoke Test (full smoke)<a class="headerlink" href="#2-cross-skill-smokeyml-cross-skill-smoke-test-full-smoke" title="Permanent link">&para;</a></h2>
+<p><strong>What it does:</strong> the actual end-to-end test. Real BERIL fixture
+→ adversarial review → paper-writer draft → presentation-maker
+draft → verifies all three artifacts produced.</p>
+<p><strong>Triggers:</strong>
+- <strong>Manual</strong> (<code>workflow_dispatch</code>) — the recommended use. Click
+  "Actions" tab → "Cross-Skill Smoke Test" → "Run workflow".
+  Optional inputs: <code>max_cost_usd</code> (default $20),
+  <code>project_id</code> (use empty for fixture-default).
+- <strong>Quarterly cron</strong> — 1st of Mar/Jun/Sep/Dec at 08:00 UTC.
+  Catches "the platform still works" without manual attention.
+- <strong>Repository dispatch</strong> — when a submodule tags a new release,
+  it pings CRAFT via the GitHub API + this workflow fires.
+  Requires the submodule's workflow to be set up (Step 5 below).</p>
+<p><strong>Cost:</strong> ~$10-15 LLM per run, ~60 min wall-clock, ~60 GitHub-
+Actions-minutes.</p>
+<p><strong>Cost guardrails:</strong>
+- 90-minute workflow timeout (kills if hangs)
+- <code>max_cost_usd</code> workflow input (default $20)
+- Per-skill cost caps (<code>--max-revise-cost-usd 5</code>,
+  <code>--max-image-cost-usd 0.20</code>) inside each skill's invocation</p>
+<p><strong>What this catches:</strong>
+- Adversarial schema drift breaking paper-writer / presentation-
+  maker consumers
+- BERIL contract drift breaking all three skills
+- Image-gen provider auth or model-availability issues
+- New regressions across cross-skill boundaries</p>
+<p><strong>Required config</strong> (two secrets + three variables; configure
+at Settings → Secrets and variables → Actions):</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Kind</th>
+<th>Purpose</th>
+<th>Example value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ANTHROPIC_API_KEY</code></td>
+<td><strong>Secret</strong></td>
+<td>Direct Anthropic API for <code>claude -p</code> on CI runner</td>
+<td>Get one at https://console.anthropic.com/settings/keys (starts with <code>sk-ant-...</code>)</td>
+</tr>
+<tr>
+<td><code>CBORG_API_KEY</code></td>
+<td><strong>Secret</strong></td>
+<td>LBL CBORG gateway token (needed for presentation-maker's image-gen)</td>
+<td>Copy from your <code>~/.env</code> or <code>BERIL_ROOT/.env</code></td>
+</tr>
+<tr>
+<td><code>SMOKE_BERIL_REPO</code></td>
+<td><strong>Variable</strong></td>
+<td>Upstream BERIL repo for fixture</td>
+<td><code>kbaseincubator/BERIL-research-observatory</code></td>
+</tr>
+<tr>
+<td><code>SMOKE_BERIL_COMMIT</code></td>
+<td><strong>Variable</strong></td>
+<td>Pinned commit SHA (smoke reproducibility)</td>
+<td><code>940c3b0ee7bbf63bc576bd6e8c25210ad692df8e</code></td>
+</tr>
+<tr>
+<td><code>SMOKE_BERIL_PROJECT_ID</code></td>
+<td><strong>Variable</strong></td>
+<td>Project subdir name</td>
+<td><code>microbeatlas_metal_ecology</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note on the two API keys:</strong> Your local BERIL deployment uses a
+<code>claude</code> CLI that's configured to route through the CBORG gateway,
+so <code>CBORG_API_KEY</code> is enough locally. CI runners start fresh
+with no pre-configured <code>claude</code> routing, so the <code>claude -p</code>
+invocations need a direct Anthropic API key. Cost from CI smoke
+runs goes against your Anthropic account, not CBORG quota.
+Image-gen (in presentation-maker) still routes through CBORG
+because that path is configured at the skill level, not the
+shell-CLI level.</p>
+<p><strong>Why a mix of secrets and variables:</strong>
+- <strong>Secrets</strong> are masked in CI logs + used for sensitive values
+  (tokens, API keys). <code>CBORG_API_KEY</code> qualifies.
+- <strong>Variables</strong> are visible in the UI + used for non-sensitive
+  configuration. The BERIL repo name, commit SHA, and project
+  ID are all public information — making them variables means
+  you can see them at a glance in the Actions UI.</p>
+<p><strong>Without this config the workflow fails at the pre-flight
+step with a clear error listing exactly what's missing.</strong> You
+can run the workflow once before configuring to see the
+diagnostic.</p>
+<p><strong>Approach: smoke against the live BERIL repo via sparse-checkout.</strong>
+The cross-skill smoke clones a specific project subdirectory
+from the live BERIL repo (e.g.,
+<code>kbaseincubator/BERIL-research-observatory</code>) at a pinned
+commit SHA. Sparse-checkout means we fetch only the project +
+<code>.claude/skills/</code> config, not the full 400+ MB BERIL repo —
+typical clone is ~5-20 MB.</p>
+<p><strong>Pinning the commit is load-bearing.</strong> Without a pin, the BERIL
+repo can evolve between smoke runs + the same CRAFT version
+produces different smoke outcomes. With a pin, smoke is
+reproducible. Bump the pin deliberately as a CRAFT-maintenance
+task (typically alongside the quarterly smoke cycle).</p>
+<p><strong>Maintainer actions:</strong>
+- Run manually before any platform release tag.
+- Watch for the quarterly cron + investigate failures.
+- <strong>Bump <code>SMOKE_BERIL_COMMIT</code> quarterly</strong> so smoke exercises
+  against recent BERIL conventions. Tag the bump as a CRAFT
+  patch release with a note in RELEASE_NOTES.md.
+- If a failure looks like a real regression, file an issue
+  + link the failure run.</p>
+<hr />
+<h2 id="3-setting-up-the-cross-skill-smoke-first-time-walk-through">3. Setting up the cross-skill smoke — first-time walk-through<a class="headerlink" href="#3-setting-up-the-cross-skill-smoke-first-time-walk-through" title="Permanent link">&para;</a></h2>
+<p>Before the <code>cross-skill-smoke.yml</code> workflow can run, two secrets +
+three variables need to be configured in the CRAFT GitHub repo.</p>
+<h3 id="step-1a-anthropic_api_key-secret">Step 1a — <code>ANTHROPIC_API_KEY</code> (secret)<a class="headerlink" href="#step-1a-anthropic_api_key-secret" title="Permanent link">&para;</a></h3>
+<p>A direct Anthropic API key (NOT a CBORG token). CI runners
+start fresh with no <code>claude</code> CLI auth config, so they need a
+direct Anthropic key. Get one at
+https://console.anthropic.com/settings/keys (starts with
+<code>sk-ant-...</code>).</p>
+<ol>
+<li>Open https://github.com/kbaseincubator/craft/settings/secrets/actions</li>
+<li><strong>Secrets</strong> tab → click "New repository secret"</li>
+<li>Name: <code>ANTHROPIC_API_KEY</code></li>
+<li>Value: paste the key (no quotes, no leading/trailing
+   whitespace)</li>
+<li>Click "Add secret"</li>
+</ol>
+<h3 id="step-1b-cborg_api_key-secret">Step 1b — <code>CBORG_API_KEY</code> (secret)<a class="headerlink" href="#step-1b-cborg_api_key-secret" title="Permanent link">&para;</a></h3>
+<p>This is your existing CBORG gateway token (the same one in
+<code>&lt;BERIL_ROOT&gt;/.env</code>). Needed because presentation-maker's
+image-gen routes through CBORG even when text invocations go
+direct-Anthropic.</p>
+<ol>
+<li>Same page → "New repository secret"</li>
+<li>Name: <code>CBORG_API_KEY</code></li>
+<li>Value: paste the token (no quotes, no leading/trailing
+   whitespace)</li>
+<li>Click "Add secret"</li>
+</ol>
+<p>Both secrets are masked in CI logs.</p>
+<h3 id="step-2-smoke_beril_repo-variable">Step 2 — <code>SMOKE_BERIL_REPO</code> (variable)<a class="headerlink" href="#step-2-smoke_beril_repo-variable" title="Permanent link">&para;</a></h3>
+<p>The upstream BERIL repo that contains the project the smoke
+exercises.</p>
+<ol>
+<li>Same page → switch to <strong>Variables</strong> tab → click "New
+   repository variable"</li>
+<li>Name: <code>SMOKE_BERIL_REPO</code></li>
+<li>Value: <code>kbaseincubator/BERIL-research-observatory</code></li>
+<li>Click "Add variable"</li>
+</ol>
+<p>(Or use any other BERIL-style repo with a <code>projects/</code> subdir
+containing the standard 4-zone artifact layout.)</p>
+<h3 id="step-3-smoke_beril_commit-variable">Step 3 — <code>SMOKE_BERIL_COMMIT</code> (variable)<a class="headerlink" href="#step-3-smoke_beril_commit-variable" title="Permanent link">&para;</a></h3>
+<p>A specific commit SHA from the BERIL repo. The smoke fetches THIS
+commit (not main branch HEAD) so smoke is reproducible even as
+BERIL evolves.</p>
+<p>To find a current SHA:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gh<span class="w"> </span>api<span class="w"> </span>/repos/kbaseincubator/BERIL-research-observatory/commits/main<span class="w"> </span>--jq<span class="w"> </span>.sha
+</span></code></pre></div>
+<p>Or browse to https://github.com/kbaseincubator/BERIL-research-observatory/commits/main
+and copy a recent SHA.</p>
+<ol>
+<li><strong>Variables</strong> tab → "New repository variable"</li>
+<li>Name: <code>SMOKE_BERIL_COMMIT</code></li>
+<li>Value: full SHA (40 hex chars; example:
+   <code>940c3b0ee7bbf63bc576bd6e8c25210ad692df8e</code>)</li>
+<li>Click "Add variable"</li>
+</ol>
+<p><strong>Bump quarterly</strong> to exercise smoke against recent BERIL
+conventions. Tag the bump as a CRAFT patch release.</p>
+<h3 id="step-4-smoke_beril_project_id-variable">Step 4 — <code>SMOKE_BERIL_PROJECT_ID</code> (variable)<a class="headerlink" href="#step-4-smoke_beril_project_id-variable" title="Permanent link">&para;</a></h3>
+<p>Which project subdirectory in the BERIL repo to use as the
+smoke fixture. Recommendation: pick a project with the standard
+4-zone artifact set (REPORT.md + RESEARCH_PLAN.md + notebooks/
++ figures/ + references.md).</p>
+<ol>
+<li><strong>Variables</strong> tab → "New repository variable"</li>
+<li>Name: <code>SMOKE_BERIL_PROJECT_ID</code></li>
+<li>Value: e.g. <code>microbeatlas_metal_ecology</code></li>
+<li>Click "Add variable"</li>
+</ol>
+<h3 id="step-5-verify-by-running-the-workflow">Step 5 — Verify by running the workflow<a class="headerlink" href="#step-5-verify-by-running-the-workflow" title="Permanent link">&para;</a></h3>
+<p>After all four are configured:</p>
+<ol>
+<li>Open https://github.com/kbaseincubator/craft/actions</li>
+<li>Click "Cross-Skill Smoke Test" in the left sidebar</li>
+<li>Click "Run workflow" → "Run workflow"</li>
+<li>Watch the run. The pre-flight step will list all four
+   config items + confirm "✓ pre-flight passed". If any are
+   missing the pre-flight fails with a clear diagnostic.</li>
+</ol>
+<p>The first run will take ~60 minutes wall-clock + ~$10-15 in
+LLM API costs.</p>
+<h3 id="deferring-the-cross-skill-smoke">Deferring the cross-skill smoke<a class="headerlink" href="#deferring-the-cross-skill-smoke" title="Permanent link">&para;</a></h3>
+<p>The <code>platform-ci.yml</code> workflow runs without ANY of these config
+items. The <code>cross-skill-smoke.yml</code> workflow will fail cleanly
+at the pre-flight step with a clear "what's missing" message
++ won't run any LLM stages. This is fine for incremental setup —
+configure when you're ready to spend the $10-15 on first run.</p>
+<hr />
+<h2 id="4-repository-dispatch-trigger-deferred-phase-21">4. Repository-dispatch trigger (deferred — Phase 2.1)<a class="headerlink" href="#4-repository-dispatch-trigger-deferred-phase-21" title="Permanent link">&para;</a></h2>
+<p>The third trigger in <code>cross-skill-smoke.yml</code> is
+<code>repository_dispatch</code>. For this to fire automatically when one
+of the three submodule repos tags a new release, those repos
+need a workflow that pings CRAFT via the GitHub API.</p>
+<p>This is a Phase 2.1 task (not blocking the v0.1.0 platform
+ship). When ready, each submodule repo gets a small workflow
+file:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># .github/workflows/notify-craft-on-tag.yml</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Triggers CRAFT cross-skill smoke when this skill tags a release.</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Notify CRAFT</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nt">on</span><span class="p">:</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">tags</span><span class="p">:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;v*&#39;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nt">jobs</span><span class="p">:</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="nt">ping-craft</span><span class="p">:</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Trigger CRAFT cross-skill smoke</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">          </span><span class="c1"># Personal access token with &quot;repo&quot; scope on</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">          </span><span class="c1"># kbaseincubator/craft. Add this secret in EACH submodule</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">          </span><span class="c1"># repo at: Settings → Secrets → CRAFT_DISPATCH_TOKEN</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">          </span><span class="nt">CRAFT_DISPATCH_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.CRAFT_DISPATCH_TOKEN }}</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">          </span><span class="no">curl -X POST \</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">            </span><span class="no">-H &quot;Authorization: token $CRAFT_DISPATCH_TOKEN&quot; \</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">            </span><span class="no">-H &quot;Accept: application/vnd.github.v3+json&quot; \</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">            </span><span class="no">https://api.github.com/repos/kbaseincubator/craft/dispatches \</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">            </span><span class="no">-d &#39;{&quot;event_type&quot;:&quot;submodule-released&quot;,&quot;client_payload&quot;:{&quot;skill&quot;:&quot;&#39;&quot;$GITHUB_REPOSITORY&quot;&#39;&quot;,&quot;tag&quot;:&quot;&#39;&quot;$GITHUB_REF_NAME&quot;&#39;&quot;}}&#39;</span>
+</span></code></pre></div>
+<p>When the submodule tags v1.0.2 (for example), GitHub fires the
+"Notify CRAFT" workflow on the submodule's repo, which makes an
+API call to CRAFT's repo with <code>repository_dispatch</code> event
+type <code>submodule-released</code>. CRAFT's <code>cross-skill-smoke.yml</code> sees
+this event type in its <code>on:</code> block + fires.</p>
+<p><strong>Deferred because:</strong>
+- Requires a personal access token (PAT) with cross-repo write
+  access — adds a secret-management step you should configure
+  deliberately.
+- Quarterly cron + manual-trigger cover most of the value
+  without the cross-repo PAT complexity.</p>
+<p>Recommendation: ship v0.1.0 without the repository-dispatch
+trigger; add it in v0.2.0 if you want auto-firing on every
+submodule release.</p>
+<hr />
+<h2 id="5-whats-not-in-v010">5. What's NOT in v0.1.0<a class="headerlink" href="#5-whats-not-in-v010" title="Permanent link">&para;</a></h2>
+<p>For honesty + future planning:</p>
+<ul>
+<li><strong>No code coverage tracking</strong> (e.g., codecov.io integration).
+  Tests run + pass/fail; coverage isn't measured. Add in v0.2.0
+  if you want it.</li>
+<li><strong>No release-on-tag automation.</strong> Tags are created manually
+  per <code>CROSS-SKILL-RELEASE.md</code>. A future workflow could
+  auto-publish to PyPI on tag — deferred until needed.</li>
+<li><strong>No PyPI publishing</strong> of the meta-package itself. CRAFT
+  installs via <code>pipx install git+https://github.com/kbaseincubator/craft.git@v0.1.0</code>;
+  no PyPI presence required. If PyPI publishing is wanted later,
+  add a workflow that publishes to TestPyPI on RC tags + PyPI
+  on stable tags.</li>
+<li><strong>No matrix testing across Python versions.</strong> Pinned to 3.12.
+  v0.2.0 could matrix 3.10/3.11/3.12 if cross-version stability
+  becomes a concern.</li>
+</ul>
+<hr />
+<h2 id="6-nodejs-version-policy-third-party-actions">6. Node.js version policy (third-party actions)<a class="headerlink" href="#6-nodejs-version-policy-third-party-actions" title="Permanent link">&para;</a></h2>
+<p>GitHub Actions third-party actions (the <code>uses:</code> entries) are
+implemented in Node.js. GitHub periodically deprecates older
+Node versions; the action authors release new major versions
+that target the newer Node.</p>
+<p>CRAFT's policy: <strong>use the latest Node-supported major version</strong>
+of each action. Currently (as of CRAFT v0.1.2):</p>
+<p>actions/checkout@v5         (Node 24)
+  actions/setup-python@v6     (Node 24)
+  actions/setup-node@v5       (Node 24)
+  actions/upload-artifact@v5  (Node 24)</p>
+<p>When a deprecation warning surfaces in CI output, bump the
+affected action to its new major version + tag a CRAFT patch
+release. Document in RELEASE_NOTES.md.</p>
+<p>This is a small recurring maintenance task (~once per year
+typical, more during transitions like the June 2026 Node 20 →
+Node 24 cut-over). The cost is reading the action's release
+notes + verifying no behavioral changes affect our use.</p>
+<h2 id="7-troubleshooting">7. Troubleshooting<a class="headerlink" href="#7-troubleshooting" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Platform CI: "submodule not on tagged commit"</td>
+<td>A submodule was bumped to a non-tag commit</td>
+<td>Either tag the commit, or pin the submodule to an existing tag</td>
+</tr>
+<tr>
+<td>Platform CI: ruff lint fails</td>
+<td>New code doesn't match style</td>
+<td>Run <code>ruff format src/ tests/</code> locally + commit the autofix</td>
+</tr>
+<tr>
+<td>Cross-Skill Smoke: pre-flight secrets missing</td>
+<td>Repo secrets not configured</td>
+<td>See §3 above</td>
+</tr>
+<tr>
+<td>Cross-Skill Smoke: LibreOffice install fails</td>
+<td>Apt mirror timeout</td>
+<td>Re-run the workflow; the apt step is idempotent</td>
+</tr>
+<tr>
+<td>Cross-Skill Smoke: Anthropic CLI install fails</td>
+<td>npm registry issue</td>
+<td>Re-run; the npm step is idempotent</td>
+</tr>
+<tr>
+<td>Cross-Skill Smoke: budget exceeded</td>
+<td><code>max_cost_usd</code> cap hit</td>
+<td>Investigate the cost summary in the workflow log; consider lower per-skill caps</td>
+</tr>
+<tr>
+<td>Quarterly cron fired during deprecation window</td>
+<td>Workflow scheduled regardless of context</td>
+<td>Disable the workflow in the Actions UI; re-enable after the deprecation lands</td>
+</tr>
+</tbody>
+</table>
+<p>For other failures, the workflow's "Upload artifacts (on
+failure for forensics)" step saves the entire BERIL fixture
+draft directory as a downloadable artifact (14-day retention).
+Click the workflow run → "Artifacts" panel → download for local
+debugging.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../dependencies/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Upstream dependencies">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Upstream dependencies
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../troubleshooting/" class="md-footer__link md-footer__link--next" aria-label="Next: Troubleshooting">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Troubleshooting
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/kbaseincubator/craft" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

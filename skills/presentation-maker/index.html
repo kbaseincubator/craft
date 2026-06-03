@@ -1,0 +1,2068 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Co-Scientist Research Assessment & Framing Tools — KBase | BERIL platform">
+      
+      
+      
+        <link rel="canonical" href="https://kbaseincubator.github.io/craft/skills/presentation-maker/">
+      
+      
+        <link rel="prev" href="../paper-writer/">
+      
+      
+        <link rel="next" href="../../operations/release-runbook/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>beril-presentation-maker - CRAFT</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#beril-presentation-maker-skill" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CRAFT" class="md-header__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CRAFT
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              beril-presentation-maker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quick-start/install/" class="md-tabs__link">
+          
+  
+  
+  Quick Start
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/platform-structure/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../adversarial/" class="md-tabs__link">
+          
+  
+  
+  Skills
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../operations/release-runbook/" class="md-tabs__link">
+          
+  
+  
+  Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../extending/adding-a-skill/" class="md-tabs__link">
+          
+  
+  
+  Extending
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/release-notes/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CRAFT" class="md-nav__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CRAFT
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/first-run/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First run
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/verify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/platform-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-skill contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skill relationships
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/retrospective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Augmentation stream retrospective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skills
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Skills
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adversarial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-adversarial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../paper-writer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-paper-writer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-presentation-maker
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-presentation-maker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator quick-reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skill-readme-from-the-skill-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill README (from the skill repo)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/release-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coordinated release runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstream dependencies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/github-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Actions setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extending
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Extending
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/adding-a-skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a skill
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/external-contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/release-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/platform-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator quick-reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skill-readme-from-the-skill-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill README (from the skill repo)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/kbaseincubator/craft/edit/main/docs/skills/presentation-maker.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="beril-presentation-maker-skill">beril-presentation-maker-skill<a class="headerlink" href="#beril-presentation-maker-skill" title="Permanent link">&para;</a></h1>
+<p><strong>Role in CRAFT:</strong> the <strong>presentation drafter</strong> — KBase-branded
+scientific presentations (talks + posters) from BERDL projects.
+Consumes adversarial review in its review-rewrite loop; consumes
+paper-writer's <code>citation_pool.json</code> via the D-009 reuse path.</p>
+<ul>
+<li><strong>Repo:</strong> <a href="https://github.com/ArkinLaboratory/beril-presentation-maker-skill">ArkinLaboratory/beril-presentation-maker-skill</a></li>
+<li><strong>Pinned in CRAFT at:</strong> see <code>craft/skills/beril-presentation-maker-skill</code>
+  submodule pin.</li>
+<li><strong>Schemas produced:</strong> <code>slide_spec.v1</code>, <code>compose-fragment.v1</code>/<code>.v2</code>,
+  <code>layout-overlaps.v1</code>, <code>content-overflow.v1</code>, <code>review-cascade.v1</code>
+  — see <a href="../../architecture/contract/">cross-skill contract §2</a>.</li>
+<li><strong>Schemas consumed:</strong> <code>adversarial-review-presentation.v3</code> (in
+  revise loop) + <code>citation_pool.json</code> (from paper-writer).</li>
+<li><strong>Install path:</strong> <code>pipx install git+https://github.com/ArkinLaboratory/beril-presentation-maker-skill.git@&lt;tag&gt;</code>
+  (transitive via <code>pipx install craft</code>).</li>
+<li><strong>Independent install:</strong> <code>beril-presentation-maker install-skill &lt;BERIL_ROOT&gt;</code>.</li>
+</ul>
+<h2 id="when-to-use-it">When to use it<a class="headerlink" href="#when-to-use-it" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Drafting talks or posters</strong> from a complete BERIL project.</li>
+<li><strong>Review-rewrite cycles</strong> consuming adversarial output to
+  iterate on the deck.</li>
+<li><strong>Image generation</strong> for big-idea metaphor + claim-evidence
+  slides (CBORG-Gemini default; AI Studio direct as alternative).</li>
+</ul>
+<p>For platform-level data flow see <a href="../../architecture/relationships/">Skill
+relationships</a>.</p>
+<h2 id="operator-quick-reference">Operator quick-reference<a class="headerlink" href="#operator-quick-reference" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Initial draft — talks/draft_1</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>beril-presentation-maker<span class="w"> </span>draft<span class="w"> </span>&lt;project_id&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>--tier<span class="w"> </span>STRONG<span class="w"> </span>--mode<span class="w"> </span>talk-30<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span>--auto-advance<span class="w"> </span>--auto-approve-images
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Revise against adversarial review (in audit/adversarial_review.json)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>beril-presentation-maker<span class="w"> </span>revise<span class="w"> </span>projects/&lt;project_id&gt;/talks/draft_1
+</span></code></pre></div>
+<p>Cost: ~$3-12 LLM (depends on image-gen count). Wall-clock:
+~45-90 minutes.</p>
+<p><strong>Mode choices:</strong> <code>talk-30</code> (default), <code>talk-45</code>, <code>talk-60</code>,
+<code>poster</code>. <strong>Tier choices:</strong> <code>STRONG</code> (default), <code>THIN</code>,
+<code>EXPLORATORY</code> — controls cascade depth + image-gen count.</p>
+<p>For mode/tier reference + the full flag-set, see the README
+below (auto-pulled from the skill repo).</p>
+<hr />
+<h2 id="skill-readme-from-the-skill-repo">Skill README (from the skill repo)<a class="headerlink" href="#skill-readme-from-the-skill-repo" title="Permanent link">&para;</a></h2>
+<h1 id="beril-presentation-maker-skill_1">beril-presentation-maker-skill<a class="headerlink" href="#beril-presentation-maker-skill_1" title="Permanent link">&para;</a></h1>
+<p>A scientific presentation drafter for BERDL analysis projects. Takes
+a finished project (research plan, report, notebooks, figures,
+optional adversarial review, optional paper-writer outputs) and
+produces a beautiful, evidence-grounded slide deck (talk) or poster,
+in KBase brand. Speaker notes, anticipated Q&amp;A, citation pool, and
+AI-generated illustrations for concept slides accompany the deck.</p>
+<p>Distributed as a Claude Code skill that runs inside a BERIL
+deployment. Sister skill to <code>/beril-adversarial</code> (harsh review),
+<code>/beril-atlas</code> (corpus metrics), and <code>/beril-paper-writer</code> (manuscript
+drafter). The fourth in the BERIL drop-in skill quartet.</p>
+<blockquote>
+<p><strong>For participants and BERIL users running any of the four skills end-to-end</strong>,
+see <a href="docs/cross-skill/PARTICIPANT-RUNBOOK.md"><code>docs/cross-skill/PARTICIPANT-RUNBOOK.md</code></a>.
+The runbook is a durable cross-skill walkthrough hosted here for event-timing
+reasons; it covers all four skills, BERIL workflow integration, cohort cheat-
+sheets, troubleshooting, and cost expectations. The README below is
+presentation-maker–specific.</p>
+</blockquote>
+<h2 id="documentation-map">Documentation map<a class="headerlink" href="#documentation-map" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Doc</th>
+<th>Audience</th>
+<th>What's in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="TUTORIAL.md">TUTORIAL.md</a></strong></td>
+<td>Researcher using <code>/beril-presentation-maker</code> on the BERIL hub</td>
+<td>Skill-specific: output tree, reading <code>slide_spec.json</code>, the 16 layouts, image-gen approval flow, iteration patterns (revise vs re-run), hand-editing the <code>.pptx</code>, deferred cosmetic-issues hand-fix list, presentation-maker-specific troubleshooting. <strong>Defers cross-skill install/configure to PARTICIPANT-RUNBOOK below.</strong></td>
+</tr>
+<tr>
+<td><strong><a href="HUB_INSTALL.md">HUB_INSTALL.md</a></strong></td>
+<td>Operator deploying on JupyterHub</td>
+<td>pipx install + install-skill + configure runbook, first-run validation, slash command verification, upgrading, uninstalling, hub-specific troubleshooting.</td>
+</tr>
+<tr>
+<td><strong><a href="HANDOFF.md">HANDOFF.md</a></strong></td>
+<td>Production engineer inheriting maintenance</td>
+<td>Production-team handoff: stable surface, what's deferred, ownership boundaries (production-side vs vendor-side), operational envelope, release cadence, escalation path. <strong>Read first if you're inheriting ops.</strong></td>
+</tr>
+<tr>
+<td><strong><a href="CONTRACT.md">CONTRACT.md</a></strong></td>
+<td>Integrator consuming this skill's output, or another skill (e.g., adversarial) being consumed by it</td>
+<td>Cross-skill interop pinning: slide_spec.json schema as the consumer surface for the assemble step, adversarial reviewer schema dependency (v3), per-draft layout contract (deliverable / narrative / working / audit), backwards-compatibility fallback patterns. <strong>Read this first if you're integrating.</strong></td>
+</tr>
+<tr>
+<td><strong><a href="RELEASE_NOTES.md">RELEASE_NOTES.md</a></strong></td>
+<td>Anyone tracking changes</td>
+<td>Version-by-version history.</td>
+</tr>
+<tr>
+<td><strong><a href="SPEC.md">SPEC.md</a></strong></td>
+<td>Maintainer / contributor</td>
+<td>Design intent: 14-stage pipeline, prompt versioning, slide_spec contract origin, image-gen calibration verdicts.</td>
+</tr>
+<tr>
+<td><strong><a href="LAYOUT.md">LAYOUT.md</a></strong></td>
+<td>Maintainer</td>
+<td>Directory and file organization, runtime contracts (file paths, exit codes, state-file shapes).</td>
+</tr>
+<tr>
+<td><strong><a href="DECISIONS.md">DECISIONS.md</a></strong></td>
+<td>Schema designer / consumer wanting design rationale</td>
+<td>Why the slide_spec / layout vocabulary / draft-zone partition look the way they do.</td>
+</tr>
+<tr>
+<td>Cross-skill: <strong><a href="docs/cross-skill/PARTICIPANT-RUNBOOK.md"><code>docs/cross-skill/PARTICIPANT-RUNBOOK.md</code></a></strong></td>
+<td>Researcher using ANY of the 4 BERIL plug-in skills (paper-writer / presentation-maker / adversarial / atlas)</td>
+<td>Hub workflow integration (<code>/berdl_start</code> → install → configure → run any skill), cohort cheat-sheets, recovery, cost. Hosted here for event timing; will relocate post-event.</td>
+</tr>
+<tr>
+<td>Historical: <a href="archive/punch-lists/"><code>archive/punch-lists/</code></a>, <a href="archive/runbooks/"><code>archive/runbooks/</code></a>, <a href="archive/V0_4_ARCHITECTURE.md"><code>archive/V0_4_ARCHITECTURE.md</code></a></td>
+<td>Archaeology — per-cycle punch lists and runbooks (M1-V0_7), v0.4 architecture pivot doc</td>
+<td>Each carries historical context for the cycle it was written for; relocated at v0.8.0 packaging.</td>
+</tr>
+<tr>
+<td>Active: <a href="V0_8_PUNCH_LIST.md">V0_8_PUNCH_LIST.md</a></td>
+<td>Operator state for the current release</td>
+<td>Current v0.8.0 release-blockers + v0.8.1 carries. Replaced per-cycle as each release ships.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h2>
+<p><strong>v0.8.0 — production-ready, hub-deployable.</strong> Consolidates the
+v0.4-v0.8 architecture/discipline/quality arc as a single
+release. See <a href="RELEASE_NOTES.md#v080-2026-06-02--content-discipline--deterministic-layout-pass">RELEASE_NOTES.md</a>
+for the full per-decision narrative. Key v0.8.0 features:</p>
+<ul>
+<li><strong>Prompt stack v3.3</strong> (opt-in via <code>--prompts-version v3.3</code>;
+  default remains v2). v3 chain adds register discipline,
+  figure-utilization contract, deck_close ownership,
+  arc-transition support. Live-LLM smoke gate (D-076).</li>
+<li><strong>Tier G.10 deterministic layout pass</strong> — bounding-box overlap
+  detector (G.10-A) + geometry-aware fontScale that fixes the
+  "touch the textbox to refit" symptom (G.10-B) + content_overflow
+  finding emission with revise-loop routing (G.10-C).</li>
+<li><strong>Visual-QA mode-aware default-on</strong> (D-096) for talk-30 STRONG</li>
+<li>talk-15 STRONG/BRIEF. Opt-out with <code>--no-visual-qa</code>.</li>
+<li><strong>D-098 duplicate-deck_close fix</strong> — root-caused as a
+  prompt/architecture contradiction; two-layer fix (prompt
+  rewrite + merger guard with D-098 warning).</li>
+<li><strong>AI image content-grounding</strong> (D-097): DECK_POSITION input +
+  intro-slide spoiler rule.</li>
+<li><strong>Curator figure-floor</strong> (D-093): belt-and-suspenders for
+  per-substory figure coverage.</li>
+<li><strong>install-skill ships smoke fixtures</strong> + draft wrapper forwards
+  the full v0.5-v0.8 flag surface (<code>--prompts-version</code>,
+  <code>--resume-from</code>, <code>--revise-severity-floor</code>, etc.).</li>
+</ul>
+<p>1946 unit tests passing (up from 726 at v0.3.4.4). v0.4
+architecture pivot (parallel-compose) remains opt-in via
+<code>--architecture-pipeline v0_4</code>. Default pipeline = v0_3
+(sequential per-substory) + v2 prompts; existing v0.3.x runbooks
+continue to work unchanged.</p>
+<h2 id="what-it-does">What it does<a class="headerlink" href="#what-it-does" title="Permanent link">&para;</a></h2>
+<p>Reads BERDL project artifacts and runs a multi-stage drafting
+pipeline. v0.8.0 talk-30 STRONG runs through 17 stages (additional
+stages relative to v0.3.x: <code>deck_close</code>, <code>visual_qa_final</code> +
+optional 2nd revise pass per Tier G.7/G.8):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a> 1. plan.v1                   triage tier + scope                  ~$0.20
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a> 2. throughline.v1            2-3 candidates → user picks          ~$0.25
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a> 3. substory_design.v1        partition into substories            ~$0.20
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a> 4. curate_figures            inventory + shortlist (Python)       ~$0
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a> 5. citation_pool.v1          verify-by-resolution pool            ~$0.30
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a> 6. cross_tenant.v1           K-BERDL signal (optional)            ~$0-0.10
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a> 7. intro.v1                  opening framing slides               ~$0.15
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a> 8. slide_compose.v1          per-substory composition             ~$0.30-0.50
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a> 9. qa_prep.v1                anticipated Q&amp;A slides               ~$0.20
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>10. deck_close                closing-synthesis (talk-30 only)     ~$0.10
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>11. speaker_notes.v1          per-slide speaker notes              ~$0.20-0.40
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>12. image_gen                 concept_illustration → AI image      ~$0-0.50
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>13. merge_and_assemble        slide_spec + .pptx render            ~$0
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>14. adversarial_review        v0.7.0.8 v3 schema review            ~$0.50
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>15. revise_slides (1st pass)  review-rewrite loop (capped)         ~$0-5
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>16. visual_qa_final           overlap detector + visual-QA gate    ~$0.50
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>17. revise_slides (2nd pass)  VQ-only review loop (capped)         ~$0-2
+</span></code></pre></div>
+<p>Total typical: ~$3-6 on Sonnet for <code>talk-30 STRONG</code>. ~$8-15 if
+both revise passes fire heavily.</p>
+<p>Cost ceilings (configurable): <code>--max-revise-cost-usd</code> (default
+$5.00 per revise pass), <code>--max-image-cost-usd</code> (default $0.50
+cumulative), <code>--max-image-approvals</code> (default 4 per run).</p>
+<p>The pipeline:
+- Tiers project quality (STRONG / THIN / EXPLORATORY).
+- Extracts 2-3 candidate scientific throughlines and surfaces them
+  with evidence maps. The user picks (or <code>--auto-advance</code> picks TL1).
+- Identifies critical analyses in REPORT.md, groups into 2-4
+  substories with punchlines.
+- Drafts slides per substory using a closed 16-layout vocabulary
+  (<code>title</code>, <code>section_divider</code>, <code>big_idea</code>, <code>big_number</code>,
+  <code>claim_evidence</code>, <code>two_column_compare</code>, <code>data_figure</code>, <code>data_table</code>,
+  <code>workflow_diagram</code>, <code>methods_summary</code>, <code>concept_illustration</code>,
+  <code>cross_tenant_integration</code>, <code>implications</code>, <code>acknowledgments</code>,
+  <code>references</code>, <code>qa_anticipated</code>). Slide titles are punchlines, not
+  topics.
+- Reuses figures from <code>figures/</code> and notebook outputs verbatim — no
+  fabrication of quantitative content.
+- Generates AI illustrations for <code>concept_illustration</code> slides via
+  CBORG-Gemini. Per-slide approval gate; calibrated $0.014/image;
+  cumulative budget cap; "AI-generated illustration" disclosure
+  footer.
+- Writes 200-400-word speaker notes per slide, evidence-anchored.
+- Builds anticipated Q&amp;A slides for the back of the deck.
+- Hands off to <code>/beril-adversarial --type presentation</code> for harsh
+  review. Up to 6 P0 findings auto-revised in-loop (cost-capped at
+  $5 default).
+- Surfaces <code>citation_reality</code> findings (v3) for human verification —
+  citations don't auto-revise.
+- Final assembly renders <code>slide_spec.json</code> to KBase-branded <code>.pptx</code>.</p>
+<p>The skill <strong>pauses</strong> at user-decision points and resumes via
+<code>beril-presentation-maker continue &lt;draft_dir&gt; --resume-from &lt;stage&gt;</code>.
+State lives on disk in the v0.3.1+ 4-zone layout under
+<code>talks/draft_N/</code>. Each invocation creates a new numbered draft
+directory. Old drafts are pruned via
+<code>beril-presentation-maker prune &lt;project_id&gt;</code>.</p>
+<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Run from BERIL_ROOT. Steps in order: install package → verify CLI loads →</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># configure dependencies → deploy skill files into BERIL.</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">cd</span><span class="w"> </span>&lt;BERIL_ROOT&gt;
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+https://github.com/ArkinLaboratory/beril-presentation-maker-skill.git@v0.3.4.4<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-presentation-maker<span class="w"> </span>--version<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-presentation-maker<span class="w"> </span>configure<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-presentation-maker<span class="w"> </span>install-skill<span class="w"> </span>.
+</span></code></pre></div>
+<p>For full operator runbook (prerequisites, troubleshooting, hub
+deployment), see <a href="HUB_INSTALL.md">HUB_INSTALL.md</a>.</p>
+<h2 id="development">Development<a class="headerlink" href="#development" title="Permanent link">&para;</a></h2>
+<p><code>pipx</code> (above) is the <em>skill install</em> path. To work on the code and
+run the test suite, use a project-local virtualenv:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>.venv/bin/pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>.venv/bin/python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>-q<span class="w">          </span><span class="c1"># full suite</span>
+</span></code></pre></div>
+<p>Invoke the suite (and any helper) through <code>.venv/bin/python</code> <strong>by
+explicit path</strong> — on macOS, bare <code>python3</code> / <code>pytest</code> resolve to a
+PEP-668 system interpreter that lacks the project's deps, and <code>source
+.venv/bin/activate</code> does not reliably persist across shells. The
+<code>.venv/</code> directory is gitignored.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a># Inside Claude Code on the hub:
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>/beril-presentation-maker [&lt;project_id&gt;]
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>                          [--mode talk-30|talk-15|talk-45|lightning-5|poster-h|poster-v]
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>                          [--tier STRONG|THIN|EXPLORATORY]
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>                          [--audience peer]
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>                          [--auto-advance]
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>                          [--no-adversarial]
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>                          [--no-images] [--auto-approve-images]
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>                          [--max-image-cost-usd &lt;n&gt;]
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>                          [--image-allow-exploratory]
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>                          [--image-style &lt;style&gt;]
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>                          [--max-revise-cost-usd &lt;n&gt;] [--max-revisions &lt;n&gt;]
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>                          [--visual-qa]
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>                          [--no-review-cascade]
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>                          [--skip-assembly]
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>                          [--model &lt;model_id&gt;] [--no-stream]
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a># From the shell (operators / scripts):
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>beril-presentation-maker draft &lt;project_id&gt; [...]
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>beril-presentation-maker continue &lt;draft_dir&gt; --resume-from &lt;stage&gt; [...]
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>beril-presentation-maker assemble &lt;draft_dir&gt;
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>beril-presentation-maker prune &lt;project_id&gt; [--keep N] [--apply | --archive &lt;path&gt;]
+</span></code></pre></div>
+<p>For full reference (mode matrix, output artifacts catalog,
+cost-control flag table, manual-edit workflow), see
+<a href="src/beril_presentation_maker/skill/SKILL.md">SKILL.md</a>.</p>
+<p><code>&lt;project_id&gt;</code> auto-resolves on the hub via the 4-signal tree:
+explicit arg → git branch (<code>projects/&lt;id&gt;</code> convention) → cwd →
+ask user. Mirrors the adversarial v0.7.0.1 pattern.</p>
+<h2 id="what-it-produces">What it produces<a class="headerlink" href="#what-it-produces" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>projects/&lt;project_id&gt;/talks/draft_N/
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>├── deliverable/                ← what you open / present
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>│   ├── draft.pptx
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>│   └── draft.pdf (optional)
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>├── narrative/                  ← human-readable story (user-editable)
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>│   ├── 00_throughline.md
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>│   ├── 02_substories.md
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>│   └── references.md, bibliography.bib, citation_map.md
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>├── working/                    ← intermediate pipeline state
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>│   ├── slide_spec.json         ← machine-readable, drives python-pptx
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>│   ├── 03_slides/              ← per-substory compose fragments
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>│   ├── 04_speaker_notes/       ← per-substory speaker notes
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>│   ├── 05_image_decisions.json ← v0.3.3 image-gen decisions
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>│   ├── 05_image_requests/      ← v0.3.3 per-slide request JSONs
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>│   ├── 05_images/              ← v0.3.3 generated PNGs + manifest.json
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>│   ├── citation_pool.json      ← verified literature pool
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>│   ├── curated_figures.md      ← mode-bounded figure shortlist
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>│   └── next_actions.md         ← surfaced findings (citation_reality, etc.)
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>└── audit/                      ← provenance + debug history
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>    ├── state.json
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    ├── cost-log.jsonl
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    ├── stage-metadata.json     ← v0.3.4.2 consolidated per-stage metadata
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    ├── stage-logs/
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>    ├── snapshots/              ← immutable spec snapshots
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    ├── manual-edits/           ← preserved user edits to draft.pptx
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    ├── runs/                   ← v0.3.4.2 per-invocation summaries
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>    │   └── run-N/summary.json
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>    ├── adversarial_review.{json,md}    ← v3 schema (v0.3.3.1+)
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    ├── quantitative_grounding.{json,md}
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    ├── image_provenance.json   ← v0.3.3 image-gen append-log
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>    ├── visual_qa.{json,md}     ← v0.4 M4a (opt-in --visual-qa); advisory
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>    │                             render-quality findings (5 defect classes)
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>    ├── review_cascade.{json,md} ← v0.4 M4b (auto-runs by default); tiered
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>    │                             review report (T1 deterministic + T2 Haiku
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>    │                             + T3 canonical adversarial)
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>    ├── review_tier2.{json,md}  ← v0.4 M4b Tier C output (read by cascade)
+</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>    ├── presentation_validation.json ← v0.4 M4b Tier B side-effect (P1-P10)
+</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a>    └── revise_loop_metadata.json
+</span></code></pre></div>
+<h3 id="-visual-qa-v04-m4a-tier-c-opt-in-read-this-section"><code>--visual-qa</code> (v0.4 M4a Tier C, opt-in) — <strong>read this section</strong><a class="headerlink" href="#-visual-qa-v04-m4a-tier-c-opt-in-read-this-section" title="Permanent link">&para;</a></h3>
+<p>The visual-QA pass is <strong>off by default</strong> because it requires two
+host-only deps (LibreOffice + Poppler) and adds ~$0.6–0.8 of vision-LLM
+spend per run. You opt in because the renderer can ship a deck that
+<em>validates</em> but renders poorly (a long subtitle that shrinks past the
+60% floor, a diagram label that the shrink-to-fit can't save, a figure
+caption that collides with the logo strip). Visual-QA catches that.</p>
+<p><strong>When to use it:</strong> before sharing the assembled deck with a real
+audience. Run after assembly:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>beril-presentation-maker<span class="w"> </span>draft<span class="w"> </span>&lt;project_id&gt;<span class="w"> </span>--visual-qa
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># or, post-hoc on an existing draft:</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>.venv/bin/python<span class="w"> </span>&lt;skill_path&gt;/tools/visual_qa.py<span class="w"> </span>&lt;draft_dir&gt;<span class="w"> </span>--keep-pngs
+</span></code></pre></div>
+<p><strong>What it does:</strong> renders the deck to per-slide PNGs via <code>soffice</code>
+(<code>--headless --convert-to pdf</code>) → <code>pdftoppm</code> (<code>-png</code>), runs a
+vision-capable <code>claude -p</code> (Sonnet 4.6) over them, writes advisory
+<code>audit/visual_qa.{md,json}</code> with findings across <strong>five defect classes</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Catches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>container_breach</code></td>
+<td>text overflowing its box bounds</td>
+</tr>
+<tr>
+<td><code>element_overlap</code></td>
+<td>elements visibly colliding</td>
+</tr>
+<tr>
+<td><code>footer_or_title_collision</code></td>
+<td>body content into the logo strip / title band</td>
+</tr>
+<tr>
+<td><code>illegible_scale</code></td>
+<td>text too small to read at projection distance</td>
+</tr>
+<tr>
+<td><code>headline_body_mismatch</code></td>
+<td>title promises more/different than body delivers</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Always rc=0; never blocks assembly.</strong> Findings are advisory; the
+revise loop and hand-edit pass own response. The M4b cascade reads
+<code>audit/visual_qa.json</code> if present (per D-055) — opt in to visual-QA
+to enrich the cascade's Tier-1 findings list.</p>
+<p><strong>Requires</strong> LibreOffice + Poppler on the host. Without them the
+flag is a no-op with a stub report explaining what's missing —
+<strong>the skill ships portable</strong> (no hard dep on either binary). Install
+on macOS: <code>brew install --cask libreoffice &amp;&amp; brew install poppler</code>.
+Install on Linux: distro-appropriate <code>libreoffice</code> + <code>poppler-utils</code>
+packages.</p>
+<h3 id="review-cascade-v04-m4b-auto-runs">Review cascade (v0.4 M4b, auto-runs)<a class="headerlink" href="#review-cascade-v04-m4b-auto-runs" title="Permanent link">&para;</a></h3>
+<p>After assembly, a three-tier review cascade orchestrates the
+existing checks under one fail-fast contract. <strong>Auto-runs by default</strong>
+(per D-054); opt out via <code>--no-review-cascade</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Cost</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tier 1 — deterministic</td>
+<td>~$0</td>
+<td>Aggregates P1–P10 validators + the three advisory checkers (<code>quantitative_grounding</code>, <code>no_artifact_refs</code>, <code>deck_reconciliation</code>) + <code>audit/visual_qa.json</code> if present (per D-055). Fail-fast: a P0 (P4 citation-pool or P5 brand-color violation; P3 is advisory per D-058) short-circuits Tier 2+3, saving ~$0.50+ of adversarial spend.</td>
+</tr>
+<tr>
+<td>Tier 2 — Haiku narrative-light</td>
+<td>~$0.05</td>
+<td>Claude Haiku 4.5 reviews <code>slide_spec.json</code> + the narrative artifacts for four classes: <code>register_drift</code>, <code>qa_softball</code>, <code>unbacked_quantitative</code>, <code>substory_arc</code>. Always advisory (DQ4 / D-057); never gates Tier 3.</td>
+</tr>
+<tr>
+<td>Tier 3 — canonical adversarial</td>
+<td>~$0.50–$1.50</td>
+<td>Wraps the existing <code>beril-adversarial review --type presentation</code> call. Lifts v3 findings + central_objection into the cascade JSON. Standalone <code>stage_adversarial_review</code> elides when cascade Tier 3 ran (de-dup; no double-spend).</td>
+</tr>
+</tbody>
+</table>
+<p>Output: <code>audit/review_cascade.{md,json}</code> with per-tier status,
+findings, and <code>short_circuited_at</code>. The revise loop continues to read
+<code>audit/adversarial_review.json</code> (which IS the cascade's Tier-3 output)
+— no breaking change.</p>
+<p>Each invocation creates a new numbered draft directory. Decks are
+versioned, not edited in place. v0.3.1+ 4-zone layout is stable
+through v0.3.x; v0.3.0-shape drafts are non-migratable (clean break).</p>
+<h2 id="how-it-fits-into-the-beril-workflow">How it fits into the BERIL workflow<a class="headerlink" href="#how-it-fits-into-the-beril-workflow" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>  /berdl_start → (iterate within session) → /synthesize → REPORT.md
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>       │
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>       ▼
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  /beril-adversarial               harsh project review
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>       │
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>       ▼
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  /beril-paper-writer              draft manuscript (optional)
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>       │
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>       ▼
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  /beril-presentation-maker        draft slide deck or poster
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>       │                                              ┌──────────────────┐
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>       ▼                                              │  reuse from      │
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>  user picks throughline;                             │  paper if present│
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>  approves substory clustering                ◄───────┤  (citation pool, │
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>       │                                              │   throughline)   │
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>       ▼                                              └──────────────────┘
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>  drafting (slides + speaker notes + Q&amp;A
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>       │  + cross-tenant + AI illustrations)
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>       ▼
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>  /beril-adversarial --type presentation   harsh deck review (v3)
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>       │
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>       ▼
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>  revise loop (in-orchestrator, cost-capped)
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>       │
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>       ▼
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>  beril-presentation-maker assemble    → deliverable/draft.pptx
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>       │
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>       ▼
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>  (operator) beril-presentation-maker prune &lt;project_id&gt;  cleanup
+</span></code></pre></div>
+<h2 id="status-caveats">Status caveats<a class="headerlink" href="#status-caveats" title="Permanent link">&para;</a></h2>
+<ul>
+<li>v0.3.4.x reuses existing project figures verbatim for quantitative
+  content — no figure regeneration. Conceptual illustrations are
+  generated via opt-in CBORG-Gemini AI image-gen with per-image
+  approval and a "AI-generated illustration" disclosure footer.</li>
+<li>v0.3.4.x has no journal-specific or vendor templates. KBase brand
+  only. Vendor templates are post-MVP.</li>
+<li>v0.3.4.x audience is scientific peer only. Lay / program-officer /
+  executive registers are post-MVP.</li>
+<li>AI-disclosure footnote is auto-emitted on slides with AI-generated
+  images. Speaker name, affiliation, venue, date are placeholders the
+  user must fill before delivery.</li>
+<li><code>citation_reality</code> adversarial findings (v3 schema) are
+  surfaced in <code>working/next_actions.md</code> rather than auto-revised —
+  citations need human verification before shipping.</li>
+<li>Manual edits to <code>deliverable/draft.pptx</code> are preserved (archived
+  to <code>audit/manual-edits/</code>) but not absorbed back into
+  <code>slide_spec.json</code>. Edit upstream (<code>narrative/</code>) and re-run, or
+  copy the deck out for separate polishing.</li>
+</ul>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="src/beril_presentation_maker/skill/SKILL.md">SKILL.md</a> — agent-facing
+  skill instructions (slash commands, workflow, output artifacts)</li>
+<li><a href="HUB_INSTALL.md">HUB_INSTALL.md</a> — operator install runbook</li>
+<li><a href="CONTRACT.md">CONTRACT.md</a> — cross-skill interop pinning (schemas,
+  CLI surface, versioning policy)</li>
+<li><a href="SPEC.md">SPEC.md</a> — community-facing design rationale</li>
+<li><a href="LAYOUT.md">LAYOUT.md</a> — internal architecture, CLI, package shape</li>
+<li><a href="DECISIONS.md">DECISIONS.md</a> — running log of design decisions</li>
+<li><a href="RELEASE_NOTES.md">RELEASE_NOTES.md</a> — per-version changelog</li>
+<li><a href="reference/">reference/</a> — supporting research: best-practice
+  extract, KBase brand extract, prior-art scan, master-template
+  source notes</li>
+</ul>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
+<p>MIT. See <a href="LICENSE">LICENSE</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../paper-writer/" class="md-footer__link md-footer__link--prev" aria-label="Previous: beril-paper-writer">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                beril-paper-writer
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../operations/release-runbook/" class="md-footer__link md-footer__link--next" aria-label="Next: Coordinated release runbook">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Coordinated release runbook
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/kbaseincubator/craft" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

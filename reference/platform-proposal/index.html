@@ -1,0 +1,2485 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Co-Scientist Research Assessment & Framing Tools — KBase | BERIL platform">
+      
+      
+      
+        <link rel="canonical" href="https://kbaseincubator.github.io/craft/reference/platform-proposal/">
+      
+      
+        <link rel="prev" href="../release-notes/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Platform proposal - CRAFT</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#platform-proposal" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CRAFT" class="md-header__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CRAFT
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Platform proposal
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quick-start/install/" class="md-tabs__link">
+          
+  
+  
+  Quick Start
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/platform-structure/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../skills/adversarial/" class="md-tabs__link">
+          
+  
+  
+  Skills
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../operations/release-runbook/" class="md-tabs__link">
+          
+  
+  
+  Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../extending/adding-a-skill/" class="md-tabs__link">
+          
+  
+  
+  Extending
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../release-notes/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CRAFT" class="md-nav__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CRAFT
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/first-run/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First run
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/verify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/platform-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-skill contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skill relationships
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/retrospective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Augmentation stream retrospective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skills
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Skills
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/adversarial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-adversarial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/paper-writer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-paper-writer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/presentation-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-presentation-maker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/release-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coordinated release runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstream dependencies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/github-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Actions setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extending
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Extending
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/adding-a-skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a skill
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/external-contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform proposal
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-platform-what-it-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The platform: what it is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-platform-is-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the platform is NOT
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-forward-trajectory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The forward trajectory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-three-tier-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The three-tier structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The three-tier structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-the-platform-substrate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 1 — the platform substrate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-the-coordination-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 2 — the coordination mechanism
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-the-unified-presentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 3 — the unified presentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-atlas-explicitly-not-in-the-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Atlas: explicitly NOT in the platform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-platform-contract-what-the-three-skills-commit-to" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The platform contract — what the three skills commit to
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. The platform contract — what the three skills commit to">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-schema-commitments-consumer-producer-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Schema commitments (consumer-producer contracts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-operational-commitments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Operational commitments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-joining-the-platform-for-future-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Joining the platform (for future skills)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-what-this-proposal-loses-vs-the-status-quo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. What this proposal LOSES vs. the status quo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-what-this-proposal-preserves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. What this proposal PRESERVES
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-forward-extension-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Forward extension points
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-concrete-next-steps-if-adam-approves-the-direction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Concrete next steps (if Adam approves the direction)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-decision-points-for-adam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Decision points for Adam
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-recommendation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Recommendation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-platform-what-it-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The platform: what it is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-platform-is-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the platform is NOT
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-forward-trajectory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The forward trajectory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-three-tier-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The three-tier structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The three-tier structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-the-platform-substrate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 1 — the platform substrate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-the-coordination-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 2 — the coordination mechanism
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-the-unified-presentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 3 — the unified presentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-atlas-explicitly-not-in-the-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Atlas: explicitly NOT in the platform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-platform-contract-what-the-three-skills-commit-to" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The platform contract — what the three skills commit to
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. The platform contract — what the three skills commit to">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-schema-commitments-consumer-producer-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Schema commitments (consumer-producer contracts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-operational-commitments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Operational commitments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-joining-the-platform-for-future-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Joining the platform (for future skills)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-what-this-proposal-loses-vs-the-status-quo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. What this proposal LOSES vs. the status quo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-what-this-proposal-preserves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. What this proposal PRESERVES
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-forward-extension-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Forward extension points
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-concrete-next-steps-if-adam-approves-the-direction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Concrete next steps (if Adam approves the direction)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-decision-points-for-adam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Decision points for Adam
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-recommendation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Recommendation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/kbaseincubator/craft/edit/main/docs/reference/platform-proposal.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="platform-proposal">Platform proposal<a class="headerlink" href="#platform-proposal" title="Permanent link">&para;</a></h1>
+<p>The original architectural argument for CRAFT — written before
+the platform was named, presenting the choice of "should the
+three production skills become an explicit platform?" as a
+decision input.</p>
+<p>The proposal is the source of truth for the architectural
+choices that CRAFT v0.1 enacts: three-tier structure (substrate
++ coordination + presentation), git submodules instead of mono-
+repo, atlas explicitly excluded, the cross-skill contract.</p>
+<p>For the product-facing version of this content see
+<a href="../../architecture/platform-structure/">Architecture → Platform structure</a>;
+for dev-process context see the <a href="../../architecture/retrospective/">augmentation stream
+retrospective</a>.</p>
+<hr />
+<h3 id="the-platform-what-it-is">The platform: what it is<a class="headerlink" href="#the-platform-what-it-is" title="Permanent link">&para;</a></h3>
+<p>A coordinated set of three skills that <strong>augment KBase | BERIL
+with research-assessment capability</strong>. Skills today:</p>
+<ul>
+<li><strong>beril-adversarial-skill</strong> (review-as-data)</li>
+<li><strong>beril-paper-writer-skill</strong> (ICMJE-conformant manuscript drafting)</li>
+<li><strong>beril-presentation-maker-skill</strong> (KBase-branded presentation drafting)</li>
+</ul>
+<p>The current first delivery is a coherent workflow:</p>
+<ol>
+<li><strong>Tier-0 adversarial assessment</strong> of a BERIL research artifact
+   (project, plan, paper, presentation) — review-as-data via
+   <code>beril-adversarial</code>.</li>
+<li><strong>Two human-consumable artifacts</strong> generated and reviewable
+   inside the platform: the paper (paper-writer) and the
+   presentation (presentation-maker), each with their own
+   review-rewrite loop using adversarial v3 schema.</li>
+<li><strong>Availability for future user assessment</strong> alongside other
+   BERIL artifacts (notebooks, REPORT.md, RESEARCH_PLAN.md,
+   figures).</li>
+</ol>
+<h3 id="what-the-platform-is-not">What the platform is NOT<a class="headerlink" href="#what-the-platform-is-not" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Not BERIL itself.</strong> It sits on top of KBase | BERIL's existing
+  skill-layer + <code>.claude/skills/</code> discovery + <code>claude -p</code> LLM
+  invocation. Standalone repo, standalone release cycles, no
+  BERIL-side changes required.</li>
+<li><strong>Not a kit of independent tools.</strong> The three skills work
+  individually but they are EXPLICITLY designed to compose: the
+  adversarial skill is consumed by both the paper-writer's
+  review-rewrite loop and the presentation-maker's review-rewrite
+  loop. The platform codifies that contract.</li>
+<li><strong>Not the augmentation stream.</strong> The augmentation stream
+  (<code>augmentation-stream-plan.md</code>) was the dev-process framing
+  that produced these skills. The platform is the PRODUCT shape
+  of three of them (atlas is metrology + stays separate per the
+  retrospective + this proposal's §3).</li>
+<li><strong>Not closed.</strong> Future review systems, feedback-incorporation
+  systems, research-quality-improvement skills are explicit
+  extension points (§7).</li>
+</ul>
+<h3 id="the-forward-trajectory">The forward trajectory<a class="headerlink" href="#the-forward-trajectory" title="Permanent link">&para;</a></h3>
+<p>The current three skills are the v0.1 of the platform.
+Future additions are <em>coherent extensions</em> with the same
+interface contract (see §4):</p>
+<ul>
+<li>New review systems (e.g., domain-specific reviewers beyond
+  the general adversarial)</li>
+<li>Feedback-incorporation systems (consuming review output, surfacing
+  to authors)</li>
+<li>Research-quality-improvement skills (e.g., methods-drift
+  detectors, reproducibility checkers, claim-grounding
+  validators)</li>
+<li>Cross-artifact reconciliation skills (does the paper match
+  the presentation? do both match the project plan?)</li>
+</ul>
+<p>Each new skill joins the platform by conforming to the
+<code>CRAFT-CONTRACT.md</code> interface (§4) and being added
+to the meta-package's pinned dependency list.</p>
+<h2 id="2-the-three-tier-structure">2. The three-tier structure<a class="headerlink" href="#2-the-three-tier-structure" title="Permanent link">&para;</a></h2>
+<p>The proposal's structural answer to "how do you give the three
+skills a platform identity without breaking their independence"
+is a three-tier wrapper around the existing repos. None of the
+three skill repos changes substantively; the platform tier adds
+coordination + presentation + governance.</p>
+<h3 id="tier-1-the-platform-substrate">Tier 1 — the platform substrate<a class="headerlink" href="#tier-1-the-platform-substrate" title="Permanent link">&para;</a></h3>
+<p><strong>Repo:</strong> new at <code>ArkinLaboratory/craft</code>. Independent git
+history from the skill repos.</p>
+<p><strong>Contains:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>craft/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── README.md                    # platform-level entry doc
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── PLATFORM-CONTRACT.md         # cross-skill interface pinning
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── PLATFORM-DEPENDENCIES.md     # upstream-change watchlist
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── CROSS-SKILL-RELEASE.md       # runbook for coordinated releases
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├── pyproject.toml               # meta-package; lists 3 skills as deps
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── src/craft/
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   ├── __init__.py
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│   ├── cli.py                   # `craft install-platform`
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│   ├── install_platform.py      # orchestrates 3 install-skill calls
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│   └── doctor.py                # checks all 3 skills installed cleanly
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>├── skills/                      # git submodules (NOT mono-repo subdirs)
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│   ├── beril-adversarial-skill/    → submodule
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│   ├── beril-paper-writer-skill/   → submodule
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│   └── beril-presentation-maker-skill/ → submodule
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>├── docs/                        # MkDocs source for unified docs site
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│   ├── mkdocs.yml
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│   ├── index.md                 # platform landing
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│   ├── tier-0-workflow.md       # the &quot;what does this platform do&quot; page
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│   ├── adding-a-skill.md        # how to extend the platform
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│   └── ...                      # per-skill pages pull from submodule READMEs
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>├── tests/
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│   ├── platform_smoke/          # cross-skill integration tests
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│   └── ...
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>└── .github/workflows/
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    ├── platform-ci.yml          # runs on platform PRs
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    └── cross-skill-smoke.yml    # runs when any submodule tags a release
+</span></code></pre></div>
+<p><strong>Key choice: git submodules, NOT mono-repo subdirs.</strong> Each skill
+stays in its own repo with its own release cycle + tags + issue
+tracker. The platform references each at a specific tagged
+commit (e.g., <code>beril-presentation-maker-skill @ v1.0.0</code>). Bumping
+the platform's pin is an explicit, reviewable PR — exactly when
+you want coordinated cross-skill release attention.</p>
+<p><strong>Meta-package shape:</strong> <code>pyproject.toml</code> lists the three skills
+as pinned <code>pip</code> dependencies (<code>beril-paper-writer-skill==1.0.0</code>
+etc.). <code>pipx install craft</code> transitively installs
+all three. <code>craft install-platform &lt;BERIL_ROOT&gt;</code> runs
+the three <code>install-skill</code> invocations in sequence + reports a
+summary.</p>
+<h3 id="tier-2-the-coordination-mechanism">Tier 2 — the coordination mechanism<a class="headerlink" href="#tier-2-the-coordination-mechanism" title="Permanent link">&para;</a></h3>
+<p>This is the substantive new capability beyond the three skills'
+existing operational surface. The coordination mechanism has
+four components, all living in the platform repo:</p>
+<p><strong>(a) <code>PLATFORM-CONTRACT.md</code></strong> — the cross-skill interface pin.
+Codifies every contract the three skills share:</p>
+<ul>
+<li>The 4-zone draft layout (<code>deliverable/ narrative/ working/ audit/</code>)</li>
+<li>The audit-JSON schema versioning policy (<code>schema_version</code> field;
+  non-breaking-add; deprecation-window-for-bumps)</li>
+<li>The adversarial v3 schema specifically (the consumer-side dep
+  for paper-writer + presentation-maker)</li>
+<li>The <code>claude -p</code> subagent invocation pattern + stream-json output</li>
+<li>The <code>.claude/skills/</code> deployment convention</li>
+<li>The <code>CBORG_API_KEY</code> / <code>GOOGLE_AI_STUDIO_API_KEY</code> env var contract</li>
+<li>The auto-memory integration at <code>.auto-memory/MEMORY.md</code></li>
+</ul>
+<p>When a new skill joins the platform, it commits to this contract.
+When the contract evolves (e.g., a new audit-JSON schema), the
+change goes through a platform-level review.</p>
+<p><strong>(b) <code>PLATFORM-DEPENDENCIES.md</code></strong> — the upstream-change watchlist.</p>
+<p>Lists every external dependency the platform leans on:</p>
+<ul>
+<li>Anthropic Claude Code: <code>claude -p</code> flag, stream-json output
+  shape, MCP tool surface, login model. (Today's research:
+  <code>claude -p</code> is stable, but <code>CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE</code>
+  was deprecated 06/01/2026 — pattern of narrow deprecations
+  with 30-90 day notice is real.)</li>
+<li>KBase | BERIL: <code>.claude/skills/</code> discovery, draft-zone
+  conventions, project-artifact contracts (REPORT.md, RESEARCH_PLAN.md,
+  notebooks, figures).</li>
+<li>Python ecosystem: <code>python-pptx</code>, <code>python-docx</code>, <code>nbformat</code>,
+  <code>Pillow</code>, <code>lxml</code> (transitive).</li>
+<li>Image-gen providers: CBORG-Gemini, Google AI Studio direct,
+  their API surfaces.</li>
+<li>BibTeX / citation databases for paper-writer's resolution.</li>
+</ul>
+<p>Each entry has a "last verified working with" date + a quarterly
+review cadence. Anthropic and Google announce deprecations
+30-90 days ahead; tracking actively means the platform has time
+to respond before users notice.</p>
+<p><strong>(c) <code>CROSS-SKILL-RELEASE.md</code></strong> — coordinated release runbook.</p>
+<p>When a change touches all three skills (e.g., adversarial v3 → v4
+schema bump), the runbook codifies:</p>
+<ul>
+<li>Which skill leads (usually the upstream producer of the
+  changed contract, e.g., adversarial).</li>
+<li>Branch + PR order across the three repos.</li>
+<li>Test coordination: each consumer skill must pass tests against
+  the new contract before the producer tags.</li>
+<li>Platform-level smoke test gate (see (d)).</li>
+<li>Release sequencing: producer tags first; consumers tag with
+  their pinned dep bumped; platform meta-package tags last with
+  all three submodules updated.</li>
+<li>Communication: ChangeLog entry on platform repo + per-skill
+  RELEASE_NOTES.md.</li>
+</ul>
+<p><strong>(d) Platform CI smoke test.</strong></p>
+<p>A GitHub Action that runs when ANY submodule tags a new release:</p>
+<ol>
+<li>Clones the platform repo + updates the submodule pin to the
+   new tag.</li>
+<li>Runs a cross-skill integration test (typical: small project
+   → adversarial review → paper-writer drafts paper → consumes
+   review → presentation-maker drafts presentation → consumes
+   review → both ship). ~$10-15 LLM cost per smoke run.</li>
+<li>Reports pass/fail to the platform issue tracker.</li>
+</ol>
+<p>Catches "paper-writer v1.1.0 broke presentation-maker's
+adversarial integration" within hours, not in production.
+Acceptance cost: ~$50-100/month of CI LLM spend if smokes fire
+quarterly per skill (3 skills × ~1 release per quarter).</p>
+<h3 id="tier-3-the-unified-presentation">Tier 3 — the unified presentation<a class="headerlink" href="#tier-3-the-unified-presentation" title="Permanent link">&para;</a></h3>
+<p>For end users, DOE leadership, future contributors. Built once,
+reused continuously.</p>
+<p><strong>(a) Platform landing page</strong> at
+<code>ArkinLaboratory.github.io/craft/</code>:</p>
+<ul>
+<li>One-paragraph "what is this platform" framing</li>
+<li>The Tier-0 workflow diagram (review → paper → presentation
+  → ready for user assessment)</li>
+<li>Per-skill pages pulled from each submodule's README + TUTORIAL</li>
+<li>HUB_INSTALL + HANDOFF + RELEASE_NOTES (auto-included via
+  MkDocs)</li>
+<li>Architectural diagrams (the three skills' contract relationships</li>
+<li>the KBase | BERIL substrate they sit on)</li>
+<li>"Adding a skill" page for future contributors</li>
+</ul>
+<p><strong>(b) Unified install runbook.</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># One pipx install. Pulls all three skills as transitive deps.</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>pipx<span class="w"> </span>install<span class="w"> </span>craft
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># One platform-install command. Runs the three install-skill</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># invocations in sequence; reports a summary; verifies</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># .claude/skills/ deployment.</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>craft<span class="w"> </span>install-platform<span class="w"> </span>&lt;BERIL_ROOT&gt;
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># Verify cross-skill integration (doctor command — checks each</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># skill is installed + dependencies present + .env populated).</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>craft<span class="w"> </span>doctor<span class="w"> </span>&lt;BERIL_ROOT&gt;
+</span></code></pre></div>
+<p><strong>(c) Architectural diagrams.</strong> The current
+<code>AUGMENTATION-STREAM-RETROSPECTIVE.md</code> is dev-process framing;
+the platform docs site needs a clean product-facing diagram set:</p>
+<ul>
+<li>The Tier-0 workflow (input → review → paper + presentation
+  → user assessment)</li>
+<li>The skill-contract relationships (who consumes whose schema)</li>
+<li>The platform substrate (where KBase | BERIL ends and the
+  platform begins)</li>
+<li>The extension path (where new skills plug in)</li>
+</ul>
+<p><strong>(d) Per-skill page generation.</strong> MkDocs reads each submodule's
+existing docs + presents them under a unified site nav. Per-skill
+maintenance unchanged — skill authors edit their own README; the
+platform site picks up the change on next build. No platform-
+specific docs that skill authors need to maintain.</p>
+<h2 id="3-atlas-explicitly-not-in-the-platform">3. Atlas: explicitly NOT in the platform<a class="headerlink" href="#3-atlas-explicitly-not-in-the-platform" title="Permanent link">&para;</a></h2>
+<p>Atlas is <strong>metrology</strong> — observability across BERIL deployments
++ learned-pattern indexing. The three production skills produce
+research artifacts; atlas observes the patterns + drifts. Different
+shape, different release cadence, different operational mode.</p>
+<p>Atlas:
+- Stays at <code>ArkinLaboratory/beril-atlas-skill</code>.
+- Has its own pipx install + install-skill.
+- Its own release cycle (build-once-observe).
+- May INFORM the platform (atlas observations could surface
+  cross-platform-skill issues, e.g., "users on platform v1.x
+  consistently hit X failure mode"). Information flow only;
+  no install dependency.</p>
+<p>The platform does NOT depend on atlas; atlas does NOT depend on
+the platform. They share the BERIL substrate + the auto-memory
+convention but operate independently.</p>
+<p>This is explicit per Adam's framing ("atlas is a separable
+metrology package"). Confirmed by CONSOLIDATED-REPO-ASSESSMENT.md
+§6 NF1 (atlas's DuckDB engine + observability model don't fit
+into a content-production package).</p>
+<h2 id="4-the-platform-contract-what-the-three-skills-commit-to">4. The platform contract — what the three skills commit to<a class="headerlink" href="#4-the-platform-contract-what-the-three-skills-commit-to" title="Permanent link">&para;</a></h2>
+<p>This section is the substantive content of <code>PLATFORM-CONTRACT.md</code>.
+Sketched here; the actual file would be ~30-50 pages with full
+schema definitions.</p>
+<h3 id="41-schema-commitments-consumer-producer-contracts">4.1 Schema commitments (consumer-producer contracts)<a class="headerlink" href="#41-schema-commitments-consumer-producer-contracts" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Schema</th>
+<th>Producer</th>
+<th>Consumer(s)</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>adversarial-review-{paper,presentation}.v3</code></td>
+<td>adversarial</td>
+<td>paper-writer, presentation-maker</td>
+<td>v3 stable through platform v1.x</td>
+</tr>
+<tr>
+<td><code>slide_spec.v1</code></td>
+<td>presentation-maker</td>
+<td>(external integrators)</td>
+<td>v1 stable through platform v1.x</td>
+</tr>
+<tr>
+<td><code>claim_inventory.tsv</code></td>
+<td>paper-writer</td>
+<td>(external integrators); presentation-maker reads via reuse-from-paper-writer</td>
+<td>stable through platform v1.x</td>
+</tr>
+<tr>
+<td><code>citation_pool.json</code></td>
+<td>paper-writer</td>
+<td>presentation-maker (reuse path)</td>
+<td>stable through platform v1.x</td>
+</tr>
+<tr>
+<td>4-zone draft layout</td>
+<td>all three</td>
+<td>(external integrators)</td>
+<td>stable since BERIL v0.3.1; non-negotiable</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Schema-bump policy:</strong>
+- Non-breaking additions (new fields, new finding kinds) ship at
+  patch-version-bump of producer skill.
+- Breaking changes (renamed fields, changed semantics) require:
+  - Platform-level discussion at <code>PLATFORM-DEPENDENCIES.md</code> review.
+  - Dual-version support window (typically 1-2 minor releases).
+  - Coordinated bump across producer + all consumers.</p>
+<h3 id="42-operational-commitments">4.2 Operational commitments<a class="headerlink" href="#42-operational-commitments" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Independent ship cycles.</strong> Each skill releases on its own
+  cadence (patch + minor). Major version bumps may be
+  coordinated if they imply contract changes.</li>
+<li><strong>Backward compatibility within major.</strong> A platform-v1.x
+  patch release does NOT break a v1.x consumer of the schemas
+  above.</li>
+<li><strong>Pipx install + install-skill discoverability.</strong> Each skill's
+  install path must work standalone (<code>pipx install &lt;skill&gt;</code> +
+  <code>&lt;skill&gt; install-skill &lt;BERIL_ROOT&gt;</code>) regardless of platform.</li>
+<li><strong><code>claude -p</code> invocation contract.</strong> Each skill invokes Claude
+  via the <code>claude -p</code> subagent pattern + parses stream-json
+  output. Platform-level Anthropic deprecation response is
+  coordinated.</li>
+<li><strong>Auto-memory convention.</strong> Each skill reads <code>.auto-memory/MEMORY.md</code>
+  on startup. Platform-level guidance on what cross-skill
+  discoveries get auto-saved.</li>
+</ul>
+<h3 id="43-joining-the-platform-for-future-skills">4.3 Joining the platform (for future skills)<a class="headerlink" href="#43-joining-the-platform-for-future-skills" title="Permanent link">&para;</a></h3>
+<p>A new skill joins the platform when:</p>
+<ol>
+<li>It produces or consumes a contract relevant to the existing
+   three (e.g., a new review system that produces
+   <code>adversarial-review-&lt;artifact&gt;.v3</code>-shape findings; a feedback-
+   incorporation skill that consumes them).</li>
+<li>It conforms to the operational commitments in §4.2.</li>
+<li>It maintains its own repo + release cycle (submodule pattern).</li>
+<li>It commits to the platform's coordination mechanism (PRs
+   against the platform repo when contract-touching changes happen).</li>
+</ol>
+<p>The platform does NOT require:
+- Membership in <code>ArkinLaboratory</code> GitHub org (could be external
+  contributor's org, with the platform repo linking to it).
+- A specific tech stack (the skill can be Python + bash today;
+  could be Rust or Go tomorrow as long as the install-skill
+  pattern is respected).
+- Surrendering the skill's independent identity.</p>
+<h2 id="5-what-this-proposal-loses-vs-the-status-quo">5. What this proposal LOSES vs. the status quo<a class="headerlink" href="#5-what-this-proposal-loses-vs-the-status-quo" title="Permanent link">&para;</a></h2>
+<p>Honest accounting:</p>
+<ul>
+<li><strong>Some operational complexity.</strong> The submodule pattern adds a
+  layer; cross-skill coordination is now explicit (good) but
+  also requires discipline (cost).</li>
+<li><strong>Platform-level CI cost.</strong> ~$50-100/month of LLM smoke spend
+  (the cross-skill integration test).</li>
+<li><strong>Platform-level documentation burden.</strong> Even though most of
+  it is auto-generated from per-skill docs, the architectural
+  diagrams + Tier-0 workflow page + extension docs need
+  authoring + maintenance.</li>
+<li><strong>Decision cycle latency.</strong> A change to <code>PLATFORM-CONTRACT.md</code>
+  requires platform-level review, not just one-skill-author
+  decision. Slows individual skill changes that touch the
+  contract.</li>
+</ul>
+<p>The status-quo independence is partially traded for coordination
+visibility. Per Adam's framing this is the right trade.</p>
+<h2 id="6-what-this-proposal-preserves">6. What this proposal PRESERVES<a class="headerlink" href="#6-what-this-proposal-preserves" title="Permanent link">&para;</a></h2>
+<p>The augmentation-stream architectural argument holds:</p>
+<ul>
+<li>Each skill remains independently installable + releasable.</li>
+<li>The "BERIL's skill-layer absorbs the capability stack" claim
+  still stands — the platform is a coordination wrapper, not a
+  refactor.</li>
+<li>Future external contributors can write a skill matching the
+  augmentation pattern + optionally join the platform if it fits.</li>
+<li>Atlas stays at its own pace (observability, not content
+  production).</li>
+<li>The 4-zone draft layout + schema-versioning discipline + tiered
+  review cascade pattern continue as platform invariants.</li>
+</ul>
+<h2 id="7-forward-extension-points">7. Forward extension points<a class="headerlink" href="#7-forward-extension-points" title="Permanent link">&para;</a></h2>
+<p>Future skills the platform can absorb (from Adam's framing +
+inferred natural extensions):</p>
+<table>
+<thead>
+<tr>
+<th>Future skill class</th>
+<th>What it produces / consumes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain-specific reviewers (e.g., microbiome-specific, structural-bio-specific)</td>
+<td>Produces adversarial-shape findings tuned to a domain; consumed by paper-writer + presentation-maker review loops</td>
+</tr>
+<tr>
+<td>Feedback-incorporation systems</td>
+<td>Consumes adversarial findings + drafter outputs; produces revised artifacts with reframing logs</td>
+</tr>
+<tr>
+<td>Research-quality-improvement skills</td>
+<td>Methods-drift detection, reproducibility checking, claim-grounding validation; produces audit JSON consumed by the cascade</td>
+</tr>
+<tr>
+<td>Cross-artifact reconciliation</td>
+<td>Does the paper match the presentation? Does both match the project plan? Produces reconciliation reports</td>
+</tr>
+<tr>
+<td>Domain-translation skills</td>
+<td>Produces lay-audience versions of papers / presentations; consumes the existing artifacts</td>
+</tr>
+<tr>
+<td>Synthesis skills</td>
+<td>Consumes multiple BERDL projects + produces meta-analyses</td>
+</tr>
+</tbody>
+</table>
+<p>Each follows the contract in §4. The platform absorbs them as
+submodule additions + meta-package dep bumps.</p>
+<h2 id="8-concrete-next-steps-if-adam-approves-the-direction">8. Concrete next steps (if Adam approves the direction)<a class="headerlink" href="#8-concrete-next-steps-if-adam-approves-the-direction" title="Permanent link">&para;</a></h2>
+<p>This proposal does NOT commit to any path. If Adam decides to
+proceed:</p>
+<p><strong>Phase 0 (decision, ~1 day):</strong>
+- Name selected: <strong>CRAFT</strong> (Co-Scientist Research Assessment &amp;
+  Framing Tools), 2026-06-03.
+- Repo location TBD (<code>ArkinLaboratory/craft</code> is the default;
+  alternatives: new GitHub org like <code>KBaseResearchAssessment</code>).
+- Adam confirms whether to proceed with the three-tier structure
+  as proposed.</p>
+<p><strong>Phase 1 (substrate, ~3-5 days):</strong>
+- Create <code>ArkinLaboratory/craft</code> repo.
+- Add three skills as git submodules pointing at their v1.0.0
+  tags.
+- Write meta-package pyproject.toml + <code>install-platform</code> CLI.
+- Initial draft of <code>PLATFORM-CONTRACT.md</code> + <code>PLATFORM-DEPENDENCIES.md</code>
+  + <code>CROSS-SKILL-RELEASE.md</code>.
+- First platform release: <code>v0.1.0</code>.</p>
+<p><strong>Phase 2 (coordination, ~2-3 days):</strong>
+- Set up platform CI (GitHub Actions; smoke test on submodule
+  release).
+- Set up platform issue tracker conventions (cross-skill labels,
+  triage process).
+- First cross-skill smoke run (small project end-to-end through
+  all three skills via the platform).</p>
+<p><strong>Phase 3 (presentation, ~1-2 days):</strong>
+- Set up MkDocs site at <code>ArkinLaboratory.github.io/craft/</code>.
+- Draft architectural diagrams.
+- Write the Tier-0 workflow page.
+- Auto-include per-skill docs.</p>
+<p><strong>Phase 4 (announcement + handoff, ~half day):</strong>
+- Cross-reference the platform from each skill's README.
+- Update <code>augmentation-stream-plan.md</code> + workspace <code>CLAUDE.md</code>
+  to point at the platform.
+- Public announcement (if appropriate; depends on the audience).</p>
+<p><strong>Total: ~8-12 days of work.</strong> Distributed; can be paused at
+any phase. Each phase produces a usable artifact.</p>
+<h2 id="9-decision-points-for-adam">9. Decision points for Adam<a class="headerlink" href="#9-decision-points-for-adam" title="Permanent link">&para;</a></h2>
+<p><strong>ALL DECIDED 2026-06-03.</strong> Recorded here for traceability:</p>
+<ol>
+<li>
+<p><strong>Platform name + repo name:</strong> CRAFT
+   (Co-Scientist Research Assessment &amp; Framing Tools). Repo
+   name: <code>craft</code>.</p>
+</li>
+<li>
+<p><strong>Repo location:</strong> <strong><code>kbaseincubator/craft</code></strong> (preferred);
+   Adam has org-level access. Skills currently at
+   <code>ArkinLaboratory/...</code> may also migrate to <code>kbaseincubator/...</code>
+   for everything; if so, CRAFT's submodule references update
+   to track the migration. Decision: skills migrate together
+   with CRAFT setup OR skills migrate later as a separate
+   move — TBD during Phase 1 setup based on what's least
+   disruptive.</p>
+</li>
+<li>
+<p><strong>Submodule pinning policy:</strong> strict (tagged releases only;
+   no <code>main</code>-tracking).</p>
+</li>
+<li>
+<p><strong>Initial platform version:</strong> <code>v0.1.0</code> for first ship. v1.0
+   gated on adversarial reaching v1.0 (currently v0.7.0.8).</p>
+</li>
+<li>
+<p><strong>CI provider:</strong> GitHub Actions. Workflows live at
+   <code>.github/workflows/</code> on the platform repo. Phase 2 will
+   include explanatory notes on how the platform CI works so
+   the maintainer (Adam) understands what's running + where.</p>
+</li>
+<li>
+<p><strong>Docs hosting:</strong> GitHub Pages on the platform repo.
+   <code>kbaseincubator.github.io/craft/</code> is the natural URL.</p>
+</li>
+<li>
+<p><strong>Atlas relationship:</strong> Atlas is OUT of the platform. Atlas
+   undergoing revisions; cross-referencing between CRAFT docs
+   and atlas docs is acceptable; locale updates may be needed
+   when atlas's repo location moves.</p>
+</li>
+<li><strong>Repo location.</strong> <code>ArkinLaboratory/&lt;name&gt;</code> is the natural
+   choice; alternatives include creating a new GitHub org
+   (<code>KBaseResearchAssessment</code> or similar) if the platform's
+   identity is meant to be distinct from the lab.</li>
+<li><strong>Submodule pinning policy.</strong> Pin to tagged releases (strict)
+   OR pin to commits on each skill's <code>main</code> branch (looser, more
+   flexible, less stable). Recommend strict; tag-only.</li>
+<li><strong>Initial platform version.</strong> <code>v0.1.0</code> is the natural start
+   for an early proposal-shape platform. v1.0 when all three
+   submodules are at v1.0 stably (presentation-maker just
+   tagged v1.0.0; paper-writer is at v1.0.0; adversarial is
+   at v0.7.0.8). Adversarial's v1.0 may be the gating signal.</li>
+<li><strong>CI provider.</strong> GitHub Actions is the natural fit (each
+   skill already uses it). If Adam has a preference for
+   self-hosted CI (e.g., a KBase Jenkins), that changes Phase
+   2.</li>
+<li><strong>Docs hosting.</strong> GitHub Pages on the platform repo OR an
+   external host (e.g., kbase.us subdomain). Determines MkDocs
+   deploy target.</li>
+<li><strong>Atlas relationship.</strong> Confirmed OUT of the platform.
+   Whether atlas's documentation cross-references the platform
+   (and vice versa) is Adam's call.</li>
+</ol>
+<h2 id="10-recommendation">10. Recommendation<a class="headerlink" href="#10-recommendation" title="Permanent link">&para;</a></h2>
+<p><strong>Adopt the three-tier structure.</strong> It:</p>
+<ul>
+<li>Matches Adam's framing (three-skill platform; atlas separate).</li>
+<li>Solves the coordinated-upstream-change problem
+  (<code>PLATFORM-DEPENDENCIES.md</code> + cross-skill CI).</li>
+<li>Solves the simplified-install problem (meta-package +
+  <code>install-platform</code>).</li>
+<li>Solves the unified-documentation problem (MkDocs site with
+  auto-included per-skill docs).</li>
+<li>Solves the future-extension-discoverability problem
+  (<code>adding-a-skill.md</code> + <code>PLATFORM-CONTRACT.md</code>).</li>
+<li>Preserves what's working (independent skill ship cycles, the
+  augmentation-stream architectural argument, atlas's autonomy).</li>
+<li>Adds explicit governance + presentation surface without
+  forcing a refactor.</li>
+</ul>
+<p>The total cost is ~8-12 days distributed; each phase produces a
+usable artifact; pausable at any phase. Compared to the
+benefits over a multi-year platform lifetime, the cost is
+proportional.</p>
+<p><strong>What to NOT do:</strong></p>
+<ul>
+<li>Do not fold atlas in.</li>
+<li>Do not consolidate the three skills into one repo subdirs.</li>
+<li>Do not force the three skills onto a single coordinated
+  release cycle (independent patch/minor releases preserved;
+  coordinated only for contract changes).</li>
+<li>Do not extract <code>beril_skill_common</code> infrastructure code yet
+  — premature; the duplication is ~700-1000 lines + the
+  cross-skill coupling cost would be higher than the de-dup
+  benefit. Revisit in 6-12 months once the platform is stable.</li>
+</ul>
+<hr />
+<p><em>This document is a proposal for Adam's review. Decision is
+Adam's; this proposal does not commit to any path.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../release-notes/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Release notes">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Release notes
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/kbaseincubator/craft" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

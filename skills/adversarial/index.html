@@ -1,0 +1,2291 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Co-Scientist Research Assessment & Framing Tools — KBase | BERIL platform">
+      
+      
+      
+        <link rel="canonical" href="https://kbaseincubator.github.io/craft/skills/adversarial/">
+      
+      
+        <link rel="prev" href="../../architecture/retrospective/">
+      
+      
+        <link rel="next" href="../paper-writer/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>beril-adversarial - CRAFT</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#beril-adversarial-skill" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CRAFT" class="md-header__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CRAFT
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              beril-adversarial
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quick-start/install/" class="md-tabs__link">
+          
+  
+  
+  Quick Start
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/platform-structure/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Skills
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../operations/release-runbook/" class="md-tabs__link">
+          
+  
+  
+  Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../extending/adding-a-skill/" class="md-tabs__link">
+          
+  
+  
+  Extending
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/release-notes/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CRAFT" class="md-nav__button md-logo" aria-label="CRAFT" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CRAFT
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kbaseincubator/craft" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kbaseincubator/craft
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/first-run/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First run
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/verify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/platform-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-skill contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skill relationships
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/retrospective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Augmentation stream retrospective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skills
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Skills
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-adversarial
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-adversarial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator quick-reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skill-readme-from-the-skill-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill README (from the skill repo)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../paper-writer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-paper-writer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../presentation-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    beril-presentation-maker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/release-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coordinated release runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstream dependencies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/github-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Actions setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extending
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Extending
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/adding-a-skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a skill
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending/external-contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/release-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/platform-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operator quick-reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skill-readme-from-the-skill-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill README (from the skill repo)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/kbaseincubator/craft/edit/main/docs/skills/adversarial.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="beril-adversarial-skill">beril-adversarial-skill<a class="headerlink" href="#beril-adversarial-skill" title="Permanent link">&para;</a></h1>
+<p><strong>Role in CRAFT:</strong> the <strong>producer</strong> of structured review
+findings. Both paper-writer and presentation-maker consume its
+output in their review-rewrite loops.</p>
+<ul>
+<li><strong>Repo:</strong> <a href="https://github.com/ArkinLaboratory/beril-adversarial-skill">ArkinLaboratory/beril-adversarial-skill</a></li>
+<li><strong>Pinned in CRAFT at:</strong> see <code>craft/skills/beril-adversarial-skill</code>
+  submodule pin (<code>git submodule status</code> for current).</li>
+<li><strong>Schemas produced:</strong> <code>adversarial-review-{paper,presentation,plan,project}.v3</code>
+  — see <a href="../../architecture/contract/">cross-skill contract §2</a>.</li>
+<li><strong>Install path:</strong> <code>pipx install git+https://github.com/ArkinLaboratory/beril-adversarial-skill.git@&lt;tag&gt;</code>
+  (already done transitively if you <code>pipx install craft</code>).</li>
+<li><strong>Independent install:</strong> <code>beril-adversarial install-skill &lt;BERIL_ROOT&gt;</code>
+  (CRAFT's <code>install-platform</code> calls this for you).</li>
+</ul>
+<h2 id="when-to-use-it">When to use it<a class="headerlink" href="#when-to-use-it" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Tier-0 quality assessment</strong> of any BERIL research artifact
+  (project, plan, paper, presentation) before publication.</li>
+<li><strong>As the producer of findings</strong> that paper-writer + presentation-maker
+  consume in their revise loops.</li>
+<li><strong>External integrators</strong> can consume <code>adversarial-review-*.v3</code>
+  outputs without going through CRAFT.</li>
+</ul>
+<p>For platform-level data flow see <a href="../../architecture/relationships/">Skill
+relationships</a>.</p>
+<h2 id="operator-quick-reference">Operator quick-reference<a class="headerlink" href="#operator-quick-reference" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Review a whole BERIL project</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>beril-adversarial<span class="w"> </span>review<span class="w"> </span>--type<span class="w"> </span>project<span class="w"> </span>&lt;project_id&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>--beril-root<span class="w"> </span>&lt;BERIL_ROOT&gt;
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># Review a paper draft</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>beril-adversarial<span class="w"> </span>review<span class="w"> </span>--type<span class="w"> </span>paper<span class="w"> </span>&lt;papers/draft_N&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span>--beril-root<span class="w"> </span>&lt;BERIL_ROOT&gt;
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># Review a presentation draft</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>beril-adversarial<span class="w"> </span>review<span class="w"> </span>--type<span class="w"> </span>presentation<span class="w"> </span>&lt;talks/draft_N&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span>--beril-root<span class="w"> </span>&lt;BERIL_ROOT&gt;
+</span></code></pre></div>
+<p>Cost: ~$1-2 LLM per project review; ~$0.50-1 per artifact review.
+Wall-clock: ~5-15 minutes.</p>
+<p>For mode/tier choices + flag-set reference, see the README below
+(auto-pulled from the skill repo).</p>
+<hr />
+<h2 id="skill-readme-from-the-skill-repo">Skill README (from the skill repo)<a class="headerlink" href="#skill-readme-from-the-skill-repo" title="Permanent link">&para;</a></h2>
+<h1 id="beril-adversarial-skill_1">beril-adversarial-skill<a class="headerlink" href="#beril-adversarial-skill_1" title="Permanent link">&para;</a></h1>
+<p>A harsh, detail-oriented adversarial reviewer for BERDL analysis projects,
+research plans, paper drafts, and presentation drafts. Distributed as a
+Claude Code skill that runs inside a BERIL deployment.</p>
+<p>Built as a complement to BERIL's <code>/berdl-review</code> (the lighter automated
+review), <code>/beril-adversarial</code> is meant for the moment you want a senior
+reviewer's skepticism: statistical-rigor checks, hypothesis vetting,
+biological-claim verification against current literature, and explicit
+flagging of inferential leaps.</p>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h2>
+<p><strong>Current: v0.7.0.2</strong> — see <code>RELEASE_NOTES.md</code> for the full v0.4.x →
+v0.7.x trajectory. Highlights since v0.4.0:</p>
+<ul>
+<li><strong>v0.7.0 — schema bundle (v3).</strong> Three breaking changes bundled:
+  rename <code>narrative_weakness</code> → <code>central_objection</code> (same role:
+  one finding per review, severity=info, deck/paper-wide synthesis;
+  v3 docs containing the dead class name are HARD-REJECTED by the
+  validator); NEW <code>citation_reality</code> class on presentation v3 for
+  parity with paper (detects fabricated/drifting citations on
+  slides with footers, in-text markers, or <code>provenance_pin</code>);
+  <code>--output</code> flag now HONORED for <code>--type paper|presentation</code>
+  (was silently ignored in v0.6.x). Argparse migration hint
+  surfaces tailored guidance when consumers invoke the v0.5.x-shape
+  CLI. v3 prompts adversarially reviewed by 3 parallel agents
+  before validator code; design contracts D1-D6, C1-C3, G1-G5
+  captured in <code>SCHEMA_V3_DECISIONS.md</code>. v0.7.0.1 added 4-signal
+  project resolution tree in <code>SKILL.md</code> (git branch is the
+  strongest signal on the BERIL hub) + draft auto-detection +
+  surface terminology clarification (slash command vs Python CLI).
+  v0.7.0.2 closed release-cleanliness gaps surfaced by adversarial
+  audit: HISTORICAL banners on legacy schema docs, CONTRACT.md
+  Python example KeyError fix, README/SKILL version-string
+  refresh, bash usage default-model accuracy.</li>
+<li><strong>v0.6.x — paper alignment + programmatic CLI subcommand.</strong> Paper
+  reviewer rewritten to read paper-writer v0.6+ per-draft directory
+  layout (<code>papers/draft_N/manuscript.md</code> + <code>00_throughline.md</code> +
+  <code>references.md</code> + <code>citation_map.md</code> + ...). Dual md+json output
+  with schema <code>adversarial-review-paper.v2</code>. New
+  <code>beril-adversarial review &lt;target&gt; --type X</code> Python CLI subcommand
+  for programmatic invocation from other skills. Cross-skill interop
+  pinned in <code>CONTRACT.md</code>. Schema-aware labels in validator output
+  ("section-level"/"manuscript-wide" for paper; "slide-level"/
+  "deck-level" for presentation). Unescaped-quote anti-pattern in
+  both v2 prompts; trailing-comma repair in the validator.</li>
+<li><strong>v0.5.x — single-array schema bump for presentation.</strong> Schema
+  collapsed to one <code>findings[]</code> array (was two). Auto-correcting
+  validator backstops LLM summary count mismatches (sidecar
+  preserves the original miscount for forensics). Default model
+  bumped to Claude Sonnet 4.6. Cross-skill layout-detection added
+  for presentation-maker v0.3.1+ zone reorg
+  (deliverable/narrative/working/audit).</li>
+<li><strong>v0.4.0 — adds <code>--type presentation</code> mode</strong> for adversarial review
+  of <code>beril-presentation-maker</code> draft directories.</li>
+<li><strong>v0.3.0 — additivity discipline</strong> for multi-round reviews.</li>
+<li><strong>v0.2.0 — programmatic citation verification gate.</strong></li>
+</ul>
+<p>No breaking changes to existing <code>--type plan</code> or <code>--type project</code>
+modes. <code>--type paper</code> did break in v0.6.0 (per-draft layout required;
+flat-file rejected with migration message).</p>
+<h2 id="documentation-map">Documentation map<a class="headerlink" href="#documentation-map" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Doc</th>
+<th>Audience</th>
+<th>What's in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="TUTORIAL.md">TUTORIAL.md</a></strong></td>
+<td>Researcher using <code>/beril-adversarial</code> on the BERIL hub</td>
+<td>Skill-specific: reading findings, the 8/10 detection classes, the <code>central_objection</code> killshot, <code>citation_id</code> semantics, iteration patterns. <strong>Defers cross-skill install/configure to PARTICIPANT-RUNBOOK below.</strong></td>
+</tr>
+<tr>
+<td><strong><a href="HUB_INSTALL.md">HUB_INSTALL.md</a></strong></td>
+<td>Operator deploying on JupyterHub</td>
+<td>3-step install runbook (pipx + install-skill + configure), first-run validation queries, slash command verification, upgrading, uninstalling, hub-specific troubleshooting.</td>
+</tr>
+<tr>
+<td><strong><a href="CONTRACT.md">CONTRACT.md</a></strong></td>
+<td>Integrator consuming this skill's output (paper-writer, presentation-maker, future skills)</td>
+<td>Schema family compatibility matrix, severity vocabulary mapping, v0.7.0 migration section, consumer-side smoke test pattern. <strong>Read this first if you're integrating.</strong></td>
+</tr>
+<tr>
+<td><strong><a href="RELEASE_NOTES.md">RELEASE_NOTES.md</a></strong></td>
+<td>Anyone tracking changes</td>
+<td>Version-by-version changelog from v0.4.x → v0.7.x with migration notes per release.</td>
+</tr>
+<tr>
+<td><strong><a href="LAYOUT.md">LAYOUT.md</a></strong></td>
+<td>Maintainer</td>
+<td>Directory and file organization.</td>
+</tr>
+<tr>
+<td><strong><a href="SCHEMA_V3_DECISIONS.md">SCHEMA_V3_DECISIONS.md</a></strong></td>
+<td>Schema designer / consumer wanting design rationale</td>
+<td>Why v3 looks the way it does; D1-D6, C1-C3, G1-G5 implementation contracts.</td>
+</tr>
+<tr>
+<td>Cross-skill: <strong><a href="https://github.com/ArkinLaboratory/beril-presentation-maker-skill/blob/main/docs/cross-skill/PARTICIPANT-RUNBOOK.md">PARTICIPANT-RUNBOOK.md</a></strong></td>
+<td>Researcher using ANY of the 4 BERIL plug-in skills (paper-writer / presentation-maker / adversarial / atlas)</td>
+<td>Hub workflow integration (<code>/berdl_start</code> → install → configure → run any skill), recovery, cost.</td>
+</tr>
+<tr>
+<td>Reference: <a href="PLUGIN_GUIDE.md">PLUGIN_GUIDE.md</a></td>
+<td>Reader who wants the full story in one doc</td>
+<td>Comprehensive single-doc reference. Per the May 2026 cross-skill doc-consistency agreement, this is no longer a target for new writing — granular docs above are canonical. Kept for completeness.</td>
+</tr>
+<tr>
+<td>Historical: <a href="SCHEMA_V2_DECISIONS.md">SCHEMA_V2_DECISIONS.md</a>, <a href="SCHEMA_V2_PAPER_DECISIONS.md">SCHEMA_V2_PAPER_DECISIONS.md</a>, <a href="SPEC_TYPE_PRESENTATION.md">SPEC_TYPE_PRESENTATION.md</a>, <a href="V0_4_0_PUNCH_LIST.md">V0_4_0_PUNCH_LIST.md</a></td>
+<td>Archaeology — design rationale for older releases</td>
+<td>Each carries a HISTORICAL banner pointing at the current canonical doc.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<p>There are <strong>two ways to invoke a review</strong> — pick the one that fits
+your context. Both run the same shell script under the hood; same
+exit codes, same output paths, same JSON schema.</p>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Use this when...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>/beril-adversarial</code> slash command</strong> in Claude Code (BERIL deployment)</td>
+<td>You're an end-user reviewing a paper, deck, or project interactively. Claude Code agent reads the output, summarizes the findings to you, and suggests follow-ups.</td>
+</tr>
+<tr>
+<td><strong><code>beril-adversarial review</code> Python CLI subcommand</strong></td>
+<td>You're another skill calling adversarial programmatically. paper_writer.sh, presentation-maker's revise loop, scripted workflows, CI/CD. Exit codes propagate so your script can branch on them.</td>
+</tr>
+</tbody>
+</table>
+<p>The four review modes (<code>--type project|paper|presentation|plan</code>)
+are documented in detail in
+<a href="src/beril_adversarial/skill/SKILL.md#mode-selection--one-matrix-four-modes"><code>SKILL.md</code> → Mode selection matrix</a>
+— the single source of truth for per-mode inputs, outputs, schemas,
+and supported flags. Don't memorize them; reference the matrix.</p>
+<h3 id="example-1-review-a-paper-draft-interactive-slash-command">Example 1 — Review a paper draft (interactive, slash command)<a class="headerlink" href="#example-1-review-a-paper-draft-interactive-slash-command" title="Permanent link">&para;</a></h3>
+<p>You just shipped <code>papers/draft_5/manuscript.md</code> from paper-writer
+and want a heavy adversarial audit before submission. From inside
+Claude Code in your BERIL deployment:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/beril-adversarial /Users/you/projects/my_project/papers/draft_5 --type paper
+</span></code></pre></div>
+<p>What happens:
+1. The slash-command agent runs the shell script for <code>--type paper</code>.
+2. Reviewer reads <code>manuscript.md</code> + <code>00_throughline.md</code> + <code>references.md</code> + <code>citation_map.md</code> + <code>&lt;project&gt;/REPORT.md</code> (+ optional <code>reframing_log.md</code>, <code>methods_provenance.md</code>).
+3. Writes <code>papers/draft_5/audit/adversarial_review.md</code> (human-readable) + <code>papers/draft_5/audit/adversarial_review.json</code> (<code>adversarial-review-paper.v2</code> schema).
+4. Validator auto-corrects summary count mismatches if the LLM miscounted (sidecar preserves the original for forensics).
+5. The agent reads the .md, summarizes findings to you, surfaces P0s, suggests follow-ups.</p>
+<p>Expected validator output line:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>PASS: 9 section-level finding(s), 5 manuscript-wide finding(s) (8 P0, 5 P1, 0 P2, 1 info)
+</span></code></pre></div></p>
+<p>Or if auto-correction fired:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>PASS: 9 section-level finding(s), 5 manuscript-wide finding(s) (8 P0, 5 P1, 0 P2, 1 info)
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>================================================================
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>AUTO-CORRECTED: summary count mismatches in the LLM&#39;s output
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>================================================================
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  - summary.by_severity[&#39;P0&#39;]=6 but actual count = 8
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  ...
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>================================================================
+</span></code></pre></div></p>
+<p>The <code>.json</code> is consumer-safe in either case. P0 findings are
+typically paper-killing issues (fabricated numbers, broken figure
+links, abstract-body mismatch, silent REPORT drift). The Class 7
+narrative_weakness "info" finding is the killshot — the single
+sharpest objection a peer reviewer would write.</p>
+<h3 id="example-2-review-a-presentation-draft-programmatic-from-another-skill">Example 2 — Review a presentation draft (programmatic, from another skill)<a class="headerlink" href="#example-2-review-a-presentation-draft-programmatic-from-another-skill" title="Permanent link">&para;</a></h3>
+<p>You're inside <code>beril-presentation-maker</code>'s <code>revise_loop.py</code>. After
+<code>merge_and_assemble</code> produces a deck, you want to invoke the
+adversarial reviewer and consume its JSON to drive a revise pass:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># From paper-writer / presentation-maker / any other shell:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>beril-adversarial<span class="w"> </span>review<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="s2">&quot;</span><span class="nv">$draft_dir</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span>--type<span class="w"> </span>presentation
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nv">EXIT</span><span class="o">=</span><span class="nv">$?</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">case</span><span class="w"> </span><span class="nv">$EXIT</span><span class="w"> </span><span class="k">in</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="m">0</span><span class="p">|</span><span class="m">2</span><span class="o">)</span><span class="w">  </span><span class="c1"># PASS or PASS-with-auto-correction (advisory) — JSON is consumer-safe</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="nv">json</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$draft_dir</span><span class="s2">/audit/adversarial_review.json&quot;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="c1"># Parse it, route findings by fix_target to revise prompts...</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="p">;;</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="m">1</span><span class="o">)</span><span class="w">    </span><span class="c1"># FAIL — non-correctable (schema violation, malformed JSON, etc.)</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Reviewer produced unsafe JSON; re-running once&quot;</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">        </span><span class="c1"># Optionally re-run; manual escalation if persistent</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">        </span><span class="p">;;</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">  </span><span class="m">3</span><span class="o">)</span><span class="w">    </span><span class="c1"># Config error (claude CLI missing, prompt missing)</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;beril-adversarial not properly installed&quot;</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">        </span><span class="nb">exit</span><span class="w"> </span><span class="nv">$EXIT</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">        </span><span class="p">;;</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="k">esac</span>
+</span></code></pre></div>
+<p>What happens:
+1. CLI subcommand resolves the shell script via <code>BERIL_ROOT</code> discovery (or the <code>--beril-root</code> flag if you pass one), then invokes it.
+2. Reviewer reads the standard presentation-maker draft inputs (auto-detects v0.3.0 top-level vs v0.3.1+ zone layout — <code>working/</code> etc.).
+3. Writes dual md+json output to <code>&lt;draft_dir&gt;/audit/</code>.
+4. Same auto-correction backstop, same exit-code semantics as the slash command.
+5. Your revise loop parses the JSON's <code>findings[]</code> array; routes each finding by <code>fix_target</code> to the appropriate revise prompt; re-runs the reviewer after the revise pass.</p>
+<p>See <code>CONTRACT.md</code> for the durable interop surface (CLI signature,
+input expectations, output paths, schema family, auto-correction
+behavior, fallback-reviewer coordination).</p>
+<h3 id="example-3-re-run-after-fixing-p0s">Example 3 — Re-run after fixing P0s<a class="headerlink" href="#example-3-re-run-after-fixing-p0s" title="Permanent link">&para;</a></h3>
+<p>After acting on the findings from Example 1 or 2, re-run the same
+command. Output overwrites the previous <code>audit/</code> (no auto-numbering;
+the reviewer treats each invocation as a fresh review). To preserve
+a prior review, rename the audit directory first:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Preserve the prior review for comparison</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>mv<span class="w"> </span>papers/draft_5/audit<span class="w"> </span>papers/draft_5/audit-prev
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Re-run</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>/beril-adversarial<span class="w"> </span>/Users/you/projects/my_project/papers/draft_5<span class="w"> </span>--type<span class="w"> </span>paper
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># OR via CLI:</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>beril-adversarial<span class="w"> </span>review<span class="w"> </span>/Users/you/projects/my_project/papers/draft_5<span class="w"> </span>--type<span class="w"> </span>paper
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Diff the findings (manual eyeball or scripted)</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>diff<span class="w"> </span>papers/draft_5/audit-prev/adversarial_review.md<span class="w"> </span>papers/draft_5/audit/adversarial_review.md
+</span></code></pre></div>
+<p>Iteration is owned by you (or by your downstream consumer's
+review-rewrite loop). The reviewer itself is single-pass per
+invocation — no built-in carryover or additive review across runs
+(that's a planned v0.7+ feature).</p>
+<h3 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>SKILL.md</code></strong> — full slash-command syntax + mode matrix + Claude Code agent workflow.</li>
+<li><strong><code>CONTRACT.md</code></strong> — the durable interop surface for skill-to-skill integration. Read v0.7.0 migration section first if you're a consumer.</li>
+<li><strong><code>SCHEMA_V3_DECISIONS.md</code></strong> — current schema design rationale. <strong><code>SCHEMA_V2_DECISIONS.md</code></strong> + <strong><code>SCHEMA_V2_PAPER_DECISIONS.md</code></strong> — historical (v2 deprecated as of v0.7.0).</li>
+<li><strong><code>RELEASE_NOTES.md</code></strong> — full changelog with migration notes.</li>
+</ul>
+<h2 id="project-draft-discovery-beril-hub-workflow">Project &amp; draft discovery (BERIL hub workflow)<a class="headerlink" href="#project-draft-discovery-beril-hub-workflow" title="Permanent link">&para;</a></h2>
+<p>When you invoke <code>/beril-adversarial review --type X</code> inside Claude
+Code on a BERIL deployment, the agent figures out which project + draft
+you mean from four signals, in order:</p>
+<ol>
+<li>
+<p><strong>Explicit argument.</strong> If you typed a target after the slash command
+   (e.g., <code>/beril-adversarial review --type paper my_project_id</code> or
+   <code>/beril-adversarial review --type presentation /abs/path/to/draft_3/</code>),
+   the agent uses it directly.</p>
+</li>
+<li>
+<p><strong>Git branch convention.</strong> The hub uses <code>projects/&lt;id&gt;</code> as the
+   branch-naming convention (e.g., <code>projects/gene_function_ecological_agora</code>).
+   If your current branch matches that pattern, the agent infers the
+   project from it and confirms with you before running. This is the
+   most common path on the hub because users typically stay at
+   BERIL_ROOT.</p>
+</li>
+<li>
+<p><strong>cwd.</strong> If you <code>cd</code>'d into <code>projects/&lt;id&gt;/</code> before invoking the
+   slash command, the agent picks <code>&lt;id&gt;</code> up from your working directory.</p>
+</li>
+<li>
+<p><strong>Ask you.</strong> If none of the above resolve, the agent lists projects
+   (<code>ls projects/</code>) and asks you to pick. If you just ran <code>/berdl_start</code>,
+   the agent will reference the project list it already showed you.</p>
+</li>
+</ol>
+<p>For <code>--type paper</code> and <code>--type presentation</code>, after resolving the
+project, the agent picks a draft:</p>
+<ul>
+<li>If you supplied a full path to <code>papers/draft_N/</code> or <code>talks/draft_N/</code>
+  in step 1, that's the draft.</li>
+<li>Otherwise the agent runs <code>ls papers/</code> (or <code>talks/</code>), proposes the
+  highest-numbered <code>draft_N</code> as the default, and asks you to confirm
+  or pick another.</li>
+</ul>
+<p><strong>Discoverability shortcuts you can use directly:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># From your shell on the hub:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>ls<span class="w"> </span><span class="nv">$HOME</span>/BERIL-research-observatory/projects/<span class="w">                    </span><span class="c1"># list all projects</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>ls<span class="w"> </span><span class="nv">$HOME</span>/BERIL-research-observatory/projects/&lt;id&gt;/papers/<span class="w">        </span><span class="c1"># list paper drafts</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>ls<span class="w"> </span><span class="nv">$HOME</span>/BERIL-research-observatory/projects/&lt;id&gt;/talks/<span class="w">         </span><span class="c1"># list presentation drafts</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># Or just ask Claude:</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="s2">&quot;What projects do I have in BERIL?&quot;</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="s2">&quot;What&#39;s the latest paper draft for &lt;project&gt;?&quot;</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="s2">&quot;Run adversarial review on the latest presentation draft for &lt;project&gt;&quot;</span>
+</span></code></pre></div>
+<p>The slash command is the front door, but plain English requests work
+too — the agent has shell access and follows the same resolution
+logic.</p>
+<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Run from BERIL_ROOT. Steps in order: install package → verify CLI loads →</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># configure cross-skill bindings → deploy skill files into BERIL.</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">cd</span><span class="w"> </span>&lt;BERIL_ROOT&gt;
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+https://github.com/ArkinLaboratory/beril-adversarial-skill.git<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>--version<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>configure<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>install-skill<span class="w"> </span>.
+</span></code></pre></div>
+<p>(HTTPS URL above works on shared hosts where SSH keys aren't registered with
+GitHub — e.g., JupyterHub instances; relies on a credential helper or a PAT.)</p>
+<p>If you have an SSH key registered with the ArkinLaboratory GitHub org, the
+SSH URL also works (and avoids needing a credential helper):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+ssh://git@github.com/ArkinLaboratory/beril-adversarial-skill.git
+</span></code></pre></div>
+<p>The <code>git@</code> is mandatory — <code>git+ssh://github.com/...</code> (without it) fails
+auth on private repos.</p>
+<p><code>pipx ensurepath</code> once after a fresh pipx install if <code>pipx</code> writes its
+bin dir to a PATH location that isn't on your <code>$PATH</code> yet, then <code>exec
+$SHELL -l</code> to reload.</p>
+<p>The first command installs the Python CLI. The second copies the
+Claude Code skill into <code>&lt;BERIL_ROOT&gt;/.claude/skills/beril-adversarial/</code>.
+The third confirms <code>claude</code> is on PATH and reports whether <code>codex</code> is
+also available (codex is optional; needed for <code>--reviewer codex</code> and
+<code>--reviewer claude,codex</code> fusion).</p>
+<p><code>install-skill</code> is idempotent: re-running it overwrites the shipped files
+(<code>commands/</code>, <code>prompts/</code>, <code>references/</code>, <code>tools/</code>, <code>SKILL.md</code>) but
+preserves <code>state/</code> (learned-patterns memory). To upgrade after a new
+release: <code>pipx upgrade beril-adversarial-skill &amp;&amp; beril-adversarial install-skill &lt;BERIL_ROOT&gt;</code>.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<p>From inside a BERIL deployment, in Claude Code:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>/beril-adversarial [&lt;project_id&gt;|&lt;draft_dir&gt;]
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>                   [--type plan|project|paper|presentation]
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>                   [--reviewer claude|codex|claude,codex]
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>                   [--model &lt;model_id&gt;]
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>                   [--depth quick|standard|deep]
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>                   [--no-stream] [--no-critic]
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>                   [--consolidate]
+</span></code></pre></div>
+<p><strong>Common defaults work:</strong> <code>/beril-adversarial my_project</code> is enough
+for a standard project review.
+<code>/beril-adversarial /abs/path/to/talks/draft_9 --type presentation</code>
+runs the presentation reviewer.</p>
+<h3 id="flags">Flags<a class="headerlink" href="#flags" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>&lt;project_id&gt;|&lt;draft_dir&gt;</code> — project directory under <code>projects/</code>
+  (auto-detected from cwd if inside <code>projects/&lt;id&gt;/</code>) for plan/project/
+  paper reviews; absolute path to a presentation-maker draft directory
+  for <code>--type presentation</code>.</li>
+<li><code>--type plan|project|paper|presentation</code> — what to review (default
+  <code>project</code>). The <code>presentation</code> type writes
+  <code>&lt;draft_dir&gt;/audit/adversarial_review.{md,json}</code>; the JSON is the
+  consumer contract for the presentation-maker review-rewrite loop.</li>
+<li><code>--reviewer claude|codex|claude,codex</code> — backend (default <code>claude</code>).
+  Pass <code>claude,codex</code> for parallel multi-model review with dated-provenance
+  fusion.</li>
+<li><code>--depth quick|standard|deep</code> — thoroughness (default <code>standard</code>).
+  Quick (~1–2m) skips literature subagents and bio-claim WebSearch
+  verification — good for fast development iteration. Deep (~15–25m)
+  expands literature scan, multi-source verification, and sensitivity
+  analyses — for pre-publication review.</li>
+<li><code>--model &lt;model_id&gt;</code> — override the default model
+  (<code>claude-sonnet-4-6</code> for claude — bumped from sonnet-4 in v0.5.1;
+  <code>gpt-5.4</code> for codex).</li>
+<li><code>--no-stream</code> — opt out of the stream-json parser (disables
+  programmatic Write verification, automatic retry on silent-failure,
+  cost summary, and stream log). Default: parser is on.</li>
+<li><code>--no-critic</code> — opt out of the post-review compliance critic.
+  Default: critic runs and triggers a fix pass on format/discipline
+  violations.</li>
+<li><code>--no-verify-citations</code> — opt out of the citation verification gate.
+  Default: every 9-field citation block is programmatically verified
+  against Crossref (DOI) and NCBI PubMed (PMID) after the compliance
+  critic loop. Fabricated citations are marked inline with a
+  <code>&gt; ⚠️ **CITATION FABRICATED**</code> blockquote and listed in a
+  <code>## Citation Verification</code> section appended to the review. Adds
+  zero LLM token cost (just HTTP calls to free registries).</li>
+<li><code>--consolidate</code> — synthesize all numbered reviews into a canonical
+  file with revision-history provenance; numbered files are preserved
+  as audit trail. The canonical file becomes the live baseline for
+  the next adversarial run (see "Additive multi-round reviews"
+  below).</li>
+</ul>
+<h3 id="additive-multi-round-reviews">Additive multi-round reviews<a class="headerlink" href="#additive-multi-round-reviews" title="Permanent link">&para;</a></h3>
+<p>Adversarial review is iterative. Each round produces an <strong>additive
+delta</strong> against the prior baseline rather than a fresh full review.
+The reviewer:</p>
+<ul>
+<li>Reads the prior baseline (<code>ADVERSARIAL_REVIEW.md</code> if it exists,
+  else the highest-numbered <code>ADVERSARIAL_REVIEW_N.md</code>)</li>
+<li>Leads the new review's body with a <code>## Carryover from Prior Rounds</code>
+  section: every prior issue with a one-line disposition (<code>resolved</code>,
+  <code>partially_addressed</code>, <code>still_open</code>, <code>obsolete</code>)</li>
+<li>Reserves the per-section issue lists for genuinely NEW findings</li>
+<li><code>severity_counts</code> in the YAML frontmatter reflect new-this-round
+  only; carryover dispositions go under <code>prior_round_disposition</code></li>
+</ul>
+<p>Typical lifecycle:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>round 1: /beril-adversarial my_project
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>         → ADVERSARIAL_REVIEW_1.md (8 critical, 12 important)
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>round 2: (after addressing some issues)
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>         /beril-adversarial my_project
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>         → ADVERSARIAL_REVIEW_2.md (carryover: 5 still_open,
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>           3 resolved, 4 partial; 2 new important issues)
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>round 3: /beril-adversarial my_project
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>         → ADVERSARIAL_REVIEW_3.md (similar structure)
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>         /beril-adversarial my_project --consolidate
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>         → ADVERSARIAL_REVIEW.md (canonical baseline,
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>           current-state ledger of all 28 issues raised across
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>           the chain, with disposition tracking)
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>round 4: /beril-adversarial my_project
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>         → ADVERSARIAL_REVIEW_4.md (reads ADVERSARIAL_REVIEW.md
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>           as baseline; the numbered files are no longer needed
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>           by the model, but persist on disk as audit trail)
+</span></code></pre></div>
+<p>The <code>round_number</code> field in frontmatter persists across consolidation
+— consolidation does not reset the counter.</p>
+<h2 id="how-it-fits-into-the-beril-workflow">How it fits into the BERIL workflow<a class="headerlink" href="#how-it-fits-into-the-beril-workflow" title="Permanent link">&para;</a></h2>
+<p>The typical BERIL research lifecycle:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>  /berdl_start                         start a research project
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>       │
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>       ▼
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  iterate: /berdl, /berdl-query,       develop the analysis
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>           /literature-review
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>       │
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>       ▼
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>  /beril-adversarial --type plan       harsh plan review BEFORE data work
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>                                       — catches design issues early
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>       │
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>       ▼
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>  /synthesize                          produce REPORT.md
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>       │
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>       ▼
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>  /berdl-review                        light automated review
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>       │
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>       ▼
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>  /beril-adversarial                   harsh project review
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>                                       — multiple rounds during iteration
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>       │
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>       ▼
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>  /beril-adversarial --consolidate     synthesize review history into
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>                                       a canonical record
+</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>       │
+</span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>       ▼
+</span><span id="__span-11-26"><a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>  /submit                              final BERIL submission
+</span><span id="__span-11-27"><a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>       │
+</span><span id="__span-11-28"><a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>       ▼
+</span><span id="__span-11-29"><a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a>  (paper-writing skill, future)        when adopting beril-paper-skill:
+</span><span id="__span-11-30"><a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>  /beril-adversarial --type paper      harsh review of paper drafts
+</span></code></pre></div>
+<p>Three integration points worth highlighting:</p>
+<ol>
+<li>
+<p><strong>Plan review before data work</strong> — <code>/beril-adversarial --type plan</code>
+   is mandatory-style: it always runs the literature-scan subagent,
+   detects whether the question is already answered, and proposes
+   missing controls / better methods / additional datasets. Catching
+   design issues here saves weeks downstream.</p>
+</li>
+<li>
+<p><strong>Project review during iteration</strong> — <code>/beril-adversarial</code> (default
+   <code>--type project</code>) on REPORT.md after <code>/synthesize</code>. Persists across
+   <code>/submit</code> cycles (unlike <code>REVIEW_*.md</code> which <code>/submit</code> clears),
+   so adversarial reviews accumulate as audit trail. Use <code>--depth quick</code>
+   for fast iteration, <code>--depth standard</code> for substantive checkpoints.</p>
+</li>
+<li>
+<p><strong>Consolidation before submission</strong> — once you have several
+   numbered adversarial reviews, <code>/beril-adversarial --consolidate</code>
+   synthesizes them into a single canonical review with revision
+   history. Useful both as a final audit before <code>/submit</code> and as
+   archival documentation of how the project's review trajectory
+   evolved.</p>
+</li>
+</ol>
+<h2 id="what-the-skill-produces">What the skill produces<a class="headerlink" href="#what-the-skill-produces" title="Permanent link">&para;</a></h2>
+<p>After a standard project review, the project directory contains:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>projects/&lt;project_id&gt;/
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>├── README.md, RESEARCH_PLAN.md, REPORT.md, REVIEW.md  (existing BERIL artifacts)
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>├── ADVERSARIAL_REVIEW_1.md           ← numbered, persists across /submit
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>├── ADVERSARIAL_REVIEW_2.md
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>├── ADVERSARIAL_REVIEW.md             ← canonical (after --consolidate)
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>└── papers/                            ← if --type paper
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    ├── draft1-review.md
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    └── FINAL_REVIEW.md               ← canonical paper review
+</span></code></pre></div>
+<p>For multi-model fusion (<code>--reviewer claude,codex</code>), each numbered
+review is accompanied by <code>_claude.md</code> and <code>_codex.md</code> intermediates
+preserved as audit trail.</p>
+<p>A typical review file looks like:</p>
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>---
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>reviewer: BERIL Adversarial Review (Claude, claude-sonnet-4-20250514)
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>type: project
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>date: 2026-04-25
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>project: my_project
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>review_number: 1
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>prompt_version: adversarial_project.v1
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>severity_counts:
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>  critical: 2
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>  important: 5
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>  suggested: 3
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>biological_claims_checked: 5
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>biological_claims_flagged: 1
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>prior_reviews_considered:
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="gu">  - REVIEW.md</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="gu">---</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="gh"># Adversarial Review — &lt;Project Title&gt;</span>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="gu">## Summary</span>
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>&lt;one-paragraph verdict&gt;
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="gu">## Overall Scientific Critique</span>
+</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>&lt;scientific-soundness, logic, scope, narrative honesty&gt;
+</span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a>
+</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="gu">## Statistical Rigor</span>
+</span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="gu">### Critical</span>
+</span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a><span class="k">-</span><span class="w"> </span>C1: &lt;issue&gt; — &lt;location&gt; — &lt;suggested fix&gt;
+</span><span id="__span-13-29"><a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a><span class="gu">### Important</span>
+</span><span id="__span-13-30"><a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a>...
+</span><span id="__span-13-31"><a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a>
+</span><span id="__span-13-32"><a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a><span class="gu">## Hypothesis Vetting</span>
+</span><span id="__span-13-33"><a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a><span class="gu">### H1: &lt;hypothesis&gt;</span>
+</span><span id="__span-13-34"><a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a><span class="k">-</span><span class="w"> </span>Falsifiable?: ...
+</span><span id="__span-13-35"><a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a><span class="k">-</span><span class="w"> </span>Evidence presented: ...
+</span><span id="__span-13-36"><a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a><span class="k">-</span><span class="w"> </span>Alternative explanations: ...
+</span><span id="__span-13-37"><a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a><span class="k">-</span><span class="w"> </span>Verdict: ...
+</span><span id="__span-13-38"><a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a>
+</span><span id="__span-13-39"><a id="__codelineno-13-39" name="__codelineno-13-39" href="#__codelineno-13-39"></a><span class="gu">## Biological Claims</span>
+</span><span id="__span-13-40"><a id="__codelineno-13-40" name="__codelineno-13-40" href="#__codelineno-13-40"></a><span class="gu">### Claim 1: &lt;claim&gt;</span>
+</span><span id="__span-13-41"><a id="__codelineno-13-41" name="__codelineno-13-41" href="#__codelineno-13-41"></a><span class="gs">**Authors (Year). &quot;Title.&quot; Journal vol(issue):pages.**</span> doi:DOI [PMID]
+</span><span id="__span-13-42"><a id="__codelineno-13-42" name="__codelineno-13-42" href="#__codelineno-13-42"></a><span class="k">-</span><span class="w"> </span>Studied: ...
+</span><span id="__span-13-43"><a id="__codelineno-13-43" name="__codelineno-13-43" href="#__codelineno-13-43"></a><span class="k">-</span><span class="w"> </span>Finding: &quot;&lt;direct quote&gt;&quot;
+</span><span id="__span-13-44"><a id="__codelineno-13-44" name="__codelineno-13-44" href="#__codelineno-13-44"></a><span class="k">-</span><span class="w"> </span>Scope alignment: ...
+</span><span id="__span-13-45"><a id="__codelineno-13-45" name="__codelineno-13-45" href="#__codelineno-13-45"></a><span class="k">-</span><span class="w"> </span>Assessment: ...
+</span><span id="__span-13-46"><a id="__codelineno-13-46" name="__codelineno-13-46" href="#__codelineno-13-46"></a>
+</span><span id="__span-13-47"><a id="__codelineno-13-47" name="__codelineno-13-47" href="#__codelineno-13-47"></a><span class="gu">## Data Support</span>
+</span><span id="__span-13-48"><a id="__codelineno-13-48" name="__codelineno-13-48" href="#__codelineno-13-48"></a>&lt;verified claims, requires-verification flags&gt;
+</span><span id="__span-13-49"><a id="__codelineno-13-49" name="__codelineno-13-49" href="#__codelineno-13-49"></a>
+</span><span id="__span-13-50"><a id="__codelineno-13-50" name="__codelineno-13-50" href="#__codelineno-13-50"></a><span class="gu">## Literature and External Resources</span>
+</span><span id="__span-13-51"><a id="__codelineno-13-51" name="__codelineno-13-51" href="#__codelineno-13-51"></a>&lt;gaps, missing tools, cross-references&gt;
+</span><span id="__span-13-52"><a id="__codelineno-13-52" name="__codelineno-13-52" href="#__codelineno-13-52"></a>
+</span><span id="__span-13-53"><a id="__codelineno-13-53" name="__codelineno-13-53" href="#__codelineno-13-53"></a><span class="gu">## Issues from Prior Reviews</span>
+</span><span id="__span-13-54"><a id="__codelineno-13-54" name="__codelineno-13-54" href="#__codelineno-13-54"></a>&lt;resolved / still-open / new&gt;
+</span><span id="__span-13-55"><a id="__codelineno-13-55" name="__codelineno-13-55" href="#__codelineno-13-55"></a>
+</span><span id="__span-13-56"><a id="__codelineno-13-56" name="__codelineno-13-56" href="#__codelineno-13-56"></a><span class="gu">## Review Metadata</span>
+</span><span id="__span-13-57"><a id="__codelineno-13-57" name="__codelineno-13-57" href="#__codelineno-13-57"></a><span class="k">-</span><span class="w"> </span>Reviewer, Date, Scope, AI-disclaimer
+</span><span id="__span-13-58"><a id="__codelineno-13-58" name="__codelineno-13-58" href="#__codelineno-13-58"></a>
+</span><span id="__span-13-59"><a id="__codelineno-13-59" name="__codelineno-13-59" href="#__codelineno-13-59"></a><span class="gu">## Run Metadata</span>
+</span><span id="__span-13-60"><a id="__codelineno-13-60" name="__codelineno-13-60" href="#__codelineno-13-60"></a><span class="k">-</span><span class="w"> </span>Elapsed: 11:48
+</span><span id="__span-13-61"><a id="__codelineno-13-61" name="__codelineno-13-61" href="#__codelineno-13-61"></a><span class="k">-</span><span class="w"> </span>Model: claude-sonnet-4-20250514
+</span><span id="__span-13-62"><a id="__codelineno-13-62" name="__codelineno-13-62" href="#__codelineno-13-62"></a><span class="k">-</span><span class="w"> </span>Tokens: input=2,364,391 output=20,695 (cache_read=590,041)
+</span><span id="__span-13-63"><a id="__codelineno-13-63" name="__codelineno-13-63" href="#__codelineno-13-63"></a><span class="k">-</span><span class="w"> </span>Estimated cost: $1.470
+</span><span id="__span-13-64"><a id="__codelineno-13-64" name="__codelineno-13-64" href="#__codelineno-13-64"></a><span class="k">-</span><span class="w"> </span>Pipeline: main + critic + fix + re-critic (4 calls)
+</span></code></pre></div>
+<h2 id="costs-and-timing">Costs and timing<a class="headerlink" href="#costs-and-timing" title="Permanent link">&para;</a></h2>
+<p>Per-review estimates for a typical Sonnet-4 standard-depth run:</p>
+<table>
+<thead>
+<tr>
+<th>Configuration</th>
+<th>Wall clock</th>
+<th>Estimated cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--depth quick</code></td>
+<td>1–3 minutes</td>
+<td>~$0.10–0.20</td>
+</tr>
+<tr>
+<td><code>--depth standard</code> (default)</td>
+<td>8–14 minutes</td>
+<td>~$1.00–1.80</td>
+</tr>
+<tr>
+<td><code>--depth deep</code></td>
+<td>20–30 minutes</td>
+<td>~$3.00–5.00</td>
+</tr>
+<tr>
+<td><code>--reviewer claude,codex</code></td>
+<td>adds ~5–10 minutes + ~$0.50</td>
+<td></td>
+</tr>
+<tr>
+<td><code>--consolidate</code></td>
+<td>1–3 minutes</td>
+<td>~$0.10–0.20</td>
+</tr>
+</tbody>
+</table>
+<p>Standard runs cost more than quick because the pipeline includes the
+main review, the compliance critic, a likely fix pass, and a re-critic
+to confirm the fix. Cumulative cost is reported in the Run Metadata
+section at the end of the review file.</p>
+<h2 id="adherence-guarantees">Adherence guarantees<a class="headerlink" href="#adherence-guarantees" title="Permanent link">&para;</a></h2>
+<p>The skill defends review quality through three mechanisms:</p>
+<ul>
+<li>
+<p><strong>Programmatic Write-tool verification.</strong> The stream-json parser
+  detects when claude produces a chat-response review without
+  invoking Write (a known stochastic failure mode of <code>claude -p</code>
+  with rich tool grants). On detection, retry with an escalated
+  prompt — up to 3 attempts.</p>
+</li>
+<li>
+<p><strong>Automatic retry on silent-failure.</strong> Stream-json parser exit
+  code 2 triggers a retry; exit code 3 (Write to wrong path)
+  surfaces a <code>mv</code> recovery hint and fails non-retryably.</p>
+</li>
+<li>
+<p><strong>Compliance critic + fix pass.</strong> After the main review, a
+  separate claude call audits the file for format/discipline
+  violations (no Sources/References sections, strict 9-field
+  citation format, no vague non-citations, no vague missing-citation
+  suggestions). On violations, a targeted fix pass re-runs the
+  reviewer with the violation list and corrects in place.
+  Re-critic confirms the fix landed before declaring success.</p>
+</li>
+</ul>
+<p>These run by default; <code>--no-stream</code> and <code>--no-critic</code> opt out.</p>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<p>Lean, intentionally:</p>
+<ul>
+<li><strong>Python CLI</strong> (<code>src/beril_adversarial/</code>) — install + configure
+  only. Zero runtime dependencies (stdlib only).</li>
+<li><strong>Shell script</strong> (<code>tools/adversarial_review.sh</code>) — orchestrates
+  the review pipeline, manages retries, runs the critic + fix pass.</li>
+<li><strong>Stream-json parser</strong> (<code>tools/stream_progress.py</code>) — audits Write
+  invocations, computes per-call cost, writes JSON metadata sidecars.</li>
+<li><strong>Cumulative metadata aggregator</strong> (<code>tools/aggregate_metadata.py</code>)
+  — sums per-call metadata across the pipeline and writes one Run
+  Metadata section to the review file.</li>
+<li><strong>System prompts</strong> (<code>prompts/</code>) — five <code>.v1.md</code> files: project,
+  plan, paper, fusion, consolidation. Plus <code>compliance_critic.v1.md</code>.</li>
+<li><strong>Reference rubric</strong> (<code>references/adversarial-checklist.md</code>) — a
+  starting-point list referenced (not mechanically walked) by all
+  prompts.</li>
+</ul>
+<p>The Python package ships the skill folder as <code>package_data</code>;
+<code>beril-adversarial install-skill</code> copies it into <code>&lt;BERIL&gt;/.claude/skills/beril-adversarial/</code>.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<p><strong><code>beril-adversarial: command not found</code></strong> after install →
+<code>pipx ensurepath; exec $SHELL</code>. Restart Claude Code.</p>
+<p><strong><code>claude: command not found</code></strong> during configure → install Claude
+Code from https://docs.claude.com and ensure <code>claude</code> is on PATH.</p>
+<p><strong>Review takes longer than expected</strong> → standard depth's pipeline
+(main + critic + fix + re-critic) is 8–14 minutes by design. Use
+<code>--depth quick</code> for faster iteration, or <code>--no-critic</code> to skip the
+critic+fix passes.</p>
+<p><strong><code>Write tool was NEVER invoked</code> (parser exit 2)</strong> → known
+stochastic failure of <code>claude -p</code> with rich tool grants. The retry
+logic should handle it; if it persists across all 3 attempts,
+inspect <code>&lt;output&gt;.stream.log</code> to see what the reviewer did instead.</p>
+<p><strong><code>Write was invoked but on a different path</code> (parser exit 3)</strong> →
+the parser surfaces a <code>mv</code> recovery one-liner pointing at the actual
+location. Run it to relocate the file. This is rare since we use
+absolute paths in prompts; persistent occurrences indicate a
+script-level path-resolution bug.</p>
+<p><strong>Compliance critic flags violations after fix pass</strong> → the audit
+log is preserved at <code>&lt;output&gt;.audit2.md</code>. Inspect to see what the
+critic flagged. The review is still usable, but format/discipline
+issues remain that the prompt didn't catch automatically.</p>
+<h2 id="layout-reference">Layout reference<a class="headerlink" href="#layout-reference" title="Permanent link">&para;</a></h2>
+<p>See <a href="LAYOUT.md">LAYOUT.md</a> for the full architecture spec, including
+canonical review structure, learned-patterns memory model, retry
+semantics, and BERIL_ROOT discovery.</p>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
+<p>MIT — see <a href="LICENSE">LICENSE</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../architecture/retrospective/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Augmentation stream retrospective">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Augmentation stream retrospective
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../paper-writer/" class="md-footer__link md-footer__link--next" aria-label="Next: beril-paper-writer">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                beril-paper-writer
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/kbaseincubator/craft" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
