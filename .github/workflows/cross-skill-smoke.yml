@@ -14,7 +14,15 @@
 #
 # Requirements:
 #   secrets (mask in logs; for sensitive values):
-#     - CBORG_API_KEY: LLM auth via LBL CBORG gateway
+#     - ANTHROPIC_API_KEY: direct Anthropic API auth for `claude -p`
+#       invocations on the runner. Different from the CBORG token
+#       used in local BERIL deployments — the CI runner has no
+#       CBORG-routed claude config, so it needs a direct Anthropic
+#       key. Cost goes against your Anthropic account, not CBORG.
+#     - CBORG_API_KEY: gateway token written into the fixture .env
+#       for skills that route image-gen through CBORG. Still needed
+#       because presentation-maker's image_client.py reads
+#       CBORG_API_KEY directly from .env for image-gen calls.
 #   variables (visible in UI; for non-sensitive config — pinned
 #   to keep smoke deterministic across BERIL evolution):
 #     - SMOKE_BERIL_REPO: e.g. "kbaseincubator/BERIL-research-observatory"
@@ -60,6 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       CBORG_API_KEY: ${{ secrets.CBORG_API_KEY }}
       SMOKE_BERIL_REPO: ${{ vars.SMOKE_BERIL_REPO }}
       SMOKE_BERIL_COMMIT: ${{ vars.SMOKE_BERIL_COMMIT }}
@@ -107,8 +116,15 @@ jobs:
       - name: "Pre-flight: verify required config"
         run: |
           MISSING=0
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "❌ ANTHROPIC_API_KEY not set (needed for claude -p on CI runner)"
+            echo "   Get one at https://console.anthropic.com/settings/keys"
+            echo "   Add at Settings → Secrets and variables → Actions → Secrets"
+            MISSING=1
+          fi
           if [ -z "$CBORG_API_KEY" ]; then
-            echo "❌ CBORG_API_KEY not set (Settings → Secrets and variables → Actions → New repository secret)"
+            echo "❌ CBORG_API_KEY not set (needed for image-gen in presentation-maker)"
+            echo "   Add at Settings → Secrets and variables → Actions → Secrets"
             MISSING=1
           fi
           if [ -z "$SMOKE_BERIL_REPO" ]; then

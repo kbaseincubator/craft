@@ -90,15 +90,26 @@ Actions-minutes.
 - Image-gen provider auth or model-availability issues
 - New regressions across cross-skill boundaries
 
-**Required config** (one secret + three variables; configure
+**Required config** (two secrets + three variables; configure
 at Settings → Secrets and variables → Actions):
 
 | Item | Kind | Purpose | Example value |
 |---|---|---|---|
-| `CBORG_API_KEY` | **Secret** | LBL CBORG gateway token | Copy from your `~/.env` or `BERIL_ROOT/.env` |
+| `ANTHROPIC_API_KEY` | **Secret** | Direct Anthropic API for `claude -p` on CI runner | Get one at https://console.anthropic.com/settings/keys (starts with `sk-ant-...`) |
+| `CBORG_API_KEY` | **Secret** | LBL CBORG gateway token (needed for presentation-maker's image-gen) | Copy from your `~/.env` or `BERIL_ROOT/.env` |
 | `SMOKE_BERIL_REPO` | **Variable** | Upstream BERIL repo for fixture | `kbaseincubator/BERIL-research-observatory` |
 | `SMOKE_BERIL_COMMIT` | **Variable** | Pinned commit SHA (smoke reproducibility) | `940c3b0ee7bbf63bc576bd6e8c25210ad692df8e` |
 | `SMOKE_BERIL_PROJECT_ID` | **Variable** | Project subdir name | `microbeatlas_metal_ecology` |
+
+**Note on the two API keys:** Your local BERIL deployment uses a
+`claude` CLI that's configured to route through the CBORG gateway,
+so `CBORG_API_KEY` is enough locally. CI runners start fresh
+with no pre-configured `claude` routing, so the `claude -p`
+invocations need a direct Anthropic API key. Cost from CI smoke
+runs goes against your Anthropic account, not CBORG quota.
+Image-gen (in presentation-maker) still routes through CBORG
+because that path is configured at the skill level, not the
+shell-CLI level.
 
 **Why a mix of secrets and variables:**
 - **Secrets** are masked in CI logs + used for sensitive values
@@ -140,22 +151,38 @@ task (typically alongside the quarterly smoke cycle).
 
 ## 3. Setting up the cross-skill smoke — first-time walk-through
 
-Before the `cross-skill-smoke.yml` workflow can run, one secret +
+Before the `cross-skill-smoke.yml` workflow can run, two secrets +
 three variables need to be configured in the CRAFT GitHub repo.
 
-### Step 1 — `CBORG_API_KEY` (secret)
+### Step 1a — `ANTHROPIC_API_KEY` (secret)
 
-This is your existing CBORG gateway token (the same one in
-`<BERIL_ROOT>/.env`).
+A direct Anthropic API key (NOT a CBORG token). CI runners
+start fresh with no `claude` CLI auth config, so they need a
+direct Anthropic key. Get one at
+https://console.anthropic.com/settings/keys (starts with
+`sk-ant-...`).
 
 1. Open https://github.com/kbaseincubator/craft/settings/secrets/actions
 2. **Secrets** tab → click "New repository secret"
-3. Name: `CBORG_API_KEY`
-4. Value: paste the token (no quotes, no leading/trailing
+3. Name: `ANTHROPIC_API_KEY`
+4. Value: paste the key (no quotes, no leading/trailing
    whitespace)
 5. Click "Add secret"
 
-The secret is masked in CI logs.
+### Step 1b — `CBORG_API_KEY` (secret)
+
+This is your existing CBORG gateway token (the same one in
+`<BERIL_ROOT>/.env`). Needed because presentation-maker's
+image-gen routes through CBORG even when text invocations go
+direct-Anthropic.
+
+1. Same page → "New repository secret"
+2. Name: `CBORG_API_KEY`
+3. Value: paste the token (no quotes, no leading/trailing
+   whitespace)
+4. Click "Add secret"
+
+Both secrets are masked in CI logs.
 
 ### Step 2 — `SMOKE_BERIL_REPO` (variable)
 
