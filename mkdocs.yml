@@ -58,9 +58,13 @@ markdown_extensions:
       check_paths: false
   - pymdownx.superfences:
       custom_fences:
+        # `fence_div_format` emits `<div class="mermaid">SOURCE</div>`
+        # which mermaid.js's auto-init scans on page load. The
+        # default `fence_code_format` wraps in `<pre><code>` which
+        # mermaid can't see — diagrams ship as raw text.
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+          format: !!python/name:pymdownx.superfences.fence_div_format
   # Admonitions + collapsible sections
   - admonition
   - pymdownx.details
@@ -89,6 +93,16 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/kbaseincubator/craft
   generator: false   # remove "Made with Material for MkDocs" footer
+
+# Load mermaid.js from a CDN + auto-init on every page. The
+# superfences mermaid handler above emits `<div class="mermaid">`
+# blocks that the auto-init scans + renders. Pinning to v11 (the
+# current stable major) keeps the diagrams reproducible across
+# rebuilds; bump deliberately as a docs-maintenance task.
+extra_javascript:
+  - assets/javascripts/mermaid-init.js
+
+# Inline mermaid.js loader (the file is in docs/assets/javascripts/).
 
 # Site navigation. Keep flat-ish; deep hierarchies hurt discoverability.
 nav:
