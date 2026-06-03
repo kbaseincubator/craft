@@ -1,5 +1,25 @@
 # CRAFT — Release Notes
 
+## v0.1.2 (2026-06-03) — Node 24 action bumps
+
+Pre-emptive fix for GitHub Actions Node.js 20 deprecation
+(forced to Node 24 on June 16th, 2026). Bumps third-party action
+versions to their Node-24-supporting releases:
+
+- `actions/checkout@v4` → `actions/checkout@v5`
+- `actions/setup-python@v5` → `actions/setup-python@v6`
+- `actions/setup-node@v4` → `actions/setup-node@v5`
+- `actions/upload-artifact@v4` → `actions/upload-artifact@v5`
+
+v0.1.1 was running cleanly + green; this is the pre-emptive
+upgrade so the June 16th deadline doesn't break us silently.
+
+The first cross-skill-release-runbook entry would normally cover
+a coordinated bump like this — but since none of the three
+skills' workflows are affected (their CI is in their own repos),
+this is a CRAFT-internal patch with no cross-skill coordination
+needed.
+
 ## v0.1.1 (2026-06-03) — Phase 2 CI
 
 Adds GitHub Actions workflows for continuous platform health-

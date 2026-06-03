@@ -8,4 +8,4 @@ Platform meta-package for the three BERIL research-assessment skills:
 See CRAFT-CONTRACT.md for the cross-skill interface contract.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
