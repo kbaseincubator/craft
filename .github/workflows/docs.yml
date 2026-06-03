@@ -1,0 +1,72 @@
+# Build + deploy the CRAFT MkDocs site to GitHub Pages.
+#
+# Triggered on push to main + manual dispatch. Per-skill READMEs
+# are pulled from the git submodules via include-markdown, so the
+# checkout step needs `submodules: recursive`.
+#
+# Deploys via the gh-pages branch (mkdocs gh-deploy default). The
+# repo's Pages settings need to point at the gh-pages branch on
+# first deploy; see operations/github-actions.md.
+
+name: Deploy docs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "CRAFT-CONTRACT.md"
+      - "CRAFT-DEPENDENCIES.md"
+      - "CROSS-SKILL-RELEASE.md"
+      - "PLATFORM-PROPOSAL.md"
+      - "AUGMENTATION-STREAM-RETROSPECTIVE.md"
+      - "RELEASE_NOTES.md"
+      - "README.md"
+      - ".github/workflows/docs.yml"
+      - ".github/workflows/README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # gh-deploy needs to push to gh-pages branch
+
+concurrency:
+  group: docs-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+          fetch-depth: 0   # gh-deploy benefits from full history
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install MkDocs + plugins
+        run: |
+          python -m pip install --upgrade pip
+          pip install \
+            mkdocs-material>=9.5.0 \
+            mkdocs-include-markdown-plugin>=6.0.0 \
+            pymdown-extensions>=10.7.0
+
+      - name: Build site (validation)
+        # Don't use --strict: per-skill READMEs (pulled via
+        # include-markdown from the submodules) contain
+        # intra-repo links that resolve fine on GitHub but
+        # aren't present in the docs/ tree. They render as
+        # broken-link warnings; the site is otherwise clean.
+        run: mkdocs build
+
+      - name: Deploy to gh-pages
+        run: mkdocs gh-deploy --force --clean

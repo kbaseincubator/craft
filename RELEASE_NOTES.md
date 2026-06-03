@@ -1,5 +1,90 @@
 # CRAFT — Release Notes
 
+## v0.2.0 (2026-06-03) — Unified MkDocs documentation site
+
+Ships the Tier-3 presentation layer the platform proposal calls
+for: a unified MkDocs Material docs site, auto-deployed to
+GitHub Pages via `mkdocs gh-deploy` on push to main.
+
+### What changed in v0.2.0
+
+`docs/` (new):
+
+- `index.md` — platform landing with the Tier-0 workflow
+  mermaid diagram.
+- `quick-start/` — install → first-run → verify walkthrough.
+- `architecture/` — platform-structure + cross-skill contract
+  (auto-pulled from `CRAFT-CONTRACT.md`) + skill relationships
+  diagram + augmentation-stream retrospective (auto-pulled
+  from `AUGMENTATION-STREAM-RETROSPECTIVE.md`).
+- `skills/` — per-skill operator pages with the skill README
+  auto-pulled from each submodule via the `include-markdown`
+  plugin.
+- `operations/` — coordinated release runbook (auto-pulled from
+  `CROSS-SKILL-RELEASE.md`) + upstream dependencies (auto-pulled
+  from `CRAFT-DEPENDENCIES.md`) + GitHub Actions setup
+  (auto-pulled from `.github/workflows/README.md`) +
+  troubleshooting decision tree.
+- `extending/` — `adding-a-skill.md` (the formal join process)
+  + `external-contributors.md` (scope + conventions).
+- `reference/` — release notes (this file, auto-pulled) +
+  platform proposal (auto-pulled from `PLATFORM-PROPOSAL.md`).
+
+`mkdocs.yml`:
+
+- MkDocs Material theme; light/dark toggle (indigo palette);
+  navigation tabs + sections; search; content.code.copy +
+  content.action.edit.
+- `pymdownx.superfences` + `mermaid` custom-fence — diagrams
+  ship as text.
+- `pymdownx.snippets` + `include-markdown` plugin — auto-pull
+  per-skill READMEs from submodules; auto-pull platform-level
+  docs from repo root.
+- Flat nav (Home / Quick Start / Architecture / Skills /
+  Operations / Extending / Reference); 19 markdown pages total.
+
+`.github/workflows/docs.yml` (new):
+
+- Triggered on push to main (paths-filtered to docs/ + root
+  doc files) + manual dispatch.
+- Checks out with `submodules: recursive` so include-markdown
+  can read per-skill READMEs.
+- Installs `mkdocs-material`, `mkdocs-include-markdown-plugin`,
+  `pymdown-extensions`.
+- Runs `mkdocs build` then `mkdocs gh-deploy --force --clean`.
+- 10-minute timeout; concurrency-grouped so docs deploys
+  don't pile up.
+
+`.gitignore`:
+
+- Added `site/` (MkDocs build output) + `.mkdocs-venv/` (local
+  preview venv).
+
+### Local build verification
+
+Build verified clean locally (46 warnings, all from per-skill
+READMEs containing intra-repo links that exist on GitHub but
+aren't in the docs/ tree; 0 errors; site renders correctly).
+
+### One-time GitHub Pages setup needed
+
+First docs deploy needs the GitHub Pages source set to the
+`gh-pages` branch:
+
+1. https://github.com/kbaseincubator/craft/settings/pages
+2. "Build and deployment" → Source → "Deploy from a branch"
+3. Branch: `gh-pages` / `(root)`
+4. Save.
+
+After that the docs workflow handles deploys automatically on
+push to main.
+
+### Site URL
+
+After Pages activates: https://kbaseincubator.github.io/craft/
+
+---
+
 ## v0.1.4 (2026-06-03) — Smoke narrowed to adversarial-only + fixture cleanup
 
 First end-to-end cross-skill smoke run (26904057672) succeeded
@@ -263,5 +348,5 @@ documentation surface. No new skill features.
 [beril-atlas-skill](https://github.com/ArkinLaboratory/beril-atlas-skill)
 is metrology (observability) — distinct from CRAFT's
 research-artifact-production focus. Stays as its own skill with
-its own release cycle. See [PLATFORM-PROPOSAL.md §3](PLATFORM-PROPOSAL.md)
+its own release cycle. See [PLATFORM-PROPOSAL.md §3](https://github.com/kbaseincubator/craft/blob/main/PLATFORM-PROPOSAL.md)
 for the rationale.

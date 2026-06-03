@@ -1,0 +1,119 @@
+# CRAFT — Documentation Site Configuration
+#
+# Built with MkDocs Material; deployed via GitHub Pages.
+# See .github/workflows/docs.yml for the deploy pipeline.
+
+site_name: CRAFT
+site_description: Co-Scientist Research Assessment & Framing Tools — KBase | BERIL platform
+site_url: https://kbaseincubator.github.io/craft/
+repo_url: https://github.com/kbaseincubator/craft
+repo_name: kbaseincubator/craft
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    # Light / dark toggle
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  # Code blocks + highlighting
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path:
+        - .
+        - skills
+      check_paths: false
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  # Admonitions + collapsible sections
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  # Tables + footnotes + content tweaks
+  - tables
+  - footnotes
+  - attr_list
+  - md_in_html
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  # The `include-markdown` plugin pulls per-skill READMEs from the
+  # submodule directories. Submodules must be checked out at build
+  # time (the CI workflow does `actions/checkout@v5 submodules: recursive`).
+  - include-markdown
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/kbaseincubator/craft
+  generator: false   # remove "Made with Material for MkDocs" footer
+
+# Site navigation. Keep flat-ish; deep hierarchies hurt discoverability.
+nav:
+  - Home: index.md
+  - Quick Start:
+      - Install: quick-start/install.md
+      - First run: quick-start/first-run.md
+      - Verify: quick-start/verify.md
+  - Architecture:
+      - Platform structure: architecture/platform-structure.md
+      - Cross-skill contract: architecture/contract.md
+      - Skill relationships: architecture/relationships.md
+      - Augmentation stream retrospective: architecture/retrospective.md
+  - Skills:
+      - beril-adversarial: skills/adversarial.md
+      - beril-paper-writer: skills/paper-writer.md
+      - beril-presentation-maker: skills/presentation-maker.md
+  - Operations:
+      - Coordinated release runbook: operations/release-runbook.md
+      - Upstream dependencies: operations/dependencies.md
+      - GitHub Actions setup: operations/github-actions.md
+      - Troubleshooting: operations/troubleshooting.md
+  - Extending:
+      - Adding a skill: extending/adding-a-skill.md
+      - External contributors: extending/external-contributors.md
+  - Reference:
+      - Release notes: reference/release-notes.md
+      - Platform proposal: reference/platform-proposal.md
