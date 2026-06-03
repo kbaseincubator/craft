@@ -12,10 +12,16 @@
 #   - Quarterly cron (1st of Mar/Jun/Sep/Dec at 08:00 UTC)
 #   - Repository dispatch event (submodule-release-fired)
 #
-# Requirements (configured in repo secrets):
-#   - CBORG_API_KEY: LLM auth via LBL CBORG gateway
-#   - SMOKE_BERIL_FIXTURE_TARBALL_URL: tarball URL of a small BERIL
-#     fixture project for smoke testing
+# Requirements:
+#   secrets (mask in logs; for sensitive values):
+#     - CBORG_API_KEY: LLM auth via LBL CBORG gateway
+#   variables (visible in UI; for non-sensitive config — pinned
+#   to keep smoke deterministic across BERIL evolution):
+#     - SMOKE_BERIL_REPO: e.g. "kbaseincubator/BERIL-research-observatory"
+#     - SMOKE_BERIL_COMMIT: full SHA the smoke pins to (so smoke
+#       is reproducible across BERIL repo changes)
+#     - SMOKE_BERIL_PROJECT_ID: which project subdirectory to
+#       exercise (e.g. "microbeatlas_metal_ecology")
 #
 # Cost guardrails:
 #   - Per-run budget cap of $20 (kill the workflow if exceeded)
@@ -55,9 +61,11 @@ jobs:
     timeout-minutes: 90
     env:
       CBORG_API_KEY: ${{ secrets.CBORG_API_KEY }}
-      SMOKE_BERIL_FIXTURE_TARBALL_URL: ${{ secrets.SMOKE_BERIL_FIXTURE_TARBALL_URL }}
+      SMOKE_BERIL_REPO: ${{ vars.SMOKE_BERIL_REPO }}
+      SMOKE_BERIL_COMMIT: ${{ vars.SMOKE_BERIL_COMMIT }}
+      SMOKE_BERIL_PROJECT_ID: ${{ vars.SMOKE_BERIL_PROJECT_ID }}
       MAX_COST_USD: ${{ inputs.max_cost_usd || '20' }}
-      PROJECT_ID: ${{ inputs.project_id || '' }}
+      PROJECT_ID_OVERRIDE: ${{ inputs.project_id || '' }}
 
     steps:
       - name: Checkout (with submodules)
@@ -96,21 +104,40 @@ jobs:
           # Use the per-step PATH for subsequent installs
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: "Pre-flight: verify required secrets"
+      - name: "Pre-flight: verify required config"
         run: |
+          MISSING=0
           if [ -z "$CBORG_API_KEY" ]; then
-            echo "❌ CBORG_API_KEY not set in repo secrets."
-            echo "Set it at: Settings → Secrets and variables → Actions → New repository secret"
+            echo "❌ CBORG_API_KEY not set (Settings → Secrets and variables → Actions → New repository secret)"
+            MISSING=1
+          fi
+          if [ -z "$SMOKE_BERIL_REPO" ]; then
+            echo "❌ SMOKE_BERIL_REPO variable not set"
+            echo "   Set at Settings → Secrets and variables → Actions → Variables tab"
+            echo "   Recommended: kbaseincubator/BERIL-research-observatory"
+            MISSING=1
+          fi
+          if [ -z "$SMOKE_BERIL_COMMIT" ]; then
+            echo "❌ SMOKE_BERIL_COMMIT variable not set"
+            echo "   Set to a full SHA from the BERIL repo (pins smoke reproducibility)"
+            MISSING=1
+          fi
+          if [ -z "$SMOKE_BERIL_PROJECT_ID" ]; then
+            echo "❌ SMOKE_BERIL_PROJECT_ID variable not set"
+            echo "   Set to a project subdir name (e.g. microbeatlas_metal_ecology)"
+            MISSING=1
+          fi
+          if [ "$MISSING" -ne 0 ]; then
+            echo ""
+            echo "See .github/workflows/README.md §3 for the secrets+variables setup walk-through."
             exit 1
           fi
-          if [ -z "$SMOKE_BERIL_FIXTURE_TARBALL_URL" ]; then
-            echo "⚠️  SMOKE_BERIL_FIXTURE_TARBALL_URL not set."
-            echo "Full smoke needs a BERIL fixture project. Either:"
-            echo "  (a) Set SMOKE_BERIL_FIXTURE_TARBALL_URL to a tarball URL"
-            echo "  (b) Use workflow_dispatch with project_id input"
-            exit 1
-          fi
+          # workflow_dispatch override takes precedence over the pinned project
+          EFFECTIVE_PROJECT="${PROJECT_ID_OVERRIDE:-$SMOKE_BERIL_PROJECT_ID}"
           echo "✓ pre-flight passed"
+          echo "  BERIL repo:    $SMOKE_BERIL_REPO"
+          echo "  Pinned commit: $SMOKE_BERIL_COMMIT"
+          echo "  Project:       $EFFECTIVE_PROJECT"
 
       - name: Install the three CRAFT skills via pipx
         run: |
@@ -136,39 +163,60 @@ jobs:
       - name: Verify CRAFT doctor passes
         run: craft doctor || (echo "doctor failed; investigate" && exit 1)
 
-      - name: Set up BERIL fixture
+      - name: Set up BERIL fixture (sparse-checkout from upstream)
         run: |
+          # Effective project: workflow_dispatch override > pinned variable.
+          EFFECTIVE_PROJECT="${PROJECT_ID_OVERRIDE:-$SMOKE_BERIL_PROJECT_ID}"
+          echo "EFFECTIVE_PROJECT=$EFFECTIVE_PROJECT" >> $GITHUB_ENV
+
           mkdir -p /tmp/beril-smoke
-          if [ -n "$PROJECT_ID" ]; then
-            echo "Using project_id from input: $PROJECT_ID (must be in fixture tarball)"
-          fi
-          # Download + extract the smoke fixture
-          curl -sSL "$SMOKE_BERIL_FIXTURE_TARBALL_URL" -o /tmp/beril-fixture.tar.gz
-          tar -xzf /tmp/beril-fixture.tar.gz -C /tmp/beril-smoke
-          ls /tmp/beril-smoke/
-          # Ensure .env carries the LLM key
-          if [ ! -f /tmp/beril-smoke/.env ]; then
-            echo "CBORG_API_KEY=$CBORG_API_KEY" > /tmp/beril-smoke/.env
-          fi
+          cd /tmp/beril-smoke
+
+          # Sparse-checkout fetches only the named project subdir +
+          # .claude/skills/ (for skill-discovery config), not the
+          # full 400+ MB BERIL repo. Pinned to a specific commit so
+          # smoke is reproducible.
+          git init -q
+          git remote add origin "https://github.com/${SMOKE_BERIL_REPO}.git"
+          git config core.sparseCheckout true
+          # Patterns: the project + .claude/skills/ + top-level meta
+          cat > .git/info/sparse-checkout <<EOF
+          projects/${EFFECTIVE_PROJECT}/
+          .claude/skills/
+          .env.template
+          README.md
+          EOF
+          git fetch --depth 1 origin "$SMOKE_BERIL_COMMIT"
+          git checkout FETCH_HEAD
+          echo ""
+          echo "── Fixture layout:"
+          ls -la /tmp/beril-smoke/ | head -20
+          echo ""
+          echo "── Project artifacts:"
+          ls -la "/tmp/beril-smoke/projects/${EFFECTIVE_PROJECT}/" | head -15
+
+          # Ensure .env carries the LLM key (sparse-checkout won't pull
+          # .env since it's gitignored upstream + we don't want to)
+          echo "CBORG_API_KEY=$CBORG_API_KEY" > /tmp/beril-smoke/.env
+          # Ensure .claude/skills/ exists even if sparse-checkout came up empty
+          mkdir -p /tmp/beril-smoke/.claude/skills
 
       - name: Install CRAFT into the fixture BERIL deployment
         run: craft install-platform /tmp/beril-smoke
 
       - name: Smoke — adversarial review on the fixture
         run: |
-          PROJECT_ID="${PROJECT_ID:-$(ls /tmp/beril-smoke/projects | head -1)}"
-          echo "Using project: $PROJECT_ID"
+          echo "Using project: $EFFECTIVE_PROJECT"
           cd /tmp/beril-smoke
           beril-adversarial review \
             --type project \
-            "projects/$PROJECT_ID" \
+            "projects/$EFFECTIVE_PROJECT" \
             --beril-root /tmp/beril-smoke
 
       - name: Smoke — paper-writer draft
         run: |
-          PROJECT_ID="${PROJECT_ID:-$(ls /tmp/beril-smoke/projects | head -1)}"
           cd /tmp/beril-smoke
-          beril-paper-writer draft "$PROJECT_ID" \
+          beril-paper-writer draft "$EFFECTIVE_PROJECT" \
             --auto-advance \
             --no-adversarial \
             --max-revise-cost-usd 5 \
@@ -176,9 +224,8 @@ jobs:
 
       - name: Smoke — presentation-maker draft
         run: |
-          PROJECT_ID="${PROJECT_ID:-$(ls /tmp/beril-smoke/projects | head -1)}"
           cd /tmp/beril-smoke
-          beril-presentation-maker draft "$PROJECT_ID" \
+          beril-presentation-maker draft "$EFFECTIVE_PROJECT" \
             --tier STRONG --mode talk-30 \
             --auto-advance \
             --auto-approve-images \
@@ -189,8 +236,7 @@ jobs:
 
       - name: Verify artifacts produced
         run: |
-          PROJECT_ID="${PROJECT_ID:-$(ls /tmp/beril-smoke/projects | head -1)}"
-          PROJECT_DIR="/tmp/beril-smoke/projects/$PROJECT_ID"
+          PROJECT_DIR="/tmp/beril-smoke/projects/$EFFECTIVE_PROJECT"
           set -e
 
           # Paper-writer deliverable
@@ -220,8 +266,7 @@ jobs:
       - name: Report cost summary
         if: always()
         run: |
-          PROJECT_ID="${PROJECT_ID:-$(ls /tmp/beril-smoke/projects 2>/dev/null | head -1 || echo unknown)}"
-          PROJECT_DIR="/tmp/beril-smoke/projects/$PROJECT_ID"
+          PROJECT_DIR="/tmp/beril-smoke/projects/${EFFECTIVE_PROJECT:-unknown}"
           echo "═══ Cross-skill smoke cost summary ═══"
           # Each skill writes its own cost log under audit/runs/run-N/.
           # Aggregate the total_cost_usd fields via a one-liner python script.

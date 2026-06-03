@@ -90,90 +90,144 @@ Actions-minutes.
 - Image-gen provider auth or model-availability issues
 - New regressions across cross-skill boundaries
 
-**Required secrets** (configure at Settings → Secrets and
-variables → Actions → New repository secret):
+**Required config** (one secret + three variables; configure
+at Settings → Secrets and variables → Actions):
 
-| Secret name | What it is | How to set it |
-|---|---|---|
-| `CBORG_API_KEY` | LBL CBORG gateway token (your existing dev token works) | Copy from your `~/.env` or `BERIL_ROOT/.env` |
-| `SMOKE_BERIL_FIXTURE_TARBALL_URL` | URL of a small BERIL fixture project (tarball) | Upload a fixture project as a release asset on a private BERIL fixture repo, OR use GitHub Releases on a smoke-fixture repo |
+| Item | Kind | Purpose | Example value |
+|---|---|---|---|
+| `CBORG_API_KEY` | **Secret** | LBL CBORG gateway token | Copy from your `~/.env` or `BERIL_ROOT/.env` |
+| `SMOKE_BERIL_REPO` | **Variable** | Upstream BERIL repo for fixture | `kbaseincubator/BERIL-research-observatory` |
+| `SMOKE_BERIL_COMMIT` | **Variable** | Pinned commit SHA (smoke reproducibility) | `940c3b0ee7bbf63bc576bd6e8c25210ad692df8e` |
+| `SMOKE_BERIL_PROJECT_ID` | **Variable** | Project subdir name | `microbeatlas_metal_ecology` |
 
-**Without these secrets the workflow fails at the pre-flight
-step with a clear error.** You can run the workflow once before
-setting the secrets to see what's missing.
+**Why a mix of secrets and variables:**
+- **Secrets** are masked in CI logs + used for sensitive values
+  (tokens, API keys). `CBORG_API_KEY` qualifies.
+- **Variables** are visible in the UI + used for non-sensitive
+  configuration. The BERIL repo name, commit SHA, and project
+  ID are all public information — making them variables means
+  you can see them at a glance in the Actions UI.
 
-**Setting the secrets (first time):**
-1. Navigate to https://github.com/kbaseincubator/craft/settings/secrets/actions
-2. Click "New repository secret"
-3. Name: `CBORG_API_KEY`, Value: (paste your token)
-4. Click "Add secret"
-5. Repeat for `SMOKE_BERIL_FIXTURE_TARBALL_URL`
+**Without this config the workflow fails at the pre-flight
+step with a clear error listing exactly what's missing.** You
+can run the workflow once before configuring to see the
+diagnostic.
 
-The secrets are then available to ALL workflow runs as
-`secrets.CBORG_API_KEY` etc. Not visible in logs (GitHub masks
-them).
+**Approach: smoke against the live BERIL repo via sparse-checkout.**
+The cross-skill smoke clones a specific project subdirectory
+from the live BERIL repo (e.g.,
+`kbaseincubator/BERIL-research-observatory`) at a pinned
+commit SHA. Sparse-checkout means we fetch only the project +
+`.claude/skills/` config, not the full 400+ MB BERIL repo —
+typical clone is ~5-20 MB.
 
-**About the fixture tarball:** the cross-skill smoke needs a
-real BERIL project to operate on. A minimal one suffices — a
-project with REPORT.md, RESEARCH_PLAN.md, 2-3 notebooks, a few
-figures. The tarball gets downloaded + extracted at smoke time.
-Recommendation: create a private GitHub repo with a single
-release containing the fixture tarball; point
-SMOKE_BERIL_FIXTURE_TARBALL_URL at the release asset URL.
+**Pinning the commit is load-bearing.** Without a pin, the BERIL
+repo can evolve between smoke runs + the same CRAFT version
+produces different smoke outcomes. With a pin, smoke is
+reproducible. Bump the pin deliberately as a CRAFT-maintenance
+task (typically alongside the quarterly smoke cycle).
 
 **Maintainer actions:**
 - Run manually before any platform release tag.
 - Watch for the quarterly cron + investigate failures.
+- **Bump `SMOKE_BERIL_COMMIT` quarterly** so smoke exercises
+  against recent BERIL conventions. Tag the bump as a CRAFT
+  patch release with a note in RELEASE_NOTES.md.
 - If a failure looks like a real regression, file an issue
   + link the failure run.
 
 ---
 
-## 3. Setting up the secrets — first-time walk-through
+## 3. Setting up the cross-skill smoke — first-time walk-through
 
-Before the `cross-skill-smoke.yml` workflow can run, two secrets
-need to be configured in the CRAFT GitHub repo:
+Before the `cross-skill-smoke.yml` workflow can run, one secret +
+three variables need to be configured in the CRAFT GitHub repo.
 
-### CBORG_API_KEY
+### Step 1 — `CBORG_API_KEY` (secret)
 
 This is your existing CBORG gateway token (the same one in
 `<BERIL_ROOT>/.env`).
 
 1. Open https://github.com/kbaseincubator/craft/settings/secrets/actions
-2. Click "New repository secret"
+2. **Secrets** tab → click "New repository secret"
 3. Name: `CBORG_API_KEY`
 4. Value: paste the token (no quotes, no leading/trailing
    whitespace)
 5. Click "Add secret"
 
-### SMOKE_BERIL_FIXTURE_TARBALL_URL
+The secret is masked in CI logs.
 
-This needs a tarball of a small BERIL project that the smoke
-exercises. Three options:
+### Step 2 — `SMOKE_BERIL_REPO` (variable)
 
-**Option A — create a smoke-fixture repo (recommended):**
+The upstream BERIL repo that contains the project the smoke
+exercises.
 
-1. Create a private repo `kbaseincubator/craft-smoke-fixtures`.
-2. Pick a small BERIL project (e.g., a stripped-down version of
-   one of your existing projects with ~3-5 notebooks).
-3. Tar it up: `tar -czf craft-smoke-v1.tar.gz <project-dir>`
-4. Upload as a release asset on the smoke-fixtures repo.
-5. Set `SMOKE_BERIL_FIXTURE_TARBALL_URL` to the asset URL
-   (right-click the asset → Copy link).
+1. Same page → switch to **Variables** tab → click "New
+   repository variable"
+2. Name: `SMOKE_BERIL_REPO`
+3. Value: `kbaseincubator/BERIL-research-observatory`
+4. Click "Add variable"
 
-**Option B — use an existing BERIL artifact location:**
+(Or use any other BERIL-style repo with a `projects/` subdir
+containing the standard 4-zone artifact layout.)
 
-If you already have a fixture project hosted somewhere accessible
-to GitHub Actions runners (S3 bucket, public URL), use that URL
-directly.
+### Step 3 — `SMOKE_BERIL_COMMIT` (variable)
 
-**Option C — defer the cross-skill smoke until later:**
+A specific commit SHA from the BERIL repo. The smoke fetches THIS
+commit (not main branch HEAD) so smoke is reproducible even as
+BERIL evolves.
 
-The `platform-ci.yml` workflow runs without these secrets. The
-`cross-skill-smoke.yml` workflow will fail at the pre-flight step
-with a clear message, but won't run any LLM stages. This is fine
-for v0.1.0 — the cheap-smoke is enough until you're ready to set
-up the full smoke.
+To find a current SHA:
+
+```bash
+gh api /repos/kbaseincubator/BERIL-research-observatory/commits/main --jq .sha
+```
+
+Or browse to https://github.com/kbaseincubator/BERIL-research-observatory/commits/main
+and copy a recent SHA.
+
+1. **Variables** tab → "New repository variable"
+2. Name: `SMOKE_BERIL_COMMIT`
+3. Value: full SHA (40 hex chars; example:
+   `940c3b0ee7bbf63bc576bd6e8c25210ad692df8e`)
+4. Click "Add variable"
+
+**Bump quarterly** to exercise smoke against recent BERIL
+conventions. Tag the bump as a CRAFT patch release.
+
+### Step 4 — `SMOKE_BERIL_PROJECT_ID` (variable)
+
+Which project subdirectory in the BERIL repo to use as the
+smoke fixture. Recommendation: pick a project with the standard
+4-zone artifact set (REPORT.md + RESEARCH_PLAN.md + notebooks/
++ figures/ + references.md).
+
+1. **Variables** tab → "New repository variable"
+2. Name: `SMOKE_BERIL_PROJECT_ID`
+3. Value: e.g. `microbeatlas_metal_ecology`
+4. Click "Add variable"
+
+### Step 5 — Verify by running the workflow
+
+After all four are configured:
+
+1. Open https://github.com/kbaseincubator/craft/actions
+2. Click "Cross-Skill Smoke Test" in the left sidebar
+3. Click "Run workflow" → "Run workflow"
+4. Watch the run. The pre-flight step will list all four
+   config items + confirm "✓ pre-flight passed". If any are
+   missing the pre-flight fails with a clear diagnostic.
+
+The first run will take ~60 minutes wall-clock + ~$10-15 in
+LLM API costs.
+
+### Deferring the cross-skill smoke
+
+The `platform-ci.yml` workflow runs without ANY of these config
+items. The `cross-skill-smoke.yml` workflow will fail cleanly
+at the pre-flight step with a clear "what's missing" message
++ won't run any LLM stages. This is fine for incremental setup —
+configure when you're ready to spend the $10-15 on first run.
 
 ---
 

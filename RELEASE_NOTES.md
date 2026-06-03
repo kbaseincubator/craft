@@ -1,5 +1,58 @@
 # CRAFT — Release Notes
 
+## v0.1.3 (2026-06-03) — Cross-skill smoke: live BERIL repo via sparse-checkout
+
+Pivots the cross-skill smoke from a static tarball fixture to a
+live-BERIL-repo sparse-checkout. Eliminates fixture-drift risk
++ removes the operational chore of maintaining a separate
+fixture artifact.
+
+### Why
+
+The original tarball approach (v0.1.1) required uploading + maintaining a
+static BERIL project tarball at a private repo, with manual updates
+when BERIL conventions evolved. The live-repo approach instead clones
+a specific project subdirectory from the live BERIL repo at a pinned
+commit SHA — exercises CRAFT against actual BERIL conventions, with
+no drift.
+
+### What changed
+
+`.github/workflows/cross-skill-smoke.yml`:
+
+- Removed: `SMOKE_BERIL_FIXTURE_TARBALL_URL` secret +
+  `curl + tar -xz` extraction.
+- Added: three repo **variables** (visible in UI; non-sensitive):
+  - `SMOKE_BERIL_REPO` — e.g.
+    `kbaseincubator/BERIL-research-observatory`
+  - `SMOKE_BERIL_COMMIT` — full SHA for reproducibility
+  - `SMOKE_BERIL_PROJECT_ID` — project subdir name
+- Added: git sparse-checkout against the pinned commit, fetching
+  only `projects/<PROJECT_ID>/` + `.claude/skills/` (~5-20 MB
+  vs. the full 400+ MB BERIL repo).
+- Pre-flight diagnostic now lists all four required config items
+  + tells the operator exactly which one is missing.
+
+`.github/workflows/README.md` — §2 + §3 rewritten with the
+secrets-vs-variables rationale + the four-step setup walk-through.
+
+### Required config (configure at the kbaseincubator/craft repo)
+
+One secret:
+- `CBORG_API_KEY` (same value as before)
+
+Three new variables (NOT secrets — they're non-sensitive):
+- `SMOKE_BERIL_REPO`
+- `SMOKE_BERIL_COMMIT`
+- `SMOKE_BERIL_PROJECT_ID`
+
+See `.github/workflows/README.md` §3 for the step-by-step.
+
+### Maintainer ongoing task
+
+Bump `SMOKE_BERIL_COMMIT` quarterly so smoke exercises against
+recent BERIL conventions. Tag each bump as a CRAFT patch release.
+
 ## v0.1.2 (2026-06-03) — Node 24 action bumps
 
 Pre-emptive fix for GitHub Actions Node.js 20 deprecation
