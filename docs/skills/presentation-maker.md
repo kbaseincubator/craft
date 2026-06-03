@@ -5,7 +5,7 @@ scientific presentations (talks + posters) from BERDL projects.
 Consumes adversarial review in its review-rewrite loop; consumes
 paper-writer's `citation_pool.json` via the D-009 reuse path.
 
-- **Repo:** [ArkinLaboratory/beril-presentation-maker-skill](https://github.com/ArkinLaboratory/beril-presentation-maker-skill)
+- **Repo:** [kbaseincubator/beril-presentation-maker-skill](https://github.com/kbaseincubator/beril-presentation-maker-skill)
 - **Pinned in CRAFT at:** see `craft/skills/beril-presentation-maker-skill`
   submodule pin.
 - **Schemas produced:** `slide_spec.v1`, `compose-fragment.v1`/`.v2`,
@@ -13,7 +13,7 @@ paper-writer's `citation_pool.json` via the D-009 reuse path.
   — see [cross-skill contract §2](../architecture/contract.md).
 - **Schemas consumed:** `adversarial-review-presentation.v3` (in
   revise loop) + `citation_pool.json` (from paper-writer).
-- **Install path:** `pipx install git+https://github.com/ArkinLaboratory/beril-presentation-maker-skill.git@<tag>`
+- **Install path:** `pipx install git+https://github.com/kbaseincubator/beril-presentation-maker-skill.git@<tag>`
   (transitive via `pipx install craft`).
 - **Independent install:** `beril-presentation-maker install-skill <BERIL_ROOT>`.
 

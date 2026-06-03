@@ -5,14 +5,14 @@ scientific manuscripts from BERDL projects. Consumes adversarial
 review in its review-rewrite loop; produces `citation_pool.json`
 that presentation-maker can reuse.
 
-- **Repo:** [ArkinLaboratory/beril-paper-writer-skill](https://github.com/ArkinLaboratory/beril-paper-writer-skill)
+- **Repo:** [kbaseincubator/beril-paper-writer-skill](https://github.com/kbaseincubator/beril-paper-writer-skill)
 - **Pinned in CRAFT at:** see `craft/skills/beril-paper-writer-skill`
   submodule pin.
 - **Schemas produced:** `claim_inventory.tsv`,
   `citation_pool.json` — see [cross-skill contract §2](../architecture/contract.md).
 - **Schemas consumed:** `adversarial-review-paper.v3` (in
   revise loop).
-- **Install path:** `pipx install git+https://github.com/ArkinLaboratory/beril-paper-writer-skill.git@<tag>`
+- **Install path:** `pipx install git+https://github.com/kbaseincubator/beril-paper-writer-skill.git@<tag>`
   (transitive via `pipx install craft`).
 - **Independent install:** `beril-paper-writer install-skill <BERIL_ROOT>`.
 

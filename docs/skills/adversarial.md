@@ -4,12 +4,12 @@
 findings. Both paper-writer and presentation-maker consume its
 output in their review-rewrite loops.
 
-- **Repo:** [ArkinLaboratory/beril-adversarial-skill](https://github.com/ArkinLaboratory/beril-adversarial-skill)
+- **Repo:** [kbaseincubator/beril-adversarial-skill](https://github.com/kbaseincubator/beril-adversarial-skill)
 - **Pinned in CRAFT at:** see `craft/skills/beril-adversarial-skill`
   submodule pin (`git submodule status` for current).
 - **Schemas produced:** `adversarial-review-{paper,presentation,plan,project}.v3`
   — see [cross-skill contract §2](../architecture/contract.md).
-- **Install path:** `pipx install git+https://github.com/ArkinLaboratory/beril-adversarial-skill.git@<tag>`
+- **Install path:** `pipx install git+https://github.com/kbaseincubator/beril-adversarial-skill.git@<tag>`
   (already done transitively if you `pipx install craft`).
 - **Independent install:** `beril-adversarial install-skill <BERIL_ROOT>`
   (CRAFT's `install-platform` calls this for you).
