@@ -57,13 +57,14 @@ jobs:
             cd - > /dev/null
           done
 
-      - name: Install CRAFT meta-package
+      - name: Install CRAFT meta-package + dev tools
         run: |
-          # --no-deps because the submodule deps install from git+https URLs
-          # which would require network + auth at install time. The smoke
-          # tests work without the actual skills being pip-installed; they
-          # exercise CRAFT's coordination logic, not the skills themselves.
-          pip install -e ".[dev]" --no-deps
+          # Install the meta-package with --no-deps to skip the three
+          # skill git+https deps (would require network + auth at install
+          # time). The dev tools (pytest, ruff) come from the [dev] extra
+          # which we install separately to avoid `--no-deps` skipping them.
+          pip install -e . --no-deps
+          pip install pytest>=7.4.0 pytest-cov>=4.0.0
 
       - name: Verify version
         run: |

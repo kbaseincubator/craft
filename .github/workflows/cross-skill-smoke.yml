@@ -96,7 +96,7 @@ jobs:
           # Use the per-step PATH for subsequent installs
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Pre-flight: verify required secrets
+      - name: "Pre-flight: verify required secrets"
         run: |
           if [ -z "$CBORG_API_KEY" ]; then
             echo "❌ CBORG_API_KEY not set in repo secrets."
@@ -223,17 +223,13 @@ jobs:
           PROJECT_ID="${PROJECT_ID:-$(ls /tmp/beril-smoke/projects 2>/dev/null | head -1 || echo unknown)}"
           PROJECT_DIR="/tmp/beril-smoke/projects/$PROJECT_ID"
           echo "═══ Cross-skill smoke cost summary ═══"
-          # Each skill writes its own cost log under audit/runs/run-N/
+          # Each skill writes its own cost log under audit/runs/run-N/.
+          # Aggregate the total_cost_usd fields via a one-liner python script.
           for draft in "$PROJECT_DIR"/papers/draft_*/audit/runs/run-*/summary.json \
                        "$PROJECT_DIR"/talks/draft_*/audit/runs/run-*/summary.json; do
             if [ -f "$draft" ]; then
               echo "── $draft"
-              python -c "
-import json
-d = json.load(open('$draft'))
-total = d.get('total_cost_usd', 0)
-print(f'  total: \${total:.2f}')
-" 2>/dev/null || true
+              python -c "import json,sys; print(f'  total: \${json.load(open(sys.argv[1])).get(\"total_cost_usd\", 0):.2f}')" "$draft" 2>/dev/null || true
             fi
           done
 
