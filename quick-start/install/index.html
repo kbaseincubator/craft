@@ -1539,11 +1539,26 @@ invocations into one command.</p>
 </span></code></pre></div></li>
 </ul>
 <h2 id="install-command">Install command<a class="headerlink" href="#install-command" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>git+https://github.com/kbaseincubator/craft.git@v0.2.2
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>git+https://github.com/kbaseincubator/craft.git@v0.2.3
 </span></code></pre></div>
-<p>Replace <code>v0.2.2</code> with the latest tag if you want the current
+<p>Replace <code>v0.2.3</code> with the latest tag if you want the current
 release; see <a href="../../reference/release-notes/">release notes</a> for
 what each version ships.</p>
+<div class="admonition warning">
+<p class="admonition-title">Pre-existing skill installs</p>
+<p>pipx <strong>doesn't reinstall packages that are already installed
+as standalone apps</strong>. If you've previously run
+<code>pipx install beril-adversarial-skill</code> (etc.) at a different
+version, <code>pipx install craft</code> leaves those pre-existing
+venvs untouched — <code>craft install-platform</code> would deploy
+skill data from the <em>old</em> versions, not the ones CRAFT pins.</p>
+<p><code>craft install-platform</code> (v0.2.3+) detects this drift and
+force-syncs each skill to the CRAFT-pinned version
+automatically, prompting before each reinstall. Pass
+<code>--yes</code> for unattended runs, or <code>--no-sync-skills</code> to skip
+the sync (e.g., when you have a hand-installed version you
+want to keep).</p>
+</div>
 <p>CRAFT's <code>pyproject.toml</code> pins the three skill versions, so this
 single <code>pipx install</code> transitively installs:</p>
 <ul>
@@ -1556,7 +1571,7 @@ pipx venv; the CRAFT meta-package shares its venv with the
 <code>craft</code> CLI.</p>
 <h2 id="verify-craft-installed">Verify CRAFT installed<a class="headerlink" href="#verify-craft-installed" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>craft<span class="w"> </span>--version
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># CRAFT v0.1.4</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># CRAFT v0.2.3</span>
 </span></code></pre></div>
 <p>You should also see the three skill CLIs on <code>PATH</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>beril-adversarial<span class="w"> </span>--version

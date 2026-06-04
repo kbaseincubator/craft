@@ -1716,9 +1716,9 @@ itself. Common failures:</p>
 <td><code>pipx install --force git+https://github.com/kbaseincubator/beril-adversarial-skill.git@&lt;tag&gt;</code></td>
 </tr>
 <tr>
-<td><code>beril-adversarial: version mismatch (installed: 0.7.0.7, CRAFT pins: 0.7.0.9)</code></td>
-<td>Skill installed but not at the CRAFT-pinned version</td>
-<td><code>pipx install --force git+https://github.com/kbaseincubator/beril-adversarial-skill.git@v0.7.0.9</code></td>
+<td><code>⚠ beril-adversarial: installed 0.7.0.4, CRAFT pins 0.7.0.10 — run</code>craft install-platform<code>to sync</code></td>
+<td>Skill installed standalone (typical: hub install of skill before CRAFT was added)</td>
+<td>Re-run <code>craft install-platform &lt;BERIL_ROOT&gt;</code> (v0.2.3+); the sync stage force-reinstalls drifted skills at the pinned versions. To opt out for a specific skill, hand-install + then pass <code>--no-sync-skills</code>.</td>
 </tr>
 <tr>
 <td>Per-skill <code>configure</code> step reports <code>claude CLI not on PATH</code></td>
