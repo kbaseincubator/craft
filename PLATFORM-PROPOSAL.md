@@ -406,7 +406,7 @@ inferred natural extensions):
 | Research-quality-improvement skills | Methods-drift detection, reproducibility checking, claim-grounding validation; produces audit JSON consumed by the cascade |
 | Cross-artifact reconciliation | Does the paper match the presentation? Does both match the project plan? Produces reconciliation reports |
 | Domain-translation skills | Produces lay-audience versions of papers / presentations; consumes the existing artifacts |
-| Synthesis skills | Consumes multiple BERDL projects + produces meta-analyses |
+| Synthesis skills | Consumes multiple BERIL projects + produces meta-analyses |
 
 Each follows the contract in §4. The platform absorbs them as
 submodule additions + meta-package dep bumps.

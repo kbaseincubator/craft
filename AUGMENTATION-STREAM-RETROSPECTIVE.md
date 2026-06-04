@@ -230,8 +230,8 @@ prompt-side review is **synthesis** over those findings.
 ### Pattern: auto-memory integration
 
 Each skill reads workspace-level auto-memory (`.auto-memory/MEMORY.md`)
-on startup. Cross-skill discoveries (BERDL pitfalls, K-BERDL
-schema details, citation canonicalizations, prompt-layering
+on startup. Cross-skill discoveries (KBase Lakehouse pitfalls,
+KBase Lakehouse schema details, citation canonicalizations, prompt-layering
 drift patterns) accumulate there and inform future invocations.
 
 **Why this works:** the panel-of-one model needs persistent

@@ -256,7 +256,7 @@ expect:
 
 - `reference_beril_*` — BERIL operational pitfalls + project-
   artifact conventions
-- `reference_kberdl_*` — K-BERDL schema details + database
+- `reference_kberdl_*` — KBase Lakehouse schema details + database
   conventions
 - `project_<skill>_*` — per-skill ongoing state pointers
 - `reference_adversarial_*` — adversarial schema/CLI behavior

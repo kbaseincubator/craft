@@ -7,7 +7,7 @@ Tools)
 **Purpose:** When a change touches all three CRAFT skills (e.g.,
 adversarial schema bump rippling into paper-writer + presentation-
 maker; Anthropic CLI deprecation requiring all three to adopt
-new invocation; K-BERDL contract change), this runbook codifies
+new invocation; KBase Lakehouse contract change), this runbook codifies
 the sequencing + tests + release ordering.
 
 **When this runbook applies:** any change that requires bumping

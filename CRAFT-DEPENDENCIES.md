@@ -73,7 +73,7 @@ implicit but load-bearing.
 | `.claude/skills/` discovery convention | Stable | 2026-06-03 | Low | Claude Code controls this; documented at the skill-loader level. |
 | 4-zone draft layout (`deliverable / narrative / working / audit`) | Stable since BERIL v0.3.1 | 2026-06-03 | Low | Multiple CRAFT skills depend on this; BERIL changes would ripple through. |
 | Project artifact conventions (`REPORT.md`, `RESEARCH_PLAN.md`, `notebooks/`, `figures/`) | Stable | 2026-06-03 | Low | New artifact types (e.g., `experiments/`) being added are non-breaking; renaming existing ones would be. |
-| K-BERDL database conventions | Evolving (Adam noted BERDL nomenclature being deprecated) | 2026-06-03 | Medium | The "BERDL" → "KBase | BERIL" rename. CRAFT skills reference BERDL conventions in prompts + audit messages; nomenclature drift over time. |
+| KBase Lakehouse database conventions | Stable; docs normalized 2026-06-03 | 2026-06-03 | Medium | "BERDL" is deprecated — the data layer is "KBase Lakehouse", the co-scientist is "BERIL". Documentation now uses these terms; operational artifacts (prompts, audit messages, code identifiers like `berdl_query`/`berdl_start`) still reference BERDL by design. |
 | `<BERIL_ROOT>/.env` env-var convention | Stable | 2026-06-03 | Low | Any change to where env vars come from. |
 | Sibling-skill discovery (e.g., paper-writer finds presentation-maker's draft) | Stable | 2026-06-03 | Low | Used by presentation-maker's D-009 "reuse-from-paper" path. |
 
@@ -83,10 +83,12 @@ implicit but load-bearing.
   maintainers. The quarterly review should check the BERIL
   repo for recent commits to the skill-loader + draft-layout
   conventions.
-- "BERDL deprecation" is a known long-term consideration; CRAFT
-  prompts + docs reference BERDL in places. v0.x doesn't
-  block on the nomenclature change; v1.x of CRAFT may include
-  a coordinated rename pass.
+- "BERDL" nomenclature is deprecated: the data layer is "KBase
+  Lakehouse" and the co-scientist is "BERIL". CRAFT documentation
+  was normalized to these terms on 2026-06-03. Operational
+  artifacts (prompts, audit messages, code identifiers) still
+  reference BERDL by design; a coordinated operational rename, if
+  ever undertaken, is a separate v1.x consideration.
 
 ---
 

@@ -49,7 +49,7 @@ deliverable/draft.docx      deliverable/draft.pptx
 Future skills will extend this workflow: domain-specific reviewers,
 feedback-incorporation systems, research-quality-improvement
 skills, cross-artifact reconciliation, domain-translation skills,
-synthesis skills across BERDL projects.
+synthesis skills across BERIL projects.
 
 ## Quick start
 
