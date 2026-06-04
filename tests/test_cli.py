@@ -66,7 +66,9 @@ def _install_ns(beril_root: str, **overrides) -> argparse.Namespace:
     CLI reads. Callers can override yes / no_sync_skills per test."""
     return argparse.Namespace(
         beril_root=beril_root,
-        no_sync_skills=overrides.get("no_sync_skills", True),  # default skip sync in tests
+        no_sync_skills=overrides.get(
+            "no_sync_skills", True
+        ),  # default skip sync in tests
         yes=overrides.get("yes", True),  # never prompt in tests
     )
 
@@ -156,9 +158,7 @@ def test_resolve_skill_pins_returns_dict(monkeypatch) -> None:
         "beril-presentation-maker-skill.git@v1.0.1",
         "pytest>=7.4.0; extra == 'dev'",
     ]
-    monkeypatch.setattr(
-        cli.importlib.metadata, "requires", lambda _pkg: fake_requires
-    )
+    monkeypatch.setattr(cli.importlib.metadata, "requires", lambda _pkg: fake_requires)
     pins = cli._resolve_skill_pins()
     assert len(pins) == 3
     assert pins["beril-adversarial-skill"]["tag"] == "v0.7.0.10"
@@ -169,8 +169,10 @@ def test_resolve_skill_pins_returns_dict(monkeypatch) -> None:
 def test_resolve_skill_pins_empty_when_craft_not_installed(monkeypatch) -> None:
     """If CRAFT isn't installed (running from a checkout), the
     resolver returns empty + the caller can fall back gracefully."""
+
     def raise_not_found(_pkg):
         raise cli.importlib.metadata.PackageNotFoundError("craft")
+
     monkeypatch.setattr(cli.importlib.metadata, "requires", raise_not_found)
     assert cli._resolve_skill_pins() == {}
 
@@ -180,12 +182,11 @@ def test_sync_skill_skips_when_version_matches(monkeypatch) -> None:
     a no-op + returns success without invoking pipx."""
     # Pretend the CLI is on PATH and reports the matching version.
     monkeypatch.setattr(cli.shutil, "which", lambda _: "/fake/bin/beril-adversarial")
-    monkeypatch.setattr(
-        cli, "_installed_skill_version", lambda _cli: "0.7.0.10"
-    )
+    monkeypatch.setattr(cli, "_installed_skill_version", lambda _cli: "0.7.0.10")
 
     def boom(*_a, **_k):
         raise AssertionError("pipx should NOT be invoked on a no-op sync")
+
     monkeypatch.setattr(cli.subprocess, "run", boom)
 
     ok, msg = cli._sync_skill_to_pinned_version(
@@ -204,15 +205,18 @@ def test_sync_skill_force_installs_on_drift(monkeypatch) -> None:
 
     def fake_run(cmd, *_a, **_k):
         call_log.append(list(cmd))
+
         class _R:
             returncode = 0
+
         return _R()
 
     # First _installed_skill_version returns the OLD version; the
     # post-install call returns the NEW version.
     installed_versions = iter(["0.7.0.4", "0.7.0.10"])
     monkeypatch.setattr(
-        cli, "_installed_skill_version",
+        cli,
+        "_installed_skill_version",
         lambda _cli: next(installed_versions),
     )
     monkeypatch.setattr(cli.subprocess, "run", fake_run)
