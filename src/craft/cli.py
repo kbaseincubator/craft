@@ -14,6 +14,8 @@ sequence + reports a unified summary.
 from __future__ import annotations
 
 import argparse
+import importlib.metadata
+import re
 import shutil
 import subprocess
 import sys
@@ -47,12 +49,152 @@ _SKILLS: list[dict[str, str]] = [
 
 
 # ---------------------------------------------------------------------------
+# Skill version pinning + sync
+# ---------------------------------------------------------------------------
+#
+# The bug this layer fixes (CRAFT v0.2.2 ↓): pipx leaves pre-existing
+# skill venvs alone when you install a meta-package whose deps name
+# those same packages. CRAFT's pyproject.toml pinning gets silently
+# ignored — `pipx install craft@v0.2.2` on a hub with v0.7.0.4 of
+# adversarial installed leaves you on v0.7.0.4 of adversarial, not
+# the v0.7.0.10 CRAFT pins.
+#
+# `craft install-platform` now resolves CRAFT's own pinned URLs from
+# its installed metadata and force-syncs each skill to the pinned
+# version before deploying skill data. `craft doctor` reports drift
+# so users can detect the issue before it bites them.
+
+
+# Pattern for parsing the `name @ git+https://.../skill.git@vTAG` dep
+# strings returned by importlib.metadata.requires(). Captures three
+# groups: skill name, full install URL (without the @tag suffix on
+# the URL itself; pipx wants the full @tag URL), pinned tag.
+_DEP_RE = re.compile(
+    r"^(?P<name>beril-[\w-]+-skill)\s*@\s*"
+    r"(?P<url_with_tag>git\+https?://\S+@(?P<tag>[\w.\-]+))\s*$"
+)
+
+
+def _resolve_skill_pins() -> dict[str, dict[str, str]]:
+    """Return {skill_name: {url, tag}} from CRAFT's installed metadata.
+
+    Reads `importlib.metadata.requires('craft')` and parses the
+    `beril-*-skill @ git+https://...@vN.N.N` URL form CRAFT uses for
+    every skill dep. Skips non-skill deps (build extras, etc.) and
+    skill deps that don't have the @tag form.
+
+    Returns an empty dict if CRAFT itself isn't installed (e.g.,
+    running from an uninstalled checkout) — in that case the caller
+    falls back to skipping the sync stage.
+    """
+    pins: dict[str, dict[str, str]] = {}
+    try:
+        requires = importlib.metadata.requires("craft") or []
+    except importlib.metadata.PackageNotFoundError:
+        return pins
+    for req in requires:
+        m = _DEP_RE.match(req)
+        if m is None:
+            continue
+        pins[m.group("name")] = {
+            "url_with_tag": m.group("url_with_tag"),
+            "tag": m.group("tag"),
+        }
+    return pins
+
+
+def _installed_skill_version(cli: str) -> Optional[str]:
+    """Return the installed skill's reported version, or None if the
+    CLI isn't on PATH / errors. Parses the last whitespace-delimited
+    token from `<cli> --version` output (handles the various output
+    shapes across our three skills)."""
+    if shutil.which(cli) is None:
+        return None
+    try:
+        result = subprocess.run(
+            [cli, "--version"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except Exception:  # noqa: BLE001
+        return None
+    tokens = (result.stdout + result.stderr).strip().split()
+    return tokens[-1] if tokens else None
+
+
+def _versions_match(installed: Optional[str], pinned_tag: str) -> bool:
+    """True iff the installed version matches the CRAFT-pinned tag.
+
+    Tags are of the form `v0.7.0.10` / `v1.0.2` etc.; reported skill
+    versions are bare (`0.7.0.10`, `1.0.2`). Normalize by stripping
+    the leading `v` from the tag.
+    """
+    if installed is None:
+        return False
+    return installed == pinned_tag.lstrip("v")
+
+
+def _sync_skill_to_pinned_version(
+    name: str,
+    pin: dict[str, str],
+    *,
+    auto_yes: bool,
+) -> tuple[bool, str]:
+    """Ensure pipx has `name` installed at `pin['tag']`. Force-installs
+    if missing or version-mismatched. Returns (ok, summary_msg).
+
+    auto_yes=True skips the interactive confirmation prompt — used
+    on `craft install-platform --yes` for CI / scripted runs.
+    """
+    cli_name = next((s["cli"] for s in _SKILLS if s["name"] == name), None)
+    installed = _installed_skill_version(cli_name) if cli_name else None
+    pinned = pin["tag"]
+
+    if _versions_match(installed, pinned):
+        return True, f"already at {pinned}"
+
+    action = "install" if installed is None else f"reinstall ({installed} → {pinned})"
+    if not auto_yes:
+        prompt = f"   Sync {name}: {action}? [Y/n] "
+        try:
+            answer = input(prompt).strip().lower()
+        except EOFError:
+            answer = "y"
+        if answer and answer not in ("y", "yes"):
+            return False, f"skipped by user (still at {installed or 'NOT INSTALLED'})"
+
+    # Run pipx install --force <url>@<tag>. --force is safe whether
+    # the venv exists or not; it rebuilds in place.
+    cmd = ["pipx", "install", "--force", pin["url_with_tag"]]
+    try:
+        result = subprocess.run(cmd, capture_output=False)
+    except FileNotFoundError:
+        return False, "pipx not on PATH — install pipx first"
+    except Exception as exc:  # noqa: BLE001
+        return False, f"pipx subprocess raised: {exc}"
+
+    if result.returncode != 0:
+        return False, f"pipx install exited rc={result.returncode}"
+
+    # Verify the install landed at the right version.
+    new_installed = _installed_skill_version(cli_name) if cli_name else None
+    if _versions_match(new_installed, pinned):
+        return True, f"synced to {pinned}"
+    return False, (
+        f"post-install version mismatch: expected {pinned}, "
+        f"got {new_installed or 'NOT INSTALLED'}"
+    )
+
+
+# ---------------------------------------------------------------------------
 # install-platform
 # ---------------------------------------------------------------------------
 
 
 def cmd_install_platform(args: argparse.Namespace) -> int:
-    """Run all three skills' install-skill commands in sequence."""
+    """Force-sync each skill to its CRAFT-pinned version, then run
+    each skill's install-skill command against BERIL_ROOT."""
     beril_root = Path(args.beril_root).resolve()
     if not beril_root.is_dir():
         print(f"Error: BERIL_ROOT not found: {beril_root}", file=sys.stderr)
@@ -62,6 +204,55 @@ def cmd_install_platform(args: argparse.Namespace) -> int:
     print(f"BERIL_ROOT: {beril_root}", file=sys.stderr)
     print("", file=sys.stderr)
 
+    # Stage 1: sync each skill to the version CRAFT pins.
+    sync_skipped = getattr(args, "no_sync_skills", False)
+    if sync_skipped:
+        print(
+            "── Skipping skill-version sync (--no-sync-skills)",
+            file=sys.stderr,
+        )
+    else:
+        print(
+            f"── Syncing skill versions to CRAFT v{__version__} pins",
+            file=sys.stderr,
+        )
+        pins = _resolve_skill_pins()
+        if not pins:
+            print(
+                "   ⚠ Could not resolve skill pins from CRAFT metadata "
+                "(CRAFT not installed via pipx?). Skipping sync; will "
+                "run install-skill against whatever's on PATH.",
+                file=sys.stderr,
+            )
+        else:
+            auto_yes = getattr(args, "yes", False)
+            sync_errors: list[str] = []
+            for skill in _SKILLS:
+                name = skill["name"]
+                if name not in pins:
+                    print(
+                        f"   ⚠ {name}: no pin in CRAFT metadata; skipping",
+                        file=sys.stderr,
+                    )
+                    continue
+                ok, msg = _sync_skill_to_pinned_version(
+                    name, pins[name], auto_yes=auto_yes
+                )
+                marker = "✓" if ok else "✗"
+                print(f"   {marker} {name}: {msg}", file=sys.stderr)
+                if not ok:
+                    sync_errors.append(f"{name}: {msg}")
+            if sync_errors:
+                print("", file=sys.stderr)
+                print(
+                    "   ⚠ One or more skill syncs failed. Continuing to "
+                    "install-skill stage anyway; per-skill versions may "
+                    "drift from CRAFT's pin.",
+                    file=sys.stderr,
+                )
+        print("", file=sys.stderr)
+
+    # Stage 2: existing per-skill install-skill loop.
     n_ok = 0
     n_missing = 0
     n_failed = 0
@@ -151,24 +342,32 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             print(f"   ✗ {cli} NOT on PATH", file=sys.stderr)
             n_warnings += 1
 
-    # Check 2: each skill's --version (cross-checks pipx install integrity)
+    # Check 2: installed skill versions match CRAFT pins.
     print("", file=sys.stderr)
-    print("── Skill versions", file=sys.stderr)
+    print("── Skill versions (vs CRAFT pins)", file=sys.stderr)
+    pins = _resolve_skill_pins()
     for skill in _SKILLS:
         cli = skill["cli"]
+        name = skill["name"]
         if shutil.which(cli) is None:
             continue
-        try:
-            result = subprocess.run(
-                [cli, "--version"],
-                capture_output=True,
-                text=True,
-                timeout=5,
+        installed = _installed_skill_version(cli)
+        if installed is None:
+            print(f"   {cli}: ERROR reading version", file=sys.stderr)
+            n_warnings += 1
+            continue
+        pinned = pins.get(name, {}).get("tag")
+        if pinned is None:
+            print(f"   {cli}: {installed}  (CRAFT pin unknown)", file=sys.stderr)
+            continue
+        if _versions_match(installed, pinned):
+            print(f"   ✓ {cli}: {installed} (matches pin)", file=sys.stderr)
+        else:
+            print(
+                f"   ⚠ {cli}: installed {installed}, "
+                f"CRAFT pins {pinned} — run `craft install-platform` to sync",
+                file=sys.stderr,
             )
-            version_str = (result.stdout + result.stderr).strip().split()[-1]
-            print(f"   {cli}: {version_str}", file=sys.stderr)
-        except Exception as exc:  # noqa: BLE001
-            print(f"   {cli}: ERROR reading version: {exc}", file=sys.stderr)
             n_warnings += 1
 
     # Check 3: each skill's configure (if a BERIL_ROOT was supplied)
@@ -266,6 +465,20 @@ def main(argv: Optional[list[str]] = None) -> int:
     p_install.add_argument(
         "beril_root",
         help="Path to the BERIL deployment (contains .claude/skills/).",
+    )
+    p_install.add_argument(
+        "--no-sync-skills",
+        action="store_true",
+        help=(
+            "Skip the pre-install skill-version sync. Use when you "
+            "have hand-installed skill versions you want to keep."
+        ),
+    )
+    p_install.add_argument(
+        "--yes",
+        "-y",
+        action="store_true",
+        help="Auto-confirm skill-version sync prompts (for CI / scripted runs).",
     )
     p_install.set_defaults(func=cmd_install_platform)
 

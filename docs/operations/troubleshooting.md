@@ -30,7 +30,7 @@ itself. Common failures:
 | `craft doctor` output | Cause | Fix |
 |---|---|---|
 | `✗ Skill CLI not on PATH: beril-adversarial` | pipx install partially failed | `pipx install --force git+https://github.com/kbaseincubator/beril-adversarial-skill.git@<tag>` |
-| `beril-adversarial: version mismatch (installed: 0.7.0.7, CRAFT pins: 0.7.0.9)` | Skill installed but not at the CRAFT-pinned version | `pipx install --force git+https://github.com/kbaseincubator/beril-adversarial-skill.git@v0.7.0.9` |
+| `⚠ beril-adversarial: installed 0.7.0.4, CRAFT pins 0.7.0.10 — run `craft install-platform` to sync` | Skill installed standalone (typical: hub install of skill before CRAFT was added) | Re-run `craft install-platform <BERIL_ROOT>` (v0.2.3+); the sync stage force-reinstalls drifted skills at the pinned versions. To opt out for a specific skill, hand-install + then pass `--no-sync-skills`. |
 | Per-skill `configure` step reports `claude CLI not on PATH` | Claude Code CLI not installed | Install Claude Code; see [code.claude.com/docs](https://code.claude.com/docs) |
 | Per-skill `configure` step reports `CBORG_API_KEY missing` | `<BERIL_ROOT>/.env` doesn't have the key | Add `CBORG_API_KEY=<token>` to `<BERIL_ROOT>/.env` |
 | Per-skill `configure` step reports `python-pptx not importable` | Skill's pipx venv missing a dep | `pipx install --force` the affected skill |

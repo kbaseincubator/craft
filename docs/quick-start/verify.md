@@ -24,17 +24,17 @@ This runs three checks:
 Sample output:
 
 ```
-CRAFT doctor v0.1.4
+CRAFT doctor v0.2.3
 
 ── Skill CLIs on PATH
    ✓ beril-adversarial → /opt/pipx/bin/beril-adversarial
    ✓ beril-paper-writer → /opt/pipx/bin/beril-paper-writer
    ✓ beril-presentation-maker → /opt/pipx/bin/beril-presentation-maker
 
-── Skill versions
-   beril-adversarial: 0.7.0.9
-   beril-paper-writer: 1.0.1
-   beril-presentation-maker: 1.0.0
+── Skill versions (vs CRAFT pins)
+   ✓ beril-adversarial: 0.7.0.10 (matches pin)
+   ✓ beril-paper-writer: 1.0.2 (matches pin)
+   ✓ beril-presentation-maker: 1.0.1 (matches pin)
 
 ── Per-skill `configure` (BERIL_ROOT=/path/to/beril)
    beril-adversarial configure ...
@@ -51,6 +51,25 @@ CRAFT doctor summary:
 
 A clean exit code 0 means CRAFT is ready. Non-zero means at
 least one warning — read the output above to find the issue.
+
+## Pin-drift detection (v0.2.3+)
+
+If a skill is installed at a different version than CRAFT pins
+(common on a Hub where the skill was installed standalone
+before CRAFT), `craft doctor` flags it in the Skill versions
+section:
+
+```
+── Skill versions (vs CRAFT pins)
+   ✓ beril-adversarial: 0.7.0.10 (matches pin)
+   ⚠ beril-paper-writer: installed 1.0.1, CRAFT pins 1.0.2 — run `craft install-platform` to sync
+   ✓ beril-presentation-maker: 1.0.1 (matches pin)
+```
+
+Resolve by re-running `craft install-platform <BERIL_ROOT>` —
+the install-platform command's sync stage will detect the
+drift and force-reinstall the affected skills at the pinned
+versions.
 
 ## Skip the BERIL_ROOT check
 

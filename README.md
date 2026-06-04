@@ -58,7 +58,7 @@ PATH:
 
 ```bash
 # 1. Install CRAFT + its three skills (pipx transitively pulls them in)
-pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.2
+pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.3
 
 # 2. Deploy all three skills into the BERIL deployment
 craft install-platform <BERIL_ROOT>
@@ -86,7 +86,7 @@ Individual skills release on their own cadence; CRAFT bumps when
 the contract surface changes OR when coordinated cross-skill
 releases happen.
 
-Current pins (CRAFT v0.2.2):
+Current pins (CRAFT v0.2.3):
 
 | Skill | Pinned version |
 |---|---|

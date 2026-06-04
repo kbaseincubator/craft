@@ -31,12 +31,27 @@ invocations into one command.
 ## Install command
 
 ```bash
-pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.2
+pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.3
 ```
 
-Replace `v0.2.2` with the latest tag if you want the current
+Replace `v0.2.3` with the latest tag if you want the current
 release; see [release notes](../reference/release-notes.md) for
 what each version ships.
+
+!!! warning "Pre-existing skill installs"
+    pipx **doesn't reinstall packages that are already installed
+    as standalone apps**. If you've previously run
+    `pipx install beril-adversarial-skill` (etc.) at a different
+    version, `pipx install craft` leaves those pre-existing
+    venvs untouched — `craft install-platform` would deploy
+    skill data from the *old* versions, not the ones CRAFT pins.
+
+    `craft install-platform` (v0.2.3+) detects this drift and
+    force-syncs each skill to the CRAFT-pinned version
+    automatically, prompting before each reinstall. Pass
+    `--yes` for unattended runs, or `--no-sync-skills` to skip
+    the sync (e.g., when you have a hand-installed version you
+    want to keep).
 
 CRAFT's `pyproject.toml` pins the three skill versions, so this
 single `pipx install` transitively installs:
@@ -53,7 +68,7 @@ pipx venv; the CRAFT meta-package shares its venv with the
 
 ```bash
 craft --version
-# CRAFT v0.1.4
+# CRAFT v0.2.3
 ```
 
 You should also see the three skill CLIs on `PATH`:

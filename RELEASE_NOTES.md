@@ -1,5 +1,126 @@
 # CRAFT — Release Notes
 
+## v0.2.3 (2026-06-04) — install-platform force-syncs skill versions
+
+**Fixes a real bug surfaced by Adam's hub install of CRAFT
+v0.2.2.** pipx does NOT reinstall packages that are already
+installed as standalone apps. Before v0.2.3, `pipx install
+craft@v0.2.2` on a hub with previously-installed skill
+versions left those venvs untouched + CRAFT's pin guarantees
+were silently false. The Hub report:
+
+```
+$ craft install-platform .
+── beril-adversarial-skill
+   Package version: 0.7.0.4         ← CRAFT v0.2.2 pins v0.7.0.10
+── beril-paper-writer-skill
+   Package version: 0.7.2           ← CRAFT v0.2.2 pins v1.0.2
+── beril-presentation-maker-skill
+   Package version: 0.3.8           ← CRAFT v0.2.2 pins v1.0.1
+All CRAFT skills installed cleanly.  ← but at the wrong versions!
+```
+
+### The fix
+
+`craft install-platform` (v0.2.3+) runs a **pre-install
+version sync stage**:
+
+1. Reads CRAFT's own pinned skill URLs from its installed
+   metadata (`importlib.metadata.requires('craft')`).
+2. For each skill, checks the installed CLI version.
+3. If a skill is missing or installed at a different version,
+   force-installs the CRAFT-pinned version via
+   `pipx install --force <url>@<tag>`.
+4. Prompts before each reinstall (interactive); pass `--yes`
+   to skip prompts.
+5. Then proceeds to the existing per-skill `install-skill`
+   stage.
+
+A `--no-sync-skills` flag opts out entirely for users who
+have hand-installed specific skill versions they want to
+keep.
+
+`craft doctor` (v0.2.3+) also flags pin drift in the "Skill
+versions" section with a clear "run `craft install-platform`
+to sync" guidance line, so users see the issue before it bites
+them.
+
+### What changed in v0.2.3
+
+`src/craft/cli.py`:
+
+- New `_resolve_skill_pins()` reads CRAFT's metadata to
+  recover the pinned `git+https://...@tag` URLs for each
+  skill.
+- New `_installed_skill_version()` / `_versions_match()`
+  helpers + `_sync_skill_to_pinned_version()` orchestrator.
+- `cmd_install_platform` runs the sync stage before the
+  install-skill loop. Reports per-skill sync result (`✓
+  already at vX`, `✓ synced to vX`, `✗ pipx subprocess
+  raised: ...`).
+- `cmd_doctor` compares installed version against pinned tag;
+  warns on mismatch.
+- New `--no-sync-skills` and `--yes` flags on `install-platform`.
+
+`tests/test_cli.py`:
+
+- 7 new tests covering the dep regex (canonical form +
+  ignored deps), `_versions_match` v-prefix handling,
+  `_resolve_skill_pins` happy + CRAFT-not-installed paths,
+  and `_sync_skill_to_pinned_version` no-op + force-sync
+  paths.
+- Tests now 16 total (was 9 in v0.2.2). All pass.
+
+`docs/quick-start/install.md`:
+
+- New "Pre-existing skill installs" warning admonition
+  explaining the pipx gotcha + the new sync behavior.
+- Sample output bumped to v0.2.3.
+
+`docs/quick-start/verify.md`:
+
+- New "Pin-drift detection" subsection with sample drift
+  output.
+- Skill-versions sample output updated to show the new
+  pin-comparison format (`✓ <cli>: <version> (matches pin)`).
+- Header `CRAFT doctor v0.1.4` → `v0.2.3`.
+
+`docs/operations/troubleshooting.md`:
+
+- Drift-row updated to reflect the new doctor output format
+  + point users at `craft install-platform` as the fix
+  rather than at a manual `pipx install --force` command.
+
+### What this does NOT change
+
+- **Skill versions pinned by CRAFT.** Same as v0.2.2:
+  adversarial v0.7.0.10 / paper-writer v1.0.2 /
+  presentation-maker v1.0.1.
+- **The cross-skill contract.** No schema or operational
+  changes.
+- **Per-skill `install-skill` behavior.** The sync stage runs
+  before the existing install-skill loop; the loop itself is
+  unchanged.
+
+### Operator note for Hub deployments
+
+If you previously ran `craft install-platform` on v0.2.0 –
+v0.2.2 and observed `0.7.0.4 / 0.7.2 / 0.3.8` (or similar
+older versions) in the summary, **your hub skill installs are
+out of sync with what CRAFT pins**. Re-run with v0.2.3:
+
+```bash
+pipx install --force git+https://github.com/kbaseincubator/craft.git@v0.2.3
+craft install-platform <BERIL_ROOT>
+# Prompts will ask you to confirm 3 force-reinstalls; answer Y to each.
+# Or pass --yes for unattended.
+```
+
+You should see the install-platform summary show the pinned
+versions (`0.7.0.10 / 1.0.2 / 1.0.1`) afterwards.
+
+---
+
 ## v0.2.2 (2026-06-03) — Terminology normalization + skill submodule bumps
 
 Coordinated docs-pass across CRAFT root + three CRAFT-skill
