@@ -1515,7 +1515,7 @@ Wall-clock: ~5-15 minutes.</p>
 <hr />
 <h2 id="skill-readme-from-the-skill-repo">Skill README (from the skill repo)<a class="headerlink" href="#skill-readme-from-the-skill-repo" title="Permanent link">&para;</a></h2>
 <h1 id="beril-adversarial-skill_1">beril-adversarial-skill<a class="headerlink" href="#beril-adversarial-skill_1" title="Permanent link">&para;</a></h1>
-<p>A harsh, detail-oriented adversarial reviewer for BERDL analysis projects,
+<p>A harsh, detail-oriented adversarial reviewer for BERIL analysis projects,
 research plans, paper drafts, and presentation drafts. Distributed as a
 Claude Code skill that runs inside a BERIL deployment.</p>
 <p>Built as a complement to BERIL's <code>/berdl-review</code> (the lighter automated
@@ -1614,7 +1614,7 @@ flat-file rejected with migration message).</p>
 <td>Why v3 looks the way it does; D1-D6, C1-C3, G1-G5 implementation contracts.</td>
 </tr>
 <tr>
-<td>Cross-skill: <strong><a href="https://github.com/ArkinLaboratory/beril-presentation-maker-skill/blob/main/docs/cross-skill/PARTICIPANT-RUNBOOK.md">PARTICIPANT-RUNBOOK.md</a></strong></td>
+<td>Cross-skill: <strong><a href="https://github.com/kbaseincubator/beril-presentation-maker-skill/blob/main/docs/cross-skill/PARTICIPANT-RUNBOOK.md">PARTICIPANT-RUNBOOK.md</a></strong></td>
 <td>Researcher using ANY of the 4 BERIL plug-in skills (paper-writer / presentation-maker / adversarial / atlas)</td>
 <td>Hub workflow integration (<code>/berdl_start</code> → install → configure → run any skill), recovery, cost.</td>
 </tr>
@@ -1802,7 +1802,7 @@ logic.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Run from BERIL_ROOT. Steps in order: install package → verify CLI loads →</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># configure cross-skill bindings → deploy skill files into BERIL.</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">cd</span><span class="w"> </span>&lt;BERIL_ROOT&gt;
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+https://github.com/ArkinLaboratory/beril-adversarial-skill.git<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+https://github.com/kbaseincubator/beril-adversarial-skill.git<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>--version<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>configure<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>install-skill<span class="w"> </span>.
@@ -1811,7 +1811,7 @@ logic.</p>
 GitHub — e.g., JupyterHub instances; relies on a credential helper or a PAT.)</p>
 <p>If you have an SSH key registered with the ArkinLaboratory GitHub org, the
 SSH URL also works (and avoids needing a credential helper):</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+ssh://git@github.com/ArkinLaboratory/beril-adversarial-skill.git
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+ssh://git@github.com/kbaseincubator/beril-adversarial-skill.git
 </span></code></pre></div>
 <p>The <code>git@</code> is mandatory — <code>git+ssh://github.com/...</code> (without it) fails
 auth on private repos.</p>
