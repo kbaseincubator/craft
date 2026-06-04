@@ -1832,11 +1832,11 @@ implicit but load-bearing.</p>
 <td>New artifact types (e.g., <code>experiments/</code>) being added are non-breaking; renaming existing ones would be.</td>
 </tr>
 <tr>
-<td>K-BERDL database conventions</td>
-<td>Evolving (Adam noted BERDL nomenclature being deprecated)</td>
+<td>KBase Lakehouse database conventions</td>
+<td>Stable; docs normalized 2026-06-03</td>
 <td>2026-06-03</td>
 <td>Medium</td>
-<td>The "BERDL" → "KBase</td>
+<td>"BERDL" is deprecated — the data layer is "KBase Lakehouse", the co-scientist is "BERIL". Documentation now uses these terms; operational artifacts (prompts, audit messages, code identifiers like <code>berdl_query</code>/<code>berdl_start</code>) still reference BERDL by design.</td>
 </tr>
 <tr>
 <td><code>&lt;BERIL_ROOT&gt;/.env</code> env-var convention</td>
@@ -1860,10 +1860,12 @@ implicit but load-bearing.</p>
   maintainers. The quarterly review should check the BERIL
   repo for recent commits to the skill-loader + draft-layout
   conventions.</li>
-<li>"BERDL deprecation" is a known long-term consideration; CRAFT
-  prompts + docs reference BERDL in places. v0.x doesn't
-  block on the nomenclature change; v1.x of CRAFT may include
-  a coordinated rename pass.</li>
+<li>"BERDL" nomenclature is deprecated: the data layer is "KBase
+  Lakehouse" and the co-scientist is "BERIL". CRAFT documentation
+  was normalized to these terms on 2026-06-03. Operational
+  artifacts (prompts, audit messages, code identifiers) still
+  reference BERDL by design; a coordinated operational rename, if
+  ever undertaken, is a separate v1.x consideration.</li>
 </ul>
 <hr />
 <h2 id="3-python-ecosystem">3. Python ecosystem<a class="headerlink" href="#3-python-ecosystem" title="Permanent link">&para;</a></h2>
