@@ -31,10 +31,10 @@ invocations into one command.
 ## Install command
 
 ```bash
-pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.1
+pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.2
 ```
 
-Replace `v0.2.1` with the latest tag if you want the current
+Replace `v0.2.2` with the latest tag if you want the current
 release; see [release notes](../reference/release-notes.md) for
 what each version ships.
 

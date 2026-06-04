@@ -1,5 +1,71 @@
 # CRAFT — Release Notes
 
+## v0.2.2 (2026-06-03) — Terminology normalization + skill submodule bumps
+
+Coordinated docs-pass across CRAFT root + three CRAFT-skill
+repos. No code change anywhere — six files in CRAFT root, one
+README per skill repo.
+
+### Terminology rule (now codified in CRAFT-DEPENDENCIES §2)
+
+- **Co-scientist:** "BERIL". The "BERDL" name is deprecated as
+  the co-scientist's name.
+- **Data layer:** "KBase Lakehouse". The "K-BERDL" name is
+  deprecated as the data-layer's name.
+- **Operational artifacts keep BERDL by design.** Prompts,
+  audit messages, and code identifiers (e.g., `berdl_query`,
+  `berdl_start`, `BERDL_REGISTRY_URL`, the `reference_kberdl_*`
+  memory slug) still reference BERDL. A coordinated operational
+  rename, if ever undertaken, is a separate v1.x consideration.
+
+This rule is codified in the [CRAFT-DEPENDENCIES.md §2 BERIL
+row](CRAFT-DEPENDENCIES.md).
+
+### Changes — CRAFT root
+
+- `README.md`, `PLATFORM-PROPOSAL.md`,
+  `AUGMENTATION-STREAM-RETROSPECTIVE.md`: BERDL → BERIL.
+- `CRAFT-CONTRACT.md`, `CROSS-SKILL-RELEASE.md`: K-BERDL →
+  KBase Lakehouse.
+- `CRAFT-DEPENDENCIES.md`: rewrote the BERIL data-layer row +
+  the coordination note to codify the rule above. Also fixed a
+  latent table-rendering bug — an unescaped `|` inside one
+  cell broke the markdown table.
+
+### Changes — submodule pin bumps
+
+Each CRAFT-skill repo shipped a docs-only patch release:
+
+- `beril-adversarial-skill`: v0.7.0.9 → **v0.7.0.10**
+- `beril-paper-writer-skill`: v1.0.1 → **v1.0.2**
+- `beril-presentation-maker-skill`: v1.0.0 → **v1.0.1**
+
+The per-skill READMEs got the same terminology pass plus
+URL updates from `ArkinLaboratory/...` to `kbaseincubator/...`
+to match the 2026-06-03 repo transfer. presentation-maker's
+README also got its stale `@v0.3.4.4` install-pin example
+bumped to `@v1.0.0`.
+
+CRAFT's `pyproject.toml` + `.gitmodules` are updated to the new
+tags. Submodules checked out + recorded at the new SHAs.
+
+### Atlas — outside CRAFT
+
+`beril-atlas-skill` is not a CRAFT submodule. It got the same
+README terminology pass on its own (one commit, no tag — atlas
+follows a different release-tagging convention). Atlas stays
+at `ArkinLaboratory/beril-atlas-skill` — it did NOT migrate to
+`kbaseincubator`.
+
+### Verification
+
+`pipx install --force git+https://github.com/kbaseincubator/craft.git@v0.2.2`
+from a fresh shell (no `gh auth` context) should resolve all
+three skill deps at the new patch tags. Test on the next
+cross-skill smoke run.
+
+---
+
 ## v0.2.1 (2026-06-03) — Skill repos migrated to kbaseincubator + flipped public
 
 The three skill repos transferred from `ArkinLaboratory` to
