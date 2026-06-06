@@ -869,10 +869,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#runtime-configuration-contract-v2-proposed-pending-review-coordinated-rollout" class="md-nav__link">
+  <a href="#runtime-configuration-contract-v2-adopted-craft-v030-2026-06" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Runtime configuration contract v2 — PROPOSED (pending review + coordinated rollout)
+        Runtime configuration contract v2 — adopted (CRAFT v0.3.0, 2026-06)
       
     </span>
   </a>
@@ -1774,10 +1774,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#runtime-configuration-contract-v2-proposed-pending-review-coordinated-rollout" class="md-nav__link">
+  <a href="#runtime-configuration-contract-v2-adopted-craft-v030-2026-06" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Runtime configuration contract v2 — PROPOSED (pending review + coordinated rollout)
+        Runtime configuration contract v2 — adopted (CRAFT v0.3.0, 2026-06)
       
     </span>
   </a>
@@ -1975,7 +1975,7 @@ the <strong>operational invariants</strong> they share. The contract is the
 load-bearing piece that lets each skill release independently
 without breaking the others.</p>
 <p><strong>Versioning:</strong> the contract itself is versioned at the platform
-level. Today: <strong>CRAFT contract v0.1</strong>. Bumping the contract
+level. Today: <strong>CRAFT contract v0.2</strong>. Bumping the contract
 version requires platform-level review + a dual-version
 support window (typically 1-2 minor releases per skill).</p>
 <hr />
@@ -2250,7 +2250,7 @@ reads <code>.env</code> at all</strong>, so reasoning-stage auth currently falls
 through to ambient Claude Code login. Contract v2 (below)
 replaces this with an explicit, provider-aware model.</p>
 </blockquote>
-<h4 id="runtime-configuration-contract-v2-proposed-pending-review-coordinated-rollout">Runtime configuration contract v2 — PROPOSED (pending review + coordinated rollout)<a class="headerlink" href="#runtime-configuration-contract-v2-proposed-pending-review-coordinated-rollout" title="Permanent link">&para;</a></h4>
+<h4 id="runtime-configuration-contract-v2-adopted-craft-v030-2026-06">Runtime configuration contract v2 — adopted (CRAFT v0.3.0, 2026-06)<a class="headerlink" href="#runtime-configuration-contract-v2-adopted-craft-v030-2026-06" title="Permanent link">&para;</a></h4>
 <p><strong>Two config classes.</strong> Every config value is exactly one of:</p>
 <ul>
 <li><strong>App-internal</strong> — read by the skill's own Python (e.g. image
@@ -2567,6 +2567,11 @@ reference) can be removed from CRAFT. Process:</p>
 <td>v0.1 (draft)</td>
 <td>2026-06-03</td>
 <td>Initial draft. Captures the contract as it exists across adversarial v0.7.0.8, paper-writer v1.0.0, presentation-maker v1.0.0.</td>
+</tr>
+<tr>
+<td>v0.2</td>
+<td>2026-06</td>
+<td>§3.4 runtime-config contract v2 adopted (provider abstraction + reasoning/standard/fast tiers + additive-only .env + configure bootstrap + app_internal_base_url). Shipped: CRAFT v0.3.0, adversarial v0.7.1, paper-writer v1.1.0, presentation-maker v1.1.0, atlas v0.4.0.</td>
 </tr>
 </tbody>
 </table>

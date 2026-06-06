@@ -611,6 +611,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#runtime-configuration-with-craft-configure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime configuration with craft configure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1500,6 +1511,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#runtime-configuration-with-craft-configure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime configuration with craft configure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1561,9 +1583,9 @@ invocations into one command.</p>
 </span></code></pre></div></li>
 </ul>
 <h2 id="install-command">Install command<a class="headerlink" href="#install-command" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>git+https://github.com/kbaseincubator/craft.git@v0.2.3
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>git+https://github.com/kbaseincubator/craft.git@v0.3.0
 </span></code></pre></div>
-<p>Replace <code>v0.2.3</code> with the latest tag if you want the current
+<p>Replace <code>v0.3.0</code> with the latest tag if you want the current
 release; see <a href="../../reference/release-notes/">release notes</a> for
 what each version ships.</p>
 <div class="admonition warning">
@@ -1593,7 +1615,7 @@ pipx venv; the CRAFT meta-package shares its venv with the
 <code>craft</code> CLI.</p>
 <h2 id="verify-craft-installed">Verify CRAFT installed<a class="headerlink" href="#verify-craft-installed" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>craft<span class="w"> </span>--version
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># CRAFT v0.2.3</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># CRAFT v0.3.0</span>
 </span></code></pre></div>
 <p>You should also see the three skill CLIs on <code>PATH</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>beril-adversarial<span class="w"> </span>--version
@@ -1642,12 +1664,60 @@ What that means for running CRAFT:</p>
 </ul>
 <p>Interactive Claude Code, Cowork, and web/desktop/mobile chat are
 <strong>not</strong> affected by this change.</p>
+<h2 id="runtime-configuration-with-craft-configure">Runtime configuration with <code>craft configure</code><a class="headerlink" href="#runtime-configuration-with-craft-configure" title="Permanent link">&para;</a></h2>
+<p>CRAFT v0.3.0 turns the manual provider wiring below into one command. You
+declare the provider + credential in <code>&lt;BERIL_ROOT&gt;/.env</code>, then run:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>craft<span class="w"> </span>configure<span class="w"> </span>&lt;BERIL_ROOT&gt;
+</span></code></pre></div>
+<p>which runs each installed skill's <code>configure</code> (CRAFT-CONTRACT §3.4): it selects
+the provider, discovers the model list, pins a model per tier, <strong>generates
+<code>&lt;BERIL_ROOT&gt;/.claude/settings.{json,local.json}</code></strong> (so <code>claude -p</code> is wired
+without hand-editing), and runs a validation ping that confirms a real call works.</p>
+<p><strong>Provider</strong> — set <code>ACTIVE_PROVIDER</code> in <code>.env</code> to one of:</p>
+<table>
+<thead>
+<tr>
+<th><code>ACTIVE_PROVIDER</code></th>
+<th>Audience</th>
+<th>What <code>configure</code> wires for <code>claude -p</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>anthropic</code></td>
+<td>Anyone, incl. external/public</td>
+<td><code>ANTHROPIC_API_KEY</code> (direct Anthropic Platform; pay-as-you-go, unaffected by the 2026-06-15 credit split)</td>
+</tr>
+<tr>
+<td><code>cborg</code></td>
+<td>LBL/KBase</td>
+<td><code>ANTHROPIC_BASE_URL=https://api.cborg.lbl.gov</code> (bare host) + <code>ANTHROPIC_AUTH_TOKEN=&lt;CBORG key&gt;</code>; free on the Hub, needs LBL VPN locally</td>
+</tr>
+<tr>
+<td><code>subscription</code></td>
+<td>Fallback (no key)</td>
+<td>nothing — ambient Claude Code login, capped by the monthly Agent SDK credit</td>
+</tr>
+</tbody>
+</table>
+<p>If <code>ACTIVE_PROVIDER</code> is unset it is <strong>inferred</strong> for backward compatibility: a
+<code>CBORG_API_KEY</code> → <code>cborg</code>, an <code>ANTHROPIC_API_KEY</code> → <code>anthropic</code>, neither →
+<code>subscription</code>. So an existing BERIL <code>.env</code> keeps working with no change.
+<code>anthropic</code> is a <strong>co-equal profile</strong>, not merely a CBORG fallback — a direct
+Anthropic key works uniformly across <code>claude -p</code> and the skills' app-internal
+calls.</p>
+<p><strong>Model tiers</strong> — three logical tiers (<code>reasoning</code> / <code>standard</code> / <code>fast</code>)
+instead of hardcoded model ids; <code>configure</code> discovers the provider's models and
+pins a concrete, visible model per tier, so a model swap is an explicit re-pin
+(<code>MODEL_{REASONING,STANDARD,FAST}</code> in <code>.env</code>), not silent drift.</p>
+<p>The detail below explains what <code>configure</code> writes for the <code>cborg</code> case — useful
+background, and the manual path if you prefer to wire it by hand.</p>
 <p><strong>LBL/KBase operators</strong> have a cleaner option: point <code>claude -p</code>
 itself at CBORG, which serves Claude (incl. Opus 4-6) and
 documents a <a href="https://cborg.lbl.gov/tools_claudecode/">Claude Code integration</a>.
 Setting</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ANTHROPIC_BASE_URL=https://api.cborg.lbl.gov          # note: NO /v1 suffix
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>ANTHROPIC_AUTH_TOKEN=&lt;same value as CBORG_API_KEY&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ANTHROPIC_BASE_URL=https://api.cborg.lbl.gov          # note: NO /v1 suffix
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>ANTHROPIC_AUTH_TOKEN=&lt;same value as CBORG_API_KEY&gt;
 </span></code></pre></div>
 <p>routes the reasoning stages through CBORG at API rates (reusing
 the key CRAFT already requires), sidestepping the subscription

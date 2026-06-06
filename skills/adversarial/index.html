@@ -1799,17 +1799,17 @@ project, the agent picks a draft:</p>
 too — the agent has shell access and follows the same resolution
 logic.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Run from BERIL_ROOT. Steps in order: install package → verify CLI loads →</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># configure cross-skill bindings → deploy skill files into BERIL.</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Run from BERIL_ROOT. In order: install package → verify CLI loads →</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># deploy skill files into BERIL → bootstrap CRAFT runtime config.</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">cd</span><span class="w"> </span>&lt;BERIL_ROOT&gt;
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+https://github.com/kbaseincubator/beril-adversarial-skill.git<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>--version<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>configure<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>install-skill<span class="w"> </span>.
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>install-skill<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-adversarial<span class="w"> </span>configure<span class="w"> </span>.
 </span></code></pre></div>
 <p>(HTTPS URL above works on shared hosts where SSH keys aren't registered with
 GitHub — e.g., JupyterHub instances; relies on a credential helper or a PAT.)</p>
-<p>If you have an SSH key registered with the ArkinLaboratory GitHub org, the
+<p>If you have an SSH key registered with the kbaseincubator GitHub org, the
 SSH URL also works (and avoids needing a credential helper):</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+ssh://git@github.com/kbaseincubator/beril-adversarial-skill.git
 </span></code></pre></div>
@@ -1818,15 +1818,39 @@ auth on private repos.</p>
 <p><code>pipx ensurepath</code> once after a fresh pipx install if <code>pipx</code> writes its
 bin dir to a PATH location that isn't on your <code>$PATH</code> yet, then <code>exec
 $SHELL -l</code> to reload.</p>
-<p>The first command installs the Python CLI. The second copies the
-Claude Code skill into <code>&lt;BERIL_ROOT&gt;/.claude/skills/beril-adversarial/</code>.
-The third confirms <code>claude</code> is on PATH and reports whether <code>codex</code> is
-also available (codex is optional; needed for <code>--reviewer codex</code> and
-<code>--reviewer claude,codex</code> fusion).</p>
+<p><code>pipx install</code> adds the Python CLI; <code>--version</code> confirms it loads;
+<code>install-skill .</code> copies the Claude Code skill into
+<code>&lt;BERIL_ROOT&gt;/.claude/skills/beril-adversarial/</code>; and <code>configure .</code>
+bootstraps the CRAFT runtime config — it selects the LLM provider,
+resolves the reasoning/standard/fast model tiers, writes
+<code>&lt;BERIL_ROOT&gt;/.claude/settings.{json,local.json}</code>, and runs a validation
+ping so <code>claude -p</code> is known-good before your first review. (<code>codex</code> is
+optional, needed only for <code>--reviewer codex</code> / <code>claude,codex</code> fusion.)
+See <a href="HUB_INSTALL.md">HUB_INSTALL.md</a> for the step-by-step.</p>
 <p><code>install-skill</code> is idempotent: re-running it overwrites the shipped files
 (<code>commands/</code>, <code>prompts/</code>, <code>references/</code>, <code>tools/</code>, <code>SKILL.md</code>) but
 preserves <code>state/</code> (learned-patterns memory). To upgrade after a new
 release: <code>pipx upgrade beril-adversarial-skill &amp;&amp; beril-adversarial install-skill &lt;BERIL_ROOT&gt;</code>.</p>
+<h2 id="runtime-configuration-provider-model-tiers">Runtime configuration (provider + model tiers)<a class="headerlink" href="#runtime-configuration-provider-model-tiers" title="Permanent link">&para;</a></h2>
+<p><code>configure</code> (run during install, above) wires the skill's <code>claude -p</code> reasoning to a
+CRAFT-contracted provider and is safe to re-run whenever the environment changes. The
+model follows CRAFT-CONTRACT §3.4:</p>
+<ul>
+<li><strong>Provider</strong> — <code>ACTIVE_PROVIDER</code> ∈ <code>anthropic | cborg | subscription</code>, in
+  <code>&lt;BERIL_ROOT&gt;/.env</code>. If unset it is inferred from the keys already present (a
+  <code>CBORG_API_KEY</code> → <code>cborg</code>, an <code>ANTHROPIC_API_KEY</code> → <code>anthropic</code>, neither →
+  <code>subscription</code>), so an existing BERIL <code>.env</code> keeps working unchanged.</li>
+<li><strong>Model tiers</strong> — three logical tiers (<code>reasoning</code> / <code>standard</code> / <code>fast</code>) instead of
+  hardcoded model ids. <code>configure</code> discovers the provider's live model list and pins a
+  concrete, visible model per tier into <code>&lt;BERIL_ROOT&gt;/.claude/settings.json</code>, so a model
+  swap is an explicit re-pin rather than silent drift. Override discovery by pinning
+  <code>MODEL_REASONING</code> / <code>MODEL_STANDARD</code> / <code>MODEL_FAST</code> in <code>.env</code>.</li>
+<li><strong>Additive <code>.env</code></strong> — <code>configure</code> only <em>adds</em> the CRAFT block + this skill's marker;
+  it never re-declares a credential the file already holds.</li>
+</ul>
+<p>The adversarial reviewer has no image generation and no app-internal API client, so it
+consumes only the <code>claude -p</code> side of the contract. See <a href="HUB_INSTALL.md">HUB_INSTALL.md</a>
+§"Step 3 — Configure" for the full flow.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <p>From inside a BERIL deployment, in Claude Code:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>/beril-adversarial [&lt;project_id&gt;|&lt;draft_dir&gt;]
@@ -1859,9 +1883,11 @@ runs the presentation reviewer.</p>
   verification — good for fast development iteration. Deep (~15–25m)
   expands literature scan, multi-source verification, and sensitivity
   analyses — for pre-publication review.</li>
-<li><code>--model &lt;model_id&gt;</code> — override the default model
-  (<code>claude-sonnet-4-6</code> for claude — bumped from sonnet-4 in v0.5.1;
-  <code>gpt-5.4</code> for codex).</li>
+<li><code>--model &lt;model_id&gt;</code> — override the model for this invocation. By
+  default the review runs on the model <code>configure</code> pinned for the review
+  tier (see <a href="HUB_INSTALL.md">HUB_INSTALL.md</a>); for codex, the configured
+  codex-profile model. Concrete model ids are no longer hardcoded — they
+  come from the per-tier pins <code>configure</code> writes.</li>
 <li><code>--no-stream</code> — opt out of the stream-json parser (disables
   programmatic Write verification, automatic retry on silent-failure,
   cost summary, and stream log). Default: parser is on.</li>
@@ -1993,7 +2019,7 @@ review is accompanied by <code>_claude.md</code> and <code>_codex.md</code> inte
 preserved as audit trail.</p>
 <p>A typical review file looks like:</p>
 <div class="language-markdown highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>---
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>reviewer: BERIL Adversarial Review (Claude, claude-sonnet-4-20250514)
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>reviewer: BERIL Adversarial Review (Claude, &lt;configured review-tier model&gt;)
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>type: project
 </span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>date: 2026-04-25
 </span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>project: my_project
@@ -2052,7 +2078,7 @@ preserved as audit trail.</p>
 </span><span id="__span-13-58"><a id="__codelineno-13-58" name="__codelineno-13-58" href="#__codelineno-13-58"></a>
 </span><span id="__span-13-59"><a id="__codelineno-13-59" name="__codelineno-13-59" href="#__codelineno-13-59"></a><span class="gu">## Run Metadata</span>
 </span><span id="__span-13-60"><a id="__codelineno-13-60" name="__codelineno-13-60" href="#__codelineno-13-60"></a><span class="k">-</span><span class="w"> </span>Elapsed: 11:48
-</span><span id="__span-13-61"><a id="__codelineno-13-61" name="__codelineno-13-61" href="#__codelineno-13-61"></a><span class="k">-</span><span class="w"> </span>Model: claude-sonnet-4-20250514
+</span><span id="__span-13-61"><a id="__codelineno-13-61" name="__codelineno-13-61" href="#__codelineno-13-61"></a><span class="k">-</span><span class="w"> </span>Model: &lt;configured review-tier model&gt;
 </span><span id="__span-13-62"><a id="__codelineno-13-62" name="__codelineno-13-62" href="#__codelineno-13-62"></a><span class="k">-</span><span class="w"> </span>Tokens: input=2,364,391 output=20,695 (cache_read=590,041)
 </span><span id="__span-13-63"><a id="__codelineno-13-63" name="__codelineno-13-63" href="#__codelineno-13-63"></a><span class="k">-</span><span class="w"> </span>Estimated cost: $1.470
 </span><span id="__span-13-64"><a id="__codelineno-13-64" name="__codelineno-13-64" href="#__codelineno-13-64"></a><span class="k">-</span><span class="w"> </span>Pipeline: main + critic + fix + re-critic (4 calls)

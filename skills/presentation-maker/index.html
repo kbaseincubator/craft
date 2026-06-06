@@ -1695,16 +1695,34 @@ State lives on disk in the v0.3.1+ 4-zone layout under
 directory. Old drafts are pruned via
 <code>beril-presentation-maker prune &lt;project_id&gt;</code>.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Run from BERIL_ROOT. Steps in order: install package → verify CLI loads →</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># configure dependencies → deploy skill files into BERIL.</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Run from BERIL_ROOT. In order: install package → verify CLI loads →</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># deploy skill files into BERIL → bootstrap CRAFT runtime config.</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">cd</span><span class="w"> </span>&lt;BERIL_ROOT&gt;
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+https://github.com/kbaseincubator/beril-presentation-maker-skill.git@v1.0.0<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>pipx<span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>git+https://github.com/kbaseincubator/beril-presentation-maker-skill.git@v1.1.0<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-presentation-maker<span class="w"> </span>--version<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-presentation-maker<span class="w"> </span>configure<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-presentation-maker<span class="w"> </span>install-skill<span class="w"> </span>.
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-presentation-maker<span class="w"> </span>install-skill<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>beril-presentation-maker<span class="w"> </span>configure<span class="w"> </span>.
 </span></code></pre></div>
 <p>For full operator runbook (prerequisites, troubleshooting, hub
 deployment), see <a href="HUB_INSTALL.md">HUB_INSTALL.md</a>.</p>
+<h2 id="runtime-configuration-provider-model-tiers">Runtime configuration (provider + model tiers)<a class="headerlink" href="#runtime-configuration-provider-model-tiers" title="Permanent link">&para;</a></h2>
+<p><code>configure</code> (above) wires <code>claude -p</code> to a CRAFT-contracted provider and is safe to
+re-run when the environment changes (CRAFT-CONTRACT §3.4):</p>
+<ul>
+<li><strong>Provider</strong> — <code>ACTIVE_PROVIDER</code> ∈ <code>anthropic | cborg | subscription</code> in
+  <code>&lt;BERIL_ROOT&gt;/.env</code>; inferred from existing keys if unset, so an existing BERIL <code>.env</code>
+  works unchanged.</li>
+<li><strong>Model tiers</strong> — the skill maps its stages onto three tiers per the §3.4 default
+  policy (<code>reasoning</code> for high-leverage framing + the review-incorporating synthesis,
+  <code>standard</code> for high-volume composition, <code>fast</code> for classification/extraction/light
+  review); <code>configure</code> pins a concrete model per tier into <code>.claude/settings.json</code> (no
+  hardcoded ids). Override via <code>MODEL_{REASONING,STANDARD,FAST}</code> in <code>.env</code> or <code>--model</code>.</li>
+<li><strong>Image generation is separate</strong> — an optional provider (CBORG-Gemini via the
+  app-internal client, or <code>GOOGLE_AI_STUDIO_API_KEY</code>), NOT governed by <code>ACTIVE_PROVIDER</code>;
+  absent → <code>image_gen</code> skips gracefully. One <code>CBORG_BASE_URL</code> serves both <code>claude -p</code>
+  (bare host) and the image client (<code>/v1</code>, via <code>app_internal_base_url</code>).</li>
+</ul>
+<p>See <a href="HUB_INSTALL.md">HUB_INSTALL.md</a> §"Step 3 — Configure" for detail.</p>
 <h2 id="development">Development<a class="headerlink" href="#development" title="Permanent link">&para;</a></h2>
 <p><code>pipx</code> (above) is the <em>skill install</em> path. To work on the code and
 run the test suite, use a project-local virtualenv:</p>
