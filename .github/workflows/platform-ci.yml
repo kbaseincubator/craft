@@ -43,6 +43,16 @@ jobs:
         # Each submodule must be at a tagged release (not a branch HEAD).
         # Detached HEAD on a tag is what we want; anything else fails the
         # CRAFT-CONTRACT.md §3 strict-pinning policy.
+        #
+        # Suspended for Stage 6: submodules pin untagged conformed mains
+        # (Stage 6 brief §4 — "untagged pins ... Stage 7 re-pins to tags").
+        # The real assertion is LEFT INTACT so the failure shows up as an
+        # amber "allowed-failure" annotation rather than silently passing
+        # over a Stage-7-required action. Re-arm by REMOVING the
+        # `continue-on-error: true` line below once Stage 7 tags the
+        # skills + bumps these submodules to tags. (Tracked in
+        # handoffs/CRAFT-config-doc-drift-inventory.md "CI (Stage 7)".)
+        continue-on-error: true
         run: |
           set -e
           for sm in skills/beril-adversarial-skill skills/beril-paper-writer-skill skills/beril-presentation-maker-skill; do
@@ -86,6 +96,22 @@ jobs:
 
       - name: Run smoke test suite
         run: pytest tests/ -v
+
+      - name: Install conformance-fixture deps (editable installs of the 3 skills)
+        # CRAFT-CONTRACT §3.4: tests/test_conformance.py is the cross-skill
+        # copy-drift backstop. It imports `beril_adversarial`,
+        # `beril_paper_writer`, `beril_presentation_maker` as sibling
+        # distributions; editable-install them from the checked-out
+        # submodules so the fixture exercises the actual code shipped
+        # with this CRAFT pin (not stale wheels from PyPI/pipx).
+        run: pip install -r tests/requirements-conformance.txt
+
+      - name: Run cross-skill conformance fixture (HARD gate)
+        # Stage 6: this fixture is the round's deliverable; failures here
+        # MUST block. No `continue-on-error`. If a future change drifts
+        # the canonical resolver in one skill's copy without the others,
+        # this step is the alarm.
+        run: pytest tests/test_conformance.py -v
 
   lint:
     runs-on: ubuntu-latest

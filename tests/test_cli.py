@@ -92,6 +92,92 @@ def test_install_platform_skips_missing_clis(tmp_path, capsys, monkeypatch):
     assert "Missing CLIs: 3" in captured.err
 
 
+# --- configure umbrella (CRAFT-CONTRACT §3.4) -------------------------------
+
+
+def _configure_ns(beril_root: str) -> argparse.Namespace:
+    """Build the configure Namespace. configure has no flags beyond
+    beril_root (mirrors install-platform's positional surface)."""
+    return argparse.Namespace(beril_root=beril_root)
+
+
+def test_configure_missing_beril_root() -> None:
+    """configure must error cleanly when BERIL_ROOT doesn't exist."""
+    rc = cli.cmd_configure(_configure_ns("/no/such/path"))
+    assert rc == 1
+
+
+def test_configure_skips_missing_clis(tmp_path, capsys, monkeypatch):
+    """When every per-skill CLI is absent from PATH, configure returns
+    rc=2 (no skills configured) and names the missing ones."""
+    monkeypatch.setattr("shutil.which", lambda _: None)
+    rc = cli.cmd_configure(_configure_ns(str(tmp_path)))
+    captured = capsys.readouterr()
+    assert rc == 2
+    assert "Missing CLIs:  3" in captured.err
+
+
+def test_configure_invokes_each_skill_with_correct_argv(tmp_path, capsys, monkeypatch):
+    """The umbrella shells out to `<cli> configure <BERIL_ROOT>` for each
+    skill in `_SKILLS` order. Mock shutil.which + subprocess.run to capture
+    the argv per call and confirm the all-OK happy path."""
+    monkeypatch.setattr("shutil.which", lambda c: f"/usr/local/bin/{c}")
+    captured_calls: list[list[str]] = []
+
+    class _OK:
+        returncode = 0
+
+    def fake_run(cmd, **kwargs):
+        captured_calls.append(list(cmd))
+        # The umbrella does NOT pass timeout / capture_output — the configure
+        # preflight is interactive (model-pin picker + .env-extend confirmation).
+        # This is the load-bearing distinction vs doctor's Check 3 quick probe.
+        assert "timeout" not in kwargs, "configure umbrella must not pass timeout="
+        assert "capture_output" not in kwargs, (
+            "configure umbrella must not pass capture_output= (interactive passthrough)"
+        )
+        return _OK()
+
+    monkeypatch.setattr("subprocess.run", fake_run)
+
+    rc = cli.cmd_configure(_configure_ns(str(tmp_path)))
+    err = capsys.readouterr().err
+    assert rc == 0, err
+    # One call per skill, in _SKILLS order, with the right argv shape.
+    assert len(captured_calls) == 3
+    for skill, call in zip(cli._SKILLS, captured_calls):
+        assert call == [skill["cli"], "configure", str(tmp_path.resolve())]
+    # Summary line confirms the all-ok count.
+    assert "Configured OK: 3/3" in err
+    assert "All CRAFT skills configured cleanly." in err
+
+
+def test_configure_aggregates_partial_failure(tmp_path, capsys, monkeypatch):
+    """If one skill's configure exits non-zero, the umbrella returns
+    rc=1 (partial), names the failure in the summary, but keeps going
+    for the rest."""
+    monkeypatch.setattr("shutil.which", lambda c: f"/usr/local/bin/{c}")
+    # Fail the SECOND skill (paper-writer); the first + third succeed.
+    failing_cli = cli._SKILLS[1]["cli"]
+
+    class _OK:
+        returncode = 0
+
+    class _Fail:
+        returncode = 7
+
+    def fake_run(cmd, **kwargs):
+        return _Fail() if cmd[0] == failing_cli else _OK()
+
+    monkeypatch.setattr("subprocess.run", fake_run)
+
+    rc = cli.cmd_configure(_configure_ns(str(tmp_path)))
+    err = capsys.readouterr().err
+    assert rc == 1
+    assert "Configured OK: 2/3" in err
+    assert f"{cli._SKILLS[1]['name']}: configure exited rc=7" in err
+
+
 def test_doctor_runs_without_beril_root() -> None:
     """doctor without BERIL_ROOT should still run (just skips
     the configure check)."""

@@ -1,0 +1,23 @@
+# Cross-skill CRAFT runtime-config conformance fixture deps.
+#
+# CRAFT-CONTRACT §3.4: each CRAFT skill keeps its OWN verbatim copy of
+# the canonical llm_config.py + sentinel-bearing configure.py. The
+# tests/test_conformance.py file imports the three skills as separate
+# distributions and asserts their behavior + source remain identical.
+#
+# These editable installs are NOT runtime deps of `craft` itself —
+# they live in this file so the conformance fixture can require them
+# in CI without polluting `craft`'s pyproject.toml.
+#
+# PEP-621 `optional-dependencies` can't express `-e <local path>`,
+# which is why we use a plain requirements file referenced by the CI
+# step + the conformance test's module-level pytest.skip hint.
+#
+# Local repro:
+#     cd <repo root>/spike/craft-platform
+#     pip install -r tests/requirements-conformance.txt
+#     pytest tests/test_conformance.py -v
+
+-e skills/beril-adversarial-skill
+-e skills/beril-paper-writer-skill
+-e skills/beril-presentation-maker-skill

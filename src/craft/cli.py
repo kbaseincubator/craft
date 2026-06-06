@@ -3,6 +3,9 @@
 Subcommands:
   craft install-platform <BERIL_ROOT>   — install all three CRAFT
                                           skills into a BERIL deployment
+  craft configure <BERIL_ROOT>          — run each skill's `configure`
+                                          interactively (CRAFT-CONTRACT §3.4
+                                          runtime-config bootstrap)
   craft doctor [<BERIL_ROOT>]           — verify platform health
   craft version                         — print CRAFT + skill versions
 
@@ -317,6 +320,113 @@ def cmd_install_platform(args: argparse.Namespace) -> int:
 
 
 # ---------------------------------------------------------------------------
+# configure (umbrella — CRAFT-CONTRACT §3.4)
+# ---------------------------------------------------------------------------
+
+
+def cmd_configure(args: argparse.Namespace) -> int:
+    """Run each skill's `configure` against BERIL_ROOT in dependency order.
+
+    Each skill's `configure` is the CRAFT runtime-config bootstrapper —
+    it extends `<BERIL_ROOT>/.env` with the additive-only CRAFT shared
+    block + the skill's per-skill marker, resolves provider + tier
+    models, writes `<BERIL_ROOT>/.claude/settings.json` (+
+    `settings.local.json`) for `claude -p` routing, and runs a
+    response-asserting validation ping. See CRAFT-CONTRACT §3.4.
+
+    This umbrella mirrors `cmd_install_platform`'s shape: per-skill
+    `── name`, ✓/✗ result, summary block, return codes
+    `0` all-ok / `1` partial / `2` none. Unlike `cmd_doctor`'s Check 3
+    probe (which sets `timeout=30` and captures output for a quick
+    health check), this command does NEITHER — the configure preflight
+    is interactive (model-pin picker on a TTY, confirmation prompts on
+    .env writes), so we let stdin/stdout flow straight through to the
+    user's terminal.
+    """
+    beril_root = Path(args.beril_root).resolve()
+    if not beril_root.is_dir():
+        print(f"Error: BERIL_ROOT not found: {beril_root}", file=sys.stderr)
+        return 1
+
+    print(f"CRAFT configure v{__version__}", file=sys.stderr)
+    print(f"BERIL_ROOT: {beril_root}", file=sys.stderr)
+    print("", file=sys.stderr)
+
+    n_ok = 0
+    n_missing = 0
+    n_failed = 0
+    skipped_reasons: list[str] = []
+
+    for skill in _SKILLS:
+        cli = skill["cli"]
+        name = skill["name"]
+        print(f"── {name}", file=sys.stderr)
+
+        if shutil.which(cli) is None:
+            print(
+                f"   SKIP: `{cli}` not on PATH. Install with: "
+                f"pipx install git+https://github.com/kbaseincubator/{name}.git",
+                file=sys.stderr,
+            )
+            n_missing += 1
+            skipped_reasons.append(f"{name}: CLI not on PATH")
+            continue
+
+        try:
+            # Interactive passthrough: NO timeout, NO capture_output. The
+            # configure preflight prompts for model pins on a TTY + asks
+            # for `.env`-extend confirmation; both need stdin/stdout.
+            result = subprocess.run(
+                [cli, "configure", str(beril_root)],
+            )
+        except Exception as exc:  # noqa: BLE001
+            print(f"   ✗ ERROR: {exc}", file=sys.stderr)
+            n_failed += 1
+            skipped_reasons.append(f"{name}: subprocess raised {exc}")
+            continue
+
+        if result.returncode == 0:
+            print(f"   ✓ {name} configured", file=sys.stderr)
+            n_ok += 1
+        else:
+            print(
+                f"   ✗ {name}: configure exited rc={result.returncode}",
+                file=sys.stderr,
+            )
+            n_failed += 1
+            skipped_reasons.append(f"{name}: configure exited rc={result.returncode}")
+
+    print("", file=sys.stderr)
+    print("═" * 60, file=sys.stderr)
+    print("CRAFT configure summary:", file=sys.stderr)
+    print(f"  Configured OK: {n_ok}/{len(_SKILLS)}", file=sys.stderr)
+    print(f"  Missing CLIs:  {n_missing}", file=sys.stderr)
+    print(f"  Failed:        {n_failed}", file=sys.stderr)
+    if skipped_reasons:
+        print("", file=sys.stderr)
+        print("Issues:", file=sys.stderr)
+        for r in skipped_reasons:
+            print(f"  - {r}", file=sys.stderr)
+    print("═" * 60, file=sys.stderr)
+
+    if n_ok == len(_SKILLS):
+        print("All CRAFT skills configured cleanly.", file=sys.stderr)
+        return 0
+    elif n_ok > 0:
+        print(
+            "Partial configure. Resolve the issues above + re-run.",
+            file=sys.stderr,
+        )
+        return 1
+    else:
+        print(
+            "No CRAFT skills configured. Verify pipx + PATH first.",
+            file=sys.stderr,
+        )
+        return 2
+
+
+# ---------------------------------------------------------------------------
 # doctor
 # ---------------------------------------------------------------------------
 
@@ -481,6 +591,20 @@ def main(argv: Optional[list[str]] = None) -> int:
         help="Auto-confirm skill-version sync prompts (for CI / scripted runs).",
     )
     p_install.set_defaults(func=cmd_install_platform)
+
+    # configure (CRAFT-CONTRACT §3.4 runtime-config bootstrap, all skills)
+    p_configure = subparsers.add_parser(
+        "configure",
+        help=(
+            "Run each CRAFT skill's `configure` interactively against "
+            "BERIL_ROOT — provider + tier-model pin + validation ping."
+        ),
+    )
+    p_configure.add_argument(
+        "beril_root",
+        help="Path to the BERIL deployment (contains .env + .claude/).",
+    )
+    p_configure.set_defaults(func=cmd_configure)
 
     # doctor
     p_doctor = subparsers.add_parser(

@@ -1,0 +1,568 @@
+"""Cross-skill CRAFT runtime-config conformance fixture (CRAFT-CONTRACT §3.4).
+
+Purpose: catch copy-drift across the three CRAFT skills' canonical
+`llm_config.py` files. The contract says the resolver is **copied, not
+shared** ("the other CRAFT skills copy it … a shared conformance fixture
+keeps the copies in step"). This file is that fixture.
+
+Atlas is **excluded** by design (CRAFT-CONTRACT §3.4 "Conformance boundary
++ atlas" — atlas is a separate product that verifies in its own suite).
+
+How this is run
+---------------
+The fixture imports three sibling packages (`beril_adversarial`,
+`beril_paper_writer`, `beril_presentation_maker`) — distinct
+distributions, no namespace collision. They are NOT runtime deps of
+`craft`; we editable-install them into the venv that runs craft-platform's
+pytest:
+
+    pip install -r tests/requirements-conformance.txt
+
+The requirements file pins:
+    -e skills/beril-adversarial-skill
+    -e skills/beril-paper-writer-skill
+    -e skills/beril-presentation-maker-skill
+
+Locally the imports may fail (no editable install yet). Module-level
+`pytest.skip` handles that gracefully with the exact remediation
+command. CI installs the requirements first so the fixture is required
+where it matters.
+
+The three assertion families
+----------------------------
+
+Family A — **behavioral identity** of the pure resolver functions.
+For every input in the fixture table, the three skills' implementations
+return equal results (or all raise an equivalent `ConfigError`).
+Behavior is the contract; this is the load-bearing family.
+
+Family B — **shared-block identity + additive-only property** of
+`compose_env_append`. The full output differs across skills (each
+carries its own per-skill marker), but the shared CRAFT-block region
+between `SHARED_OPEN`/`SHARED_CLOSE` sentinels must be byte-identical,
+and the additive-only contract (no re-declaration of keys already in
+the user's .env) must hold per skill.
+
+Family C — **source identity** of the canonical function set, via
+`inspect.getsource`. Pinpoints *which* function drifted faster than
+a behavioral diff. The set is **explicit** so per-skill additions
+(paper-writer's `pick_tier`, anything similar) are allowed by
+construction.
+
+What this file does NOT cover
+-----------------------------
+- Live model discovery / HTTP (that's `configure`'s I/O, not the resolver).
+- `settings.json` writing (configure's job).
+- Atlas (its own suite).
+"""
+
+from __future__ import annotations
+
+import ast
+import dataclasses
+import inspect
+import os
+from pathlib import Path
+from textwrap import dedent
+
+import pytest
+
+# Editable-install the 3 skills before running this file (or the module
+# imports will fail; behavior on failure is environment-aware — see below).
+try:
+    from beril_adversarial import llm_config as a_lc  # type: ignore
+    from beril_adversarial.commands import configure as a_cfg  # type: ignore
+    from beril_adversarial.commands import template_env as a_te  # type: ignore
+    from beril_paper_writer import llm_config as p_lc  # type: ignore
+    from beril_paper_writer.commands import configure as p_cfg  # type: ignore
+    from beril_paper_writer.commands import template_env as p_te  # type: ignore
+    from beril_presentation_maker import llm_config as m_lc  # type: ignore
+    from beril_presentation_maker.commands import configure as m_cfg  # type: ignore
+    from beril_presentation_maker.commands import template_env as m_te  # type: ignore
+except ImportError as exc:
+    # CI MUST FAIL when the editable installs aren't in place — a silent
+    # skip there would let a broken `tests/requirements-conformance.txt`
+    # or a busted CI step pass green. Locally we skip with the remediation
+    # hint so a fresh checkout can still run `pytest` without prep.
+    #
+    # GitHub Actions / GitLab CI / most CI systems set `CI=true`; we treat
+    # any truthy `CI` env var as "must hard-fail." The CRAFT platform-ci
+    # workflow installs `requirements-conformance.txt` BEFORE invoking
+    # pytest, so this branch in CI means the install step regressed.
+    if os.environ.get("CI"):
+        raise RuntimeError(
+            f"Cross-skill conformance imports failed in CI ({exc}). "
+            "Was `pip install -r tests/requirements-conformance.txt` run "
+            "before pytest? See .github/workflows/platform-ci.yml — the "
+            "`Install conformance-fixture deps` step must succeed before "
+            "this file is collected."
+        ) from exc
+    pytest.skip(
+        f"Cross-skill conformance requires the 3 CRAFT skills editable-installed:\n"
+        f"    pip install -r tests/requirements-conformance.txt\n"
+        f"Import failed: {exc}",
+        allow_module_level=True,
+    )
+
+# Triples used everywhere below. `SKILLS` is the canonical 3-skill matrix
+# Family A/B/C iterate over.
+SKILLS: list[tuple[str, object, object, object]] = [
+    ("adversarial", a_lc, a_cfg, a_te),
+    ("paper-writer", p_lc, p_cfg, p_te),
+    ("presentation-maker", m_lc, m_cfg, m_te),
+]
+
+LC_TRIPLE = (a_lc, p_lc, m_lc)
+CFG_TRIPLE = (a_cfg, p_cfg, m_cfg)
+TE_TRIPLE = (a_te, p_te, m_te)
+
+
+# ---------------------------------------------------------------------------
+# Anti-vacuity guard: the 3 llm_config modules must resolve to DISTINCT
+# files on disk.
+# ---------------------------------------------------------------------------
+#
+# This is the most insidious vacuous-pass mode for the conformance fixture:
+# a future packaging change (a namespace package, a wheel-build script that
+# merges sources, a symlink farm) could make `beril_adversarial.llm_config`,
+# `beril_paper_writer.llm_config`, and `beril_presentation_maker.llm_config`
+# all resolve to the SAME physical file. Family C's source-equality would
+# then "pass" trivially — but the contract's intent (each skill has its OWN
+# verbatim copy that copy-drift across copies would diverge) would be silently
+# broken.
+#
+# Verified to hold today; this test pins it.
+
+
+def test_anti_vacuity_llm_config_modules_resolve_to_distinct_files():
+    paths = [Path(mod.__file__).resolve() for mod in LC_TRIPLE]
+    assert len(set(paths)) == 3, (
+        "Family-C vacuous-pass guard: the 3 skills' llm_config modules "
+        "must resolve to 3 distinct files. Otherwise source-equality "
+        "assertions below trivially pass on the same physical file.\n"
+        f"adversarial: {paths[0]}\n"
+        f"paper-writer: {paths[1]}\n"
+        f"presentation-maker: {paths[2]}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Input fixtures (parametrize Family A + B over these — brief §3.3)
+# ---------------------------------------------------------------------------
+
+PROVIDER_INFERENCE_CASES = [
+    ({"CBORG_API_KEY": "k"}, "cborg"),
+    ({"ANTHROPIC_API_KEY": "k"}, "anthropic"),
+    ({"CBORG_API_KEY": "k", "ANTHROPIC_API_KEY": "k2"}, "cborg"),
+    ({}, "subscription"),
+    ({"ACTIVE_PROVIDER": "anthropic", "CBORG_API_KEY": "k"}, "anthropic"),
+]
+
+PROVIDER_INFERENCE_INVALID_CASES = [
+    {"ACTIVE_PROVIDER": "bogus"},
+]
+
+# Tier resolution — input → no canonical answer needed (we compare cross-skill).
+CBORG_AVAILABLE_FIXTURE = [
+    "claude-opus-4-8",
+    "claude-opus-4-8-high",
+    "claude-sonnet-4-6",
+    "claude-haiku-4-5",
+]
+
+TIER_RESOLUTION_INPUTS = [
+    # all pinned + available includes them
+    (
+        {
+            "MODEL_REASONING": "claude-opus-4-8",
+            "MODEL_STANDARD": "claude-sonnet-4-6",
+            "MODEL_FAST": "claude-haiku-4-5",
+        },
+        CBORG_AVAILABLE_FIXTURE,
+    ),
+    # pins set, available=None → pins pass through unchecked
+    (
+        {
+            "MODEL_REASONING": "claude-opus-4-7",
+            "MODEL_STANDARD": "claude-sonnet-4-5",
+            "MODEL_FAST": "claude-haiku-4-4",
+        },
+        None,
+    ),
+    # unset + available → discovery picks newest non-high per family
+    ({}, CBORG_AVAILABLE_FIXTURE),
+    # unset + available=None → all three unresolved
+    ({}, None),
+    # pin not in available → tier unresolved + warning
+    ({"MODEL_REASONING": "claude-opus-4-99"}, CBORG_AVAILABLE_FIXTURE),
+    # available has no model for fast family → unresolved + warning
+    ({}, ["claude-opus-4-8", "claude-sonnet-4-6"]),
+]
+
+BASE_URL_CASES = [
+    {},  # default
+    {"CBORG_BASE_URL": "https://api.cborg.lbl.gov/v1"},
+    {"CBORG_BASE_URL": "https://api.cborg.lbl.gov/v1/"},  # trailing slash
+    {"CBORG_BASE_URL": "https://api.cborg.lbl.gov"},  # bare host
+    {"CBORG_BASE_URL": "https://proxy.example.com/cborg"},
+    {"CBORG_BASE_URL": "https://proxy.example.com/cborg/v1"},
+]
+
+PARSE_ENV_TEXT_CASES = [
+    # The verified-fragile masking case (configure's round-1 bug).
+    ("CBORG_API_KEY=   # paste key", {"CBORG_API_KEY": ""}),
+    ("FOO=bar  # comment", {"FOO": "bar"}),
+    # No whitespace before # → kept as part of the URL.
+    ("URL=https://example.com/#frag", {"URL": "https://example.com/#frag"}),
+    # Quoted values are taken verbatim; trailing-after-quote ignored.
+    ('FOO="quoted # not a comment"', {"FOO": "quoted # not a comment"}),
+    # Whole-line comments + blank lines are dropped.
+    ("# header comment\n\nKEY=val\n", {"KEY": "val"}),
+    # Last-write-wins for duplicate keys.
+    ("K=1\nK=2", {"K": "2"}),
+]
+
+
+# ---------------------------------------------------------------------------
+# Family A — behavioral identity of the pure resolver functions
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("env,expected", PROVIDER_INFERENCE_CASES)
+def test_familyA_infer_provider_matches_across_skills(env, expected):
+    """Each skill's `infer_provider(env)` returns the same string."""
+    results = [mod.infer_provider(env) for mod in LC_TRIPLE]
+    assert results == [expected, expected, expected], (
+        f"infer_provider diverged across skills for env={env}: "
+        f"adv={results[0]!r} pw={results[1]!r} pm={results[2]!r}"
+    )
+
+
+@pytest.mark.parametrize("env", PROVIDER_INFERENCE_INVALID_CASES)
+def test_familyA_infer_provider_invalid_raises_equivalent_error(env):
+    """For the invalid-provider case, each skill raises its OWN
+    `ConfigError` type (distinct classes per the copy-not-share design).
+    We do NOT compare types; we compare that all three raise a
+    `ConfigError` and that `str(exc)` is equal."""
+    messages = []
+    for mod in LC_TRIPLE:
+        with pytest.raises(mod.ConfigError) as excinfo:
+            mod.infer_provider(env)
+        messages.append(str(excinfo.value))
+    assert messages[0] == messages[1] == messages[2], (
+        f"ConfigError messages diverged: {messages}"
+    )
+
+
+@pytest.mark.parametrize("env", BASE_URL_CASES)
+def test_familyA_bare_host_matches_across_skills(env):
+    results = [mod.bare_host(env) for mod in LC_TRIPLE]
+    assert results[0] == results[1] == results[2], (
+        f"bare_host diverged for env={env}: {results}"
+    )
+
+
+@pytest.mark.parametrize("env", BASE_URL_CASES)
+def test_familyA_app_internal_base_url_matches_across_skills(env):
+    """The Stage-6 helper. Same input → same output across skills."""
+    results = [mod.app_internal_base_url(env) for mod in LC_TRIPLE]
+    assert results[0] == results[1] == results[2], (
+        f"app_internal_base_url diverged for env={env}: {results}"
+    )
+
+
+@pytest.mark.parametrize("env", BASE_URL_CASES)
+def test_familyA_app_internal_base_url_equals_bare_host_plus_v1(env):
+    """Invariant per CRAFT-CONTRACT §3.4: for any input the two base
+    URLs differ by exactly `/v1`."""
+    for mod in LC_TRIPLE:
+        assert mod.app_internal_base_url(env) == mod.bare_host(env) + "/v1"
+
+
+@pytest.mark.parametrize("family", ["opus", "sonnet", "haiku"])
+def test_familyA_pick_newest_matches_across_skills(family):
+    results = [mod.pick_newest(CBORG_AVAILABLE_FIXTURE, family) for mod in LC_TRIPLE]
+    assert results[0] == results[1] == results[2], (
+        f"pick_newest('{family}') diverged: {results}"
+    )
+
+
+@pytest.mark.parametrize("env,available", TIER_RESOLUTION_INPUTS)
+def test_familyA_resolve_tier_models_matches_across_skills(env, available):
+    """Compare the full (models, unresolved, warnings) tuple element-wise."""
+    triples = [mod.resolve_tier_models(env, available) for mod in LC_TRIPLE]
+    for i in (1, 2):
+        assert triples[i][0] == triples[0][0], (
+            f"resolve_tier_models models diverged at skill {i}: "
+            f"{triples[0][0]} vs {triples[i][0]}"
+        )
+        assert sorted(triples[i][1]) == sorted(triples[0][1]), (
+            f"resolve_tier_models unresolved diverged at skill {i}: "
+            f"{triples[0][1]} vs {triples[i][1]}"
+        )
+        assert sorted(triples[i][2]) == sorted(triples[0][2]), (
+            f"resolve_tier_models warnings diverged at skill {i}: "
+            f"{triples[0][2]} vs {triples[i][2]}"
+        )
+
+
+# Inputs for `resolve()` — needs the provider/credentials present.
+RESOLVE_INPUTS = [
+    (
+        {"ACTIVE_PROVIDER": "cborg", "CBORG_API_KEY": "k"},
+        CBORG_AVAILABLE_FIXTURE,
+    ),
+    (
+        {"ACTIVE_PROVIDER": "anthropic", "ANTHROPIC_API_KEY": "k"},
+        CBORG_AVAILABLE_FIXTURE,
+    ),
+    (
+        {"ACTIVE_PROVIDER": "subscription"},
+        None,
+    ),
+]
+
+
+@pytest.mark.parametrize("env,available", RESOLVE_INPUTS)
+def test_familyA_resolve_matches_across_skills(env, available):
+    """ResolvedConfig is a per-skill dataclass type; compare field-by-field
+    via dataclasses.asdict so distinct types compare cleanly."""
+    asdicts = [dataclasses.asdict(mod.resolve(env, available)) for mod in LC_TRIPLE]
+    for i in (1, 2):
+        assert asdicts[i] == asdicts[0], (
+            f"resolve diverged at skill {i} for env={env}: "
+            f"adversarial={asdicts[0]} vs skill_{i}={asdicts[i]}"
+        )
+
+
+@pytest.mark.parametrize("text,expected", PARSE_ENV_TEXT_CASES)
+def test_familyA_parse_env_text_matches_across_skills(text, expected):
+    """parse_env_text is a copied pure helper; behavior must be identical."""
+    results = [mod.parse_env_text(text) for mod in CFG_TRIPLE]
+    assert results[0] == results[1] == results[2] == expected, (
+        f"parse_env_text diverged for input {text!r}: {results}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Family B — compose_env_append shared-block identity + additive-only
+# ---------------------------------------------------------------------------
+
+
+def _extract_shared_region(text: str, te_mod) -> str:
+    """Slice between the SHARED_OPEN and SHARED_CLOSE sentinels."""
+    open_sentinel = "# >>> CRAFT shared config"
+    close_sentinel = "# <<< CRAFT shared config"
+    start = text.find(open_sentinel)
+    end = text.find(close_sentinel)
+    if start == -1 or end == -1 or end < start:
+        return ""
+    # Include the close-sentinel line in the slice. find() returns the
+    # start of the close sentinel; capture the rest of that line.
+    eol = text.find("\n", end)
+    if eol == -1:
+        eol = len(text)
+    else:
+        eol += 1  # include the newline so the regions match byte-for-byte
+    return text[start:eol]
+
+
+def test_familyB_sentinel_constants_match_across_skills():
+    """The sentinel strings (which Family-B logic depends on) are equal."""
+    open_vals = [m.SHARED_OPEN for m in CFG_TRIPLE]
+    close_vals = [m.SHARED_CLOSE for m in CFG_TRIPLE]
+    assert open_vals[0] == open_vals[1] == open_vals[2]
+    assert close_vals[0] == close_vals[1] == close_vals[2]
+
+
+def test_familyB_shared_block_region_byte_identical():
+    """compose_env_append('') ⊃ the shared block. The region between the
+    open and close sentinels must be byte-identical across the 3 skills,
+    even though each skill's per-skill marker (outside the region) differs."""
+    outputs = [m.compose_env_append("") for m in CFG_TRIPLE]
+    regions = [_extract_shared_region(outputs[i], TE_TRIPLE[i]) for i in range(3)]
+    assert regions[0], "adversarial compose_env_append('') has no shared region"
+    assert regions[0] == regions[1] == regions[2], (
+        f"Shared block region diverged:\n"
+        f"adv:\n{regions[0]!r}\npw:\n{regions[1]!r}\npm:\n{regions[2]!r}"
+    )
+
+
+# Fixture .env contents for additive-only property checks (brief §3.3).
+ADDITIVE_ONLY_KEYS = [
+    "CBORG_API_KEY",
+    "ANTHROPIC_API_KEY",
+    "CBORG_BASE_URL",
+    "ACTIVE_PROVIDER",
+    "MODEL_REASONING",
+    "MODEL_STANDARD",
+    "MODEL_FAST",
+]
+
+
+@pytest.mark.parametrize("key", ADDITIVE_ONLY_KEYS)
+def test_familyB_compose_omits_keys_already_present_per_skill(key):
+    """For each skill: if the user's .env already declares KEY, the
+    appended block must NOT contain a `KEY=` line. This is the
+    additive-only contract — re-declaring shadows the user's value via
+    last-write-wins inside python-dotenv."""
+    env_text = f"{key}=user_set_value\n"
+    for name, _lc, cfg_mod, _te in SKILLS:
+        out = cfg_mod.compose_env_append(env_text)
+        assert f"{key}=" not in out, (
+            f"{name}: compose_env_append re-declared {key!r} when user .env "
+            f"already had it. Additive-only contract broken. Output:\n{out}"
+        )
+
+
+def test_familyB_idempotent_when_both_sentinel_and_marker_present_per_skill():
+    """For each skill: with both the shared sentinel AND its per-skill
+    marker already present, `compose_env_append` returns empty."""
+    for name, _lc, cfg_mod, te_mod in SKILLS:
+        # The block te_mod.render() emits includes both sentinels + marker.
+        env_text = te_mod.render(include_shared=True)
+        out = cfg_mod.compose_env_append(env_text)
+        assert out == "", (
+            f"{name}: compose_env_append non-empty when both sentinel + "
+            f"marker already present. Output:\n{out}"
+        )
+
+
+@pytest.mark.parametrize(
+    "credential_key",
+    ["CBORG_API_KEY", "ANTHROPIC_API_KEY", "GOOGLE_API_KEY", "KBASE_AUTH_TOKEN"],
+)
+def test_familyB_compose_never_declares_credentials(credential_key):
+    """The shared CRAFT block must NEVER contain a bare `KEY=` line for
+    a known credential (it READS them, never declares them, per CRAFT-
+    CONTRACT §3.4). True for compose_env_append('') with no user .env."""
+    for name, _lc, cfg_mod, _te in SKILLS:
+        out = cfg_mod.compose_env_append("")
+        # Match the start-of-line declaration; any commented mention is fine.
+        bad_line = f"\n{credential_key}="
+        assert bad_line not in out and not out.startswith(f"{credential_key}="), (
+            f"{name}: compose_env_append declared {credential_key!r}. "
+            f"Credentials must be READ, never DECLARED, per §3.4."
+        )
+
+
+# ---------------------------------------------------------------------------
+# Family C — source identity of the canonical function set + constants
+# ---------------------------------------------------------------------------
+
+# The brief's explicit canonical set. Per-skill additions (paper-writer's
+# `pick_tier`, atlas's `pick_tier`, anything new) are allowed by construction
+# — they're simply not in this set. If Family C fails on one of these, that's
+# a brief-design question for Adam, not a unilateral set edit.
+CANONICAL_FUNCTION_NAMES = [
+    "_val",
+    "infer_provider",
+    "bare_host",
+    "app_internal_base_url",  # added in Stage 6 / piece 2
+    "_version_key",
+    "pick_newest",
+    "resolve_tier_models",
+    "resolve",
+]
+
+CANONICAL_CONSTANT_NAMES = [
+    "CBORG_BARE_HOST",
+    "PROVIDERS",
+    "TIER_FAMILY",
+    "TIER_ENV",
+    "TIER_ENVKEY",
+]
+
+
+def _normalize_source(src: str) -> str:
+    """Strip trailing whitespace from each line and trailing blank lines.
+    Per Adam's Stage-6 decision: normalization is STRICT (trailing-whitespace
+    / dedent only; do NOT collapse interior whitespace)."""
+    return dedent("\n".join(line.rstrip() for line in src.splitlines())).rstrip()
+
+
+def _extract_constant_assign_source(module, const_name: str) -> str:
+    """Read the source of the module and return the `name = …` Assign
+    segment for `const_name`, normalized.
+
+    Constants don't expose source via `inspect.getsource` (they're
+    objects, not code definitions). Parse the module's source text
+    with `ast`, find the top-level `Assign` whose target name matches,
+    and return its exact source segment via `ast.get_source_segment`.
+
+    Raises AssertionError if the name isn't found at module level.
+    """
+    src = inspect.getsource(module)
+    tree = ast.parse(src)
+    for node in tree.body:
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name) and target.id == const_name:
+                    segment = ast.get_source_segment(src, node)
+                    assert segment is not None, (
+                        f"ast.get_source_segment returned None for "
+                        f"{const_name!r} in {module.__name__}"
+                    )
+                    return _normalize_source(segment)
+    raise AssertionError(
+        f"No top-level Assign for {const_name!r} found in {module.__name__}"
+    )
+
+
+@pytest.mark.parametrize("fn_name", CANONICAL_FUNCTION_NAMES)
+def test_familyC_function_source_identical_across_skills(fn_name):
+    """inspect.getsource of each canonical function is byte-identical
+    (after strict normalization) across the 3 CRAFT skills."""
+    sources = []
+    for name, lc_mod, _cfg, _te in SKILLS:
+        fn = getattr(lc_mod, fn_name)
+        sources.append((name, _normalize_source(inspect.getsource(fn))))
+    ref_name, ref_src = sources[0]
+    for name, src in sources[1:]:
+        assert src == ref_src, (
+            f"Family C: source of {fn_name!r} diverged between "
+            f"{ref_name} and {name}. Diff:\n"
+            f"--- {ref_name}\n{ref_src}\n"
+            f"+++ {name}\n{src}"
+        )
+
+
+@pytest.mark.parametrize("const_name", CANONICAL_CONSTANT_NAMES)
+def test_familyC_constant_value_identical_across_skills(const_name):
+    """Module constants in the canonical set have equal VALUES across
+    the 3 skills. Kept as a readable diagnostic: a divergence here is
+    genuine semantic drift, not formatting drift. The source-equality
+    test below is the load-bearing assertion that closes the
+    formatting-drift hole; this one fires first with a cleaner message
+    when the constants actually differ by value."""
+    values = [getattr(lc_mod, const_name) for _name, lc_mod, _cfg, _te in SKILLS]
+    assert values[0] == values[1] == values[2], (
+        f"Family C: constant {const_name!r} value diverged across skills: {values}"
+    )
+
+
+@pytest.mark.parametrize("const_name", CANONICAL_CONSTANT_NAMES)
+def test_familyC_constant_source_identical_across_skills(const_name):
+    """The Assign-source segment for each canonical constant is
+    byte-identical (after strict normalization) across the 3 skills.
+
+    Closes the formatting-drift hole that pure value-equality leaves
+    open: two skills' `TIER_ENVKEY` could be `{"a": "b", "c": "d"}` vs
+    a multi-line literal — value-equal but source-divergent. Family C
+    exists to *localize* drift; source-equality catches the cosmetic
+    drift that's the first symptom of a non-verbatim copy.
+
+    Per Adam's Stage-6 decision: STRICT normalization (trailing-
+    whitespace / dedent only). Do NOT collapse interior whitespace.
+    """
+    sources = []
+    for name, lc_mod, _cfg, _te in SKILLS:
+        sources.append((name, _extract_constant_assign_source(lc_mod, const_name)))
+    ref_name, ref_src = sources[0]
+    for name, src in sources[1:]:
+        assert src == ref_src, (
+            f"Family C: source of constant {const_name!r} diverged between "
+            f"{ref_name} and {name}. Diff:\n"
+            f"--- {ref_name}\n{ref_src}\n"
+            f"+++ {name}\n{src}"
+        )
