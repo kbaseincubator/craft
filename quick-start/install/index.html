@@ -600,6 +600,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cost-and-billing-read-before-you-run-changed-2026-06-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost and billing — read before you run (changed 2026-06-15)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1478,6 +1489,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cost-and-billing-read-before-you-run-changed-2026-06-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost and billing — read before you run (changed 2026-06-15)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1590,6 +1612,65 @@ invocations in sequence:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ls<span class="w"> </span>&lt;BERIL_ROOT&gt;/.claude/skills/
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># beril-adversarial/  beril-paper-writer/  beril-presentation-maker/</span>
 </span></code></pre></div>
+<h2 id="cost-and-billing-read-before-you-run-changed-2026-06-15">Cost and billing — read before you run (changed 2026-06-15)<a class="headerlink" href="#cost-and-billing-read-before-you-run-changed-2026-06-15" title="Permanent link">&para;</a></h2>
+<p>CRAFT skills run by calling <code>claude -p</code> (non-interactive Claude
+Code). As of <strong>June 15, 2026</strong>, Anthropic bills <code>claude -p</code> /
+Agent SDK usage from a <strong>separate, per-user monthly "Agent SDK
+credit"</strong> — not your normal subscription usage limits
+(<a href="https://support.claude.com/en/articles/15036540-use-the-claude-agent-sdk-with-your-claude-plan">official details</a>).
+What that means for running CRAFT:</p>
+<ul>
+<li><strong>Claim your Agent SDK credit first.</strong> It's a one-time opt-in
+  in your Claude account, then refreshes monthly. Without it,
+  there's no credit for <code>claude -p</code> to draw on.</li>
+<li><strong>The credit is small relative to a full run.</strong> It's $20/mo
+  (Pro), $100 (Max 5x), $200 (Max 20x), with no rollover. A
+  paper-writer draft runs on the order of several to ~$10; a
+  presentation draft a few dollars; an adversarial review under a
+  dollar. On Pro that is roughly two paper drafts before the
+  credit is exhausted.</li>
+<li><strong>Know the cliff.</strong> When the monthly credit runs out: if you've
+  <strong>enabled usage credits</strong>, further runs bill at standard API
+  rates; if not, <strong><code>claude -p</code> requests stop until the credit
+  refreshes</strong> — a skill can fail mid-run for billing reasons, not
+  bugs.</li>
+<li><strong>Heavier or shared/production use → use an Anthropic API key.</strong>
+  Configure Claude Code with an <code>ANTHROPIC_API_KEY</code> from the
+  Claude Platform for predictable pay-as-you-go billing with no
+  monthly cap. Anthropic explicitly recommends an API key for
+  shared production automation.</li>
+</ul>
+<p>Interactive Claude Code, Cowork, and web/desktop/mobile chat are
+<strong>not</strong> affected by this change.</p>
+<p><strong>LBL/KBase operators</strong> have a cleaner option: point <code>claude -p</code>
+itself at CBORG, which serves Claude (incl. Opus 4-6) and
+documents a <a href="https://cborg.lbl.gov/tools_claudecode/">Claude Code integration</a>.
+Setting</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ANTHROPIC_BASE_URL=https://api.cborg.lbl.gov          # note: NO /v1 suffix
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>ANTHROPIC_AUTH_TOKEN=&lt;same value as CBORG_API_KEY&gt;
+</span></code></pre></div>
+<p>routes the reasoning stages through CBORG at API rates (reusing
+the key CRAFT already requires), sidestepping the subscription
+credit entirely. The token is the same as <code>CBORG_API_KEY</code>, but
+the base URL is <strong>not</strong> the same as <code>CBORG_BASE_URL</code>: the
+OpenAI-style <code>CBORG_BASE_URL</code> ends in <code>/v1</code>, whereas
+<code>ANTHROPIC_BASE_URL</code> must be the bare host — the Anthropic client
+appends <code>/v1/messages</code> itself, so a <code>/v1</code> here resolves to
+<code>/v1/v1/messages</code> and 404s.</p>
+<p>Set these where <strong>Claude Code</strong> reads them — a shell <code>export</code>, or
+an <code>env</code> block in <code>&lt;BERIL_ROOT&gt;/.claude/settings.json</code>. Putting
+them only in <code>&lt;BERIL_ROOT&gt;/.env</code> is <strong>not</strong> enough: CRAFT reads
+<code>.env</code> for its own image/CBORG calls but does not inject it into
+the <code>claude -p</code> environment. This is otherwise separate from
+<code>CBORG_API_KEY</code>, which CRAFT uses for image generation and some
+direct model calls.</p>
+<blockquote>
+<p><strong>VPN:</strong> <code>api.cborg.lbl.gov</code> is on the LBL network. Running
+locally requires the <strong>LBL VPN</strong> to be connected — without it,
+<code>claude -p</code> calls fail with a connection error that can look
+like a skill bug. On the <strong>KBase Hub</strong> you are already
+on-network, so no VPN is needed.</p>
+</blockquote>
 <h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../first-run/">First run</a> — exercise one skill end-to-end on a

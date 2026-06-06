@@ -854,6 +854,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="3.4 Environment variable contract">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-state-contract-v1x-as-shipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current state (contract v1.x — as shipped)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-configuration-contract-v2-proposed-pending-review-coordinated-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime configuration contract v2 — PROPOSED (pending review + coordinated rollout)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1731,6 +1759,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="3.4 Environment variable contract">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-state-contract-v1x-as-shipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current state (contract v1.x — as shipped)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-configuration-contract-v2-proposed-pending-review-coordinated-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime configuration contract v2 — PROPOSED (pending review + coordinated rollout)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2157,6 +2213,7 @@ skill in isolation.</p>
 Re-installing doesn't damage user-edited files outside the
 skill's <code>.claude/skills/&lt;name&gt;/</code> deployment dir.</p>
 <h3 id="34-environment-variable-contract">3.4 Environment variable contract<a class="headerlink" href="#34-environment-variable-contract" title="Permanent link">&para;</a></h3>
+<h4 id="current-state-contract-v1x-as-shipped">Current state (contract v1.x — as shipped)<a class="headerlink" href="#current-state-contract-v1x-as-shipped" title="Permanent link">&para;</a></h4>
 <table>
 <thead>
 <tr>
@@ -2183,10 +2240,197 @@ skill's <code>.claude/skills/&lt;name&gt;/</code> deployment dir.</p>
 </tr>
 </tbody>
 </table>
-<p>Skills read env vars from <code>&lt;BERIL_ROOT&gt;/.env</code> automatically (via
-python-dotenv). Users do NOT need to <code>export</code> them in their
-shell.</p>
-<p><strong>Future variables MUST be added to this table</strong> before any skill
+<blockquote>
+<p><strong>Known gap (do not rely on the next sentence):</strong> the prior
+contract claimed "skills read env vars from <code>&lt;BERIL_ROOT&gt;/.env</code>
+automatically; users do NOT need to <code>export</code> them." The
+2026-06-05 config audit found this is only partially true — skills
+cherry-pick specific keys, and <strong><code>claude -p</code> (a subprocess) never
+reads <code>.env</code> at all</strong>, so reasoning-stage auth currently falls
+through to ambient Claude Code login. Contract v2 (below)
+replaces this with an explicit, provider-aware model.</p>
+</blockquote>
+<h4 id="runtime-configuration-contract-v2-proposed-pending-review-coordinated-rollout">Runtime configuration contract v2 — PROPOSED (pending review + coordinated rollout)<a class="headerlink" href="#runtime-configuration-contract-v2-proposed-pending-review-coordinated-rollout" title="Permanent link">&para;</a></h4>
+<p><strong>Two config classes.</strong> Every config value is exactly one of:</p>
+<ul>
+<li><strong>App-internal</strong> — read by the skill's own Python (e.g. image
+  client, atlas LLM client). Source: <code>&lt;BERIL_ROOT&gt;/.env</code> (the
+  authoritative user-facing file) with a defined precedence.</li>
+<li><strong>Claude-Code-runtime</strong> — must reach the <code>claude -p</code> <em>subprocess</em>.
+  Source: <code>&lt;BERIL_ROOT&gt;/.claude/settings.json</code> (non-secret) +
+  <code>settings.local.json</code> (secret, gitignored), which Claude Code
+  reads natively. <code>configure</code> <strong>generates</strong> these from <code>.env</code>, so
+  <code>.env</code> stays the single source the user edits.</li>
+</ul>
+<p><strong>Provider abstraction.</strong> <code>ACTIVE_PROVIDER</code> ∈ <code>{anthropic, cborg,
+subscription}</code> selects the reasoning backend. If unset, it is
+<strong>inferred</strong> for backward compatibility: <code>CBORG_API_KEY</code> present →
+<code>cborg</code>; <code>ANTHROPIC_API_KEY</code> present → <code>anthropic</code>; neither →
+<code>subscription</code>.</p>
+<table>
+<thead>
+<tr>
+<th><code>ACTIVE_PROVIDER</code></th>
+<th>Audience</th>
+<th><code>claude -p</code> runtime config</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>anthropic</code></td>
+<td>Anyone, incl. external/public</td>
+<td><code>ANTHROPIC_API_KEY=&lt;key&gt;</code></td>
+<td>Pay-as-you-go; unaffected by the 2026-06-15 credit split; off-network OK</td>
+</tr>
+<tr>
+<td><code>cborg</code></td>
+<td>LBL/KBase</td>
+<td><code>ANTHROPIC_BASE_URL=https://api.cborg.lbl.gov</code> (no <code>/v1</code>) + <code>ANTHROPIC_AUTH_TOKEN=&lt;CBORG key&gt;</code></td>
+<td>Needs LBL network/VPN locally; free on the Hub</td>
+</tr>
+<tr>
+<td><code>subscription</code></td>
+<td>Fallback (no key)</td>
+<td>none (ambient login)</td>
+<td>Capped by the monthly Agent SDK credit post-2026-06-15</td>
+</tr>
+</tbody>
+</table>
+<p>CBORG note: the <strong>token</strong> equals <code>CBORG_API_KEY</code>, but the <strong>base URL
+differs by client</strong> — app-internal (OpenAI-style) uses
+<code>https://api.cborg.lbl.gov/v1</code>; <code>claude -p</code> (Anthropic-style) uses
+the bare host (the SDK appends <code>/v1/messages</code>).</p>
+<p><code>ACTIVE_PROVIDER</code> governs <strong>both</strong> config classes, not just
+<code>claude -p</code>. App-internal reasoning calls resolve endpoint+key from
+the same provider: <code>anthropic</code> → <code>api.anthropic.com</code> +
+<code>ANTHROPIC_API_KEY</code>; <code>cborg</code> → <code>…/v1</code> + <code>CBORG_API_KEY</code>. So a direct
+(non-CBORG) Anthropic Platform key works uniformly across <code>claude -p</code>
+and app-internal calls — <code>anthropic</code> is a co-equal profile, not a
+CBORG fallback. Constraint: <code>subscription</code> is available <strong>only</strong> for
+<code>claude -p</code> stages (it has no API endpoint); a skill that makes a
+direct-API reasoning call under <code>ACTIVE_PROVIDER=subscription</code> MUST
+fail loud, not silently. Image generation is the only axis NOT
+governed by <code>ACTIVE_PROVIDER</code> (separate optional provider, below).</p>
+<p><strong>Model tiers (v1: Claude-tiered).</strong> Three logical tiers, not
+per-stage keys:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Default policy</th>
+<th>Typical Claude class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reasoning</code></td>
+<td>High-leverage / unrecoverable: throughline &amp; framing choice, the deep/adversarial review <em>judgment</em>, final synthesis that incorporates review</td>
+<td>Opus</td>
+</tr>
+<tr>
+<td><code>standard</code></td>
+<td>Recoverable high-volume generation: body drafting &amp; composition (a later review+revise pass catches errors)</td>
+<td>Sonnet</td>
+</tr>
+<tr>
+<td><code>fast</code></td>
+<td>Mechanical: classification, extraction, formatting, layout</td>
+<td>Haiku</td>
+</tr>
+</tbody>
+</table>
+<p>Default-policy principle: spend the expensive tier where an error
+<strong>compounds or can't be recovered</strong> downstream (framing, the review
+judgment, final synthesis) — not on high-volume generation a later
+review+revise pass will catch. Drafting is therefore <code>standard</code>, not
+<code>reasoning</code>. Tunable per skill; a user may raise any stage's tier.</p>
+<p>Each skill maps its own stages → tiers internally (documented
+per-skill, not user-configured at stage granularity). For
+<code>claude -p</code>, tiers map onto Claude Code's native
+<code>ANTHROPIC_DEFAULT_{OPUS,SONNET,HAIKU}_MODEL</code>. <strong>Concrete model IDs
+are never hardcoded.</strong> <code>configure</code> discovers the provider's model list
+and <strong>pins a visible, approved choice per tier</strong> into config —
+reproducible, so a model swap is an explicit re-pin, not silent drift.
+When a pinned model later goes missing (CBORG renames/removes it): in
+an <strong>interactive</strong> session the user is shown the filtered candidates
+for that tier and picks one (self-service — no waiting on an admin),
+and the choice is written back; in a <strong>non-interactive / CI</strong> session
+it <strong>fails loud</strong> with the candidate list and the exact re-pin
+command. Non-Claude backends are handled as per-skill backend
+extensions (below), orthogonal to the Claude tier model.</p>
+<p><strong>Image generation</strong> is an independent, optional capability with its
+own provider (<code>GOOGLE_AI_STUDIO_API_KEY</code>, or CBORG-gemini). Absent →
+skills MUST degrade gracefully (curated figures only), never hard-fail.</p>
+<p><strong>Per-skill backend extensions.</strong> A skill MAY support a non-Claude
+engine where it adds value, declared in <em>its own</em> contract, not the
+shared core. adversarial supports a <strong>Codex (GPT) review backend</strong>,
+selectable via the skill's own config (<code>REVIEW_BACKEND ∈
+{claude, codex}</code> + a <code>REVIEW_MODEL</code>). Rationale: reviewing with a
+<em>different model family than authored the work</em> reduces correlated
+errors — precisely an adversarial reviewer's job.</p>
+<p>Codex has its <strong>own config surface</strong>, distinct from the Claude path:
+the <code>codex</code> CLI reads <code>~/.codex/config.toml</code> (global provider defs +
+default profile) plus <code>~/.codex/&lt;profile&gt;.config.toml</code> (per-profile
+model) — <strong>not</strong> <code>&lt;BERIL_ROOT&gt;/.env</code> or <code>.claude/settings.json</code>. For
+LBL it routes through CBORG (<code>[model_providers.cborg]</code>: <code>base_url =
+https://api.cborg.lbl.gov/v1</code>, <code>env_key = CBORG_API_KEY</code>,
+<code>wire_api = "responses"</code>; models <code>gpt-5.4-mini</code> / <code>gpt-5.5</code> /
+<code>gpt-5.3-codex</code>); non-LBL can use OpenAI directly. So the Codex
+backend <strong>reuses <code>CBORG_API_KEY</code></strong> but is configured user-globally in
+<code>~/.codex/</code>. adversarial MUST invoke <code>codex --profile &lt;name&gt;</code>
+explicitly and never rely on the global <code>profile =</code> default in
+<code>config.toml</code> — that default is fragile and collides with other Codex
+uses (verified gotcha). <code>craft configure</code> MAY optionally scaffold the
+<code>~/.codex</code> CBorg profiles, but that is a user-global side-effect to
+flag, not a BERIL-scoped write. Ref: https://cborg.lbl.gov/tools_codex/</p>
+<p>Other skills remain Claude-tiered in v1; the extension point exists so
+this stays loosely coupled rather than special-cased in the core.</p>
+<p><strong>Conformance boundary + atlas.</strong> "Conformance" means a skill uses the shared
+resolver <em>core</em> identically — <code>infer_provider</code>, tier resolution, discovery,
+additive-only <code>.env</code>, inline-comment parsing. The claude-p <em>delivery</em> shaping
+(<code>bare_host</code>, the <code>settings.json</code> env) is used ONLY by skills that spawn
+<code>claude -p</code>. <strong>Atlas</strong> is app-internal-only (its own LLM client, no <code>claude -p</code>),
+so it uses the core and NOT the delivery, and writes no <code>settings.json</code>. Atlas is
+a <strong>separate product</strong> (ArkinLaboratory, its own release, NOT a CRAFT submodule or
+pin) that conforms to this config <em>convention</em> for two reasons: (1) <strong>coexistence
+on the shared BERIL <code>.env</code></strong> — it must be additive-only so it doesn't shadow the
+CRAFT skills' keys (the one hard requirement); (2) cross-family consistency. Atlas's
+conformance is verified in <strong>atlas's own test suite</strong>, NOT in CRAFT's Stage-6
+cross-skill conformance test (which covers the three CRAFT skills). <strong>Gemini</strong> for
+atlas is reachable today via the <code>cborg</code> provider by pinning a CBORG-served gemini
+model to a tier (e.g. <code>MODEL_FAST=gemini-flash</code>); a standalone <code>google</code> provider
+(direct Google AI Studio, bypassing CBORG) is a future own-client extension, not v1.</p>
+<p><strong>Downstream propagation.</strong> Because atlas is a separate product <em>consuming</em> this
+convention, a change to the shared-block format (sentinels, key names, the tier
+vars) is a <strong>breaking change for atlas</strong> — it must propagate to atlas's docs + code
+even though atlas isn't a CRAFT submodule. Atlas's docs <em>reference</em> this section
+rather than re-documenting the format (single source), so the propagation surface is
+bounded; track it via the doc-drift inventory.</p>
+<p><strong>Additive-only <code>.env</code>.</strong> The <code>.env</code> in a real BERIL deployment is shared with
+BERIL itself and other processes and <strong>already contains</strong> the provider
+credentials (<code>CBORG_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>, <code>GOOGLE_*</code>, <code>KBASE_AUTH_TOKEN</code>,
+<code>CBORG_BASE_URL</code>). CRAFT's <code>.env</code> block therefore <strong>declares only CRAFT-specific
+settings it introduces</strong> — <code>ACTIVE_PROVIDER</code>, <code>MODEL_{REASONING,STANDARD,FAST}</code>,
+per-skill markers, <code>CODEX_PROFILE</code> — and <strong>must never re-declare a credential</strong>
+(re-declaring appends a later, blank line that shadows the real value via
+last-write-wins). CRAFT <em>reads</em> existing credentials; if a needed one is absent,
+<code>configure</code> fails loud naming it. <code>compose_env_append</code> must skip any key already
+present in the <code>.env</code>. Parsers must strip inline <code>#</code> comments from unquoted values
+(a populated <code>.env</code> uses them).</p>
+<p><strong><code>configure</code> prerequisites preflight.</strong> <code>configure</code> is the single command a
+user runs to confirm a deployment will actually work <em>before</em> starting research,
+so it automatically checks the skill's <strong>hard runtime prerequisites</strong> — external
+CLIs/tools the skill shells out to that pip does not provide — failing loud with
+a named-missing-tool error (advisory for soft requirements). It does NOT repeat
+redundant checks: <code>claude</code> on PATH is already covered, and pip-installed Python
+deps are guaranteed by the pinned package. The preflight <em>step</em> is uniform across
+skills; the checked-tool list is per-skill data (and feeds <code>craft doctor</code>).
+<strong>There is no separate audit command</strong> — a check worth keeping runs here
+automatically; a redundant one is dropped, not parked.</p>
+<p><strong>Secrets.</strong> API keys/tokens live only in gitignored files (<code>.env</code>,
+<code>settings.local.json</code>); never in committed <code>settings.json</code>, never echoed.</p>
+<p><strong>Future variables MUST be added to this contract</strong> before any skill
 starts depending on them.</p>
 <h3 id="35-auto-memory-convention">3.5 Auto-memory convention<a class="headerlink" href="#35-auto-memory-convention" title="Permanent link">&para;</a></h3>
 <p>Each skill reads <code>.auto-memory/MEMORY.md</code> (workspace-level) on

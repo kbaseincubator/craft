@@ -1770,10 +1770,17 @@ substrate.</p>
 </tr>
 <tr>
 <td>Auth model (Anthropic direct + CBORG gateway)</td>
-<td>Stable</td>
-<td>2026-06-03</td>
-<td>Low</td>
-<td>CBORG token policy changes; per-user quota shifts.</td>
+<td>Changing — see billing-split row</td>
+<td>2026-06-05</td>
+<td>Medium</td>
+<td>CBORG token policy changes; per-user quota shifts; subscription-vs-API-key path now has billing consequences (next row).</td>
+</tr>
+<tr>
+<td><strong>Agent SDK billing split (effective 2026-06-15)</strong></td>
+<td><strong>ACTIVE 2026-06-15</strong></td>
+<td>2026-06-05</td>
+<td><strong>Medium-High</strong></td>
+<td><code>claude -p</code> usage moves OFF subscription usage limits onto a separate, per-user monthly "Agent SDK credit" ($20 Pro / $100 Max 5x / $200 Max 20x, no rollover), then API-rate overage if usage credits enabled, else hard-stop until refresh. Hits every operator running CRAFT on a personal Pro/Max subscription. Mitigations: (1) claim the credit (one-time opt-in); (2) for heavy/shared/production use, route Claude Code at an API endpoint instead of the subscription. <strong>Best path for LBL/KBase: route <code>claude -p</code> through CBORG</strong> — CBORG documents a Claude Code integration (<code>ANTHROPIC_BASE_URL=https://api.cborg.lbl.gov</code> + <code>ANTHROPIC_AUTH_TOKEN=$CBORG_API_KEY</code>) and serves Opus 4-6 / Sonnet 4-6 at API rates, so the subscription split stops mattering AND it uses the CBORG key CRAFT already requires. Remaining unknowns: whether <code>claude -p</code> (non-interactive) honors the override (near-certain; smoke-test), CBORG throttling under a full multi-stage run, and CBORG budget allocation. Non-LBL operators use a direct <code>ANTHROPIC_API_KEY</code>. <a href="https://support.claude.com/en/articles/15036540-use-the-claude-agent-sdk-with-your-claude-plan">Anthropic billing</a> · <a href="https://cborg.lbl.gov/tools_claudecode/">CBORG Claude Code</a></td>
 </tr>
 <tr>
 <td><code>CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE</code> env var</td>
@@ -1793,6 +1800,20 @@ substrate.</p>
   table above.</li>
 <li>If a deprecation lands that affects CRAFT skills, the
   <code>CROSS-SKILL-RELEASE.md</code> runbook coordinates the response.</li>
+<li><strong>Agent SDK billing split (2026-06-15):</strong> operator-facing cost
+  warning added to <code>docs/quick-start/install.md</code> on 2026-06-05.
+  Leading fix for LBL/KBase: have CRAFT export
+  <code>ANTHROPIC_BASE_URL=https://api.cborg.lbl.gov</code> +
+  <code>ANTHROPIC_AUTH_TOKEN=$CBORG_API_KEY</code> around its <code>claude -p</code>
+  calls (CBORG documents this for Claude Code and serves Opus
+  4-6). CRAFT already requires the CBORG key, so this is a small
+  change, not a new dependency. Open: smoke-test that <code>claude -p</code>
+  honors the override end-to-end + CBORG throttling under a full
+  run. Note the skills currently pin <code>--model claude-sonnet-4-6</code>
+  on several stages — via CBORG you can set
+  <code>ANTHROPIC_DEFAULT_OPUS_MODEL=claude-opus-4-6</code> and lift quality
+  stages to Opus; model tier is now both a billing lever and a
+  quality choice.</li>
 </ul>
 <hr />
 <h2 id="2-kbase-beril">2. KBase | BERIL<a class="headerlink" href="#2-kbase-beril" title="Permanent link">&para;</a></h2>
