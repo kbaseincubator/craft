@@ -266,9 +266,35 @@ three skills at their current production versions:
 No cross-skill PRs; just the platform repo setup. Documented
 here as the baseline.
 
-### Entry 1 — (future)
+### Entry 1 — 2026-06-06 — CRAFT v0.3.0 — runtime-config standardization
 
-(Appended on first coordinated release.)
+First real coordinated release. Adopted the runtime-configuration contract
+(CRAFT-CONTRACT §3.4 v2: provider abstraction `anthropic`/`cborg`/`subscription`,
+three model tiers `reasoning`/`standard`/`fast`, additive-only `.env`, `configure`
+bootstrap + validation ping, `app_internal_base_url` helper). Tags:
+
+- beril-adversarial-skill **v0.7.1** (`24063e1`, kbaseincubator)
+- beril-paper-writer-skill **v1.1.0** (`0aa62ef`, kbaseincubator)
+- beril-presentation-maker-skill **v1.1.0** (`c7156e5`, kbaseincubator)
+- CRAFT platform **v0.3.0** (`23fe599`) — submodules re-pinned to the above; CI
+  tag-pin check re-armed; §3.4 flipped PROPOSED→adopted; contract bumped v0.1→v0.2.
+- beril-atlas-skill **v0.4.0** (`d71809c`, ArkinLaboratory) — conforms to §3.4 on its
+  own track (separate product; not a CRAFT submodule).
+
+New cross-skill machinery: `craft configure <BERIL_ROOT>` umbrella + a cross-skill
+conformance fixture (Family A behavioral / B compose / C source identity) in CI.
+
+**Recorded deviation:** the Phase-D full-content cross-skill smoke (adversarial→
+paper-writer→presentation-maker end-to-end) was **intentionally skipped** — the arc
+changed runtime-config only (no §2.1 schema, no content behavior), so the conformance
+fixture + the cold `craft configure` umbrella + an old-`.env` backward-compat check were
+the proportionate verification.
+
+**Phase-H live verification (2026-06-06, KBase Hub):** `pipx install craft@v0.3.0` →
+`install-platform` synced 3/3 skills to the pinned tags → `doctor` 3/3 pin matches →
+`craft configure` resolved `cborg`, wrote settings.{json,local.json}, and the reasoning-
+tier validation ping returned `ok` (claude-opus-4-8) for all three; additive-`.env`
+no-change confirmed on an already-configured deployment. PASS.
 
 ---
 
