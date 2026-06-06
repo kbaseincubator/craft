@@ -44,15 +44,10 @@ jobs:
         # Detached HEAD on a tag is what we want; anything else fails the
         # CRAFT-CONTRACT.md §3 strict-pinning policy.
         #
-        # Suspended for Stage 6: submodules pin untagged conformed mains
-        # (Stage 6 brief §4 — "untagged pins ... Stage 7 re-pins to tags").
-        # The real assertion is LEFT INTACT so the failure shows up as an
-        # amber "allowed-failure" annotation rather than silently passing
-        # over a Stage-7-required action. Re-arm by REMOVING the
-        # `continue-on-error: true` line below once Stage 7 tags the
-        # skills + bumps these submodules to tags. (Tracked in
-        # handoffs/CRAFT-config-doc-drift-inventory.md "CI (Stage 7)".)
-        continue-on-error: true
+        # Re-armed at Stage 7 (CRAFT v0.3.0, 2026-06): the 3 skills are
+        # tagged again (v0.7.1, v1.1.0, v1.1.0) and the submodules pin to
+        # those tags. The Stage-6 `continue-on-error: true` suspension is
+        # removed — a future drift back to untagged pins now blocks CI.
         run: |
           set -e
           for sm in skills/beril-adversarial-skill skills/beril-paper-writer-skill skills/beril-presentation-maker-skill; do

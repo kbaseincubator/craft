@@ -19,6 +19,9 @@ The platform pins specific compatible versions of the three +
 provides:
 
 - **Unified install** via `pipx install craft` + `craft install-platform <BERIL_ROOT>`
+- **Runtime-config bootstrap** via `craft configure <BERIL_ROOT>` — runs each installed
+  skill's `configure` (provider selection, model-tier pins, `settings.json` + a
+  validation ping) per CRAFT-CONTRACT §3.4
 - **Health-check** via `craft doctor [<BERIL_ROOT>]`
 - **Cross-skill contract** ([CRAFT-CONTRACT.md](CRAFT-CONTRACT.md))
 - **Coordinated upstream-change response**
@@ -58,12 +61,15 @@ PATH:
 
 ```bash
 # 1. Install CRAFT + its three skills (pipx transitively pulls them in)
-pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.3
+pipx install git+https://github.com/kbaseincubator/craft.git@v0.3.0
 
 # 2. Deploy all three skills into the BERIL deployment
 craft install-platform <BERIL_ROOT>
 
-# 3. Verify cross-skill integration
+# 3. Bootstrap runtime config for all three (provider, model tiers, settings.json + ping)
+craft configure <BERIL_ROOT>
+
+# 4. Verify cross-skill integration
 craft doctor <BERIL_ROOT>
 ```
 
@@ -86,13 +92,18 @@ Individual skills release on their own cadence; CRAFT bumps when
 the contract surface changes OR when coordinated cross-skill
 releases happen.
 
-Current pins (CRAFT v0.2.3):
+Current pins (CRAFT v0.3.0):
 
 | Skill | Pinned version |
 |---|---|
-| beril-adversarial-skill | v0.7.0.10 |
-| beril-paper-writer-skill | v1.0.2 |
-| beril-presentation-maker-skill | v1.0.1 |
+| beril-adversarial-skill | v0.7.1 |
+| beril-paper-writer-skill | v1.1.0 |
+| beril-presentation-maker-skill | v1.1.0 |
+
+CRAFT v0.3.0 adopts the runtime-configuration contract (CRAFT-CONTRACT §3.4):
+provider abstraction (`anthropic`/`cborg`/`subscription`), three model tiers
+(`reasoning`/`standard`/`fast`), additive-only `.env`, and the `craft configure`
+umbrella. See [quick-start/install.md](docs/quick-start/install.md) for the setup model.
 
 See [RELEASE_NOTES.md](RELEASE_NOTES.md) for the platform's
 version history.

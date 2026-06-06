@@ -1,5 +1,80 @@
 # CRAFT — Release Notes
 
+## v0.3.0 (2026-06-06) — runtime-config standardization release
+
+The first coordinated CRAFT-platform release. Pins the 3 skills at their
+runtime-config-conformant tags and adopts CRAFT-CONTRACT §3.4 v2 as the
+shared runtime-config contract.
+
+### Adopted skills (platform pins)
+
+- `beril-adversarial-skill@v0.7.1`
+- `beril-paper-writer-skill@v1.1.0`
+- `beril-presentation-maker-skill@v1.1.0`
+
+Atlas (`beril-atlas-skill@v0.4.0`) conforms on its own
+ArkinLaboratory track and is not platform-pinned; the same §3.4 contract
+applies.
+
+### What this release standardizes
+
+**Provider abstraction.** `ACTIVE_PROVIDER ∈ {anthropic, cborg,
+subscription}`. Each skill's runtime resolves the provider explicitly
+from `.env`; legacy deployments with only `CBORG_API_KEY` infer
+`cborg` (no breaking change).
+
+**Three model tiers.** `MODEL_REASONING` / `MODEL_STANDARD` /
+`MODEL_FAST` replace the per-skill ad-hoc model knobs. Each skill maps
+its internal phases to the three tiers; tier choice + provider routing
+are now uniform across the platform.
+
+**Additive-only `.env` extension.** `configure` extends
+`<BERIL_ROOT>/.env` without re-declaring keys the user already set —
+upgrades never shadow operator credentials.
+
+**`configure` CRAFT-bootstrap.** Each skill exposes
+`<cli> configure <BERIL_ROOT>` with a uniform positional shape; the
+umbrella `craft configure <BERIL_ROOT>` invokes the three in sequence.
+A response-validating ping (not exit-code) confirms the resolved
+provider+tier configuration actually works.
+
+**`app_internal_base_url` canonical helper.** Closes a class of
+`bare-host` silent-404 bugs (provider-internal calls now consistently
+resolve `bare_host(env) + "/v1"`).
+
+### Platform changes
+
+- `pyproject.toml`: skill pins bumped to `v0.7.1` / `v1.1.0` / `v1.1.0`;
+  CRAFT version `0.2.3 → 0.3.0` (also in `src/craft/__init__.py`).
+- Submodules re-pinned to the same tags via explicit `git checkout
+  <tag>` (not `--remote`), restoring strict tag pinning.
+- `platform-ci.yml`: re-armed the "Verify submodule tag pinning" step —
+  removed the Stage-6 `continue-on-error: true` suspension. Drift back
+  to untagged submodule pins now blocks CI.
+- `CRAFT-CONTRACT.md` §3.4 v2 flipped from **PROPOSED → adopted**;
+  contract doc version `v0.1 → v0.2`; §5 history row added; status
+  header refreshed to the current per-skill versions.
+
+### Verification (CC-local)
+
+- `craft-platform` pytest green against the tagged submodules
+  (conformance fixture + cli tests).
+- Ruff clean on touched files.
+- Hub-side live verification (umbrella `craft configure <BERIL_ROOT>` +
+  old-style `.env` backward-compat) is Adam's Phase H gate.
+
+### What did NOT change
+
+- §2.1 producer schemas — content-generation behavior is identical to
+  the v0.2.x line. The full cross-skill content smoke (adversarial →
+  paper-writer → presentation-maker) is intentionally **skipped** for
+  this release; the conformance fixture + the umbrella `configure` cold
+  smoke + the old-`.env` backward-compat check cover the risk surface
+  proportionately. (See CROSS-SKILL-RELEASE.md §6 — recorded skip, not
+  a missed phase.)
+
+---
+
 ## v0.2.3 (2026-06-04) — install-platform force-syncs skill versions
 
 **Fixes a real bug surfaced by Adam's hub install of CRAFT

@@ -17,14 +17,18 @@ This runs three checks:
    is functional + checks the installed-version matches the
    CRAFT pin.
 3. **Each skill's `configure` subcommand passes against your
-   BERIL_ROOT** — verifies the per-skill environment expectations
-   (claude on PATH, python-pptx importable, CBORG_API_KEY present,
-   etc.).
+   BERIL_ROOT** — verifies the per-skill runtime config (provider
+   resolved, tier models pinned, `claude` on PATH, validation ping).
+
+`craft configure <BERIL_ROOT>` is the dedicated **setup** umbrella — it runs each
+skill's `configure` (interactive, so it can prompt for model-tier pins) to bootstrap
+the runtime config. `craft doctor` re-runs them as a non-interactive **health probe**;
+use `configure` to set things up, `doctor` to check them.
 
 Sample output:
 
 ```
-CRAFT doctor v0.2.3
+CRAFT doctor v0.3.0
 
 ── Skill CLIs on PATH
    ✓ beril-adversarial → /opt/pipx/bin/beril-adversarial
@@ -32,9 +36,9 @@ CRAFT doctor v0.2.3
    ✓ beril-presentation-maker → /opt/pipx/bin/beril-presentation-maker
 
 ── Skill versions (vs CRAFT pins)
-   ✓ beril-adversarial: 0.7.0.10 (matches pin)
-   ✓ beril-paper-writer: 1.0.2 (matches pin)
-   ✓ beril-presentation-maker: 1.0.1 (matches pin)
+   ✓ beril-adversarial: 0.7.1 (matches pin)
+   ✓ beril-paper-writer: 1.1.0 (matches pin)
+   ✓ beril-presentation-maker: 1.1.0 (matches pin)
 
 ── Per-skill `configure` (BERIL_ROOT=/path/to/beril)
    beril-adversarial configure ...

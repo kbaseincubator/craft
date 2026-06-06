@@ -31,10 +31,10 @@ invocations into one command.
 ## Install command
 
 ```bash
-pipx install git+https://github.com/kbaseincubator/craft.git@v0.2.3
+pipx install git+https://github.com/kbaseincubator/craft.git@v0.3.0
 ```
 
-Replace `v0.2.3` with the latest tag if you want the current
+Replace `v0.3.0` with the latest tag if you want the current
 release; see [release notes](../reference/release-notes.md) for
 what each version ships.
 
@@ -68,7 +68,7 @@ pipx venv; the CRAFT meta-package shares its venv with the
 
 ```bash
 craft --version
-# CRAFT v0.2.3
+# CRAFT v0.3.0
 ```
 
 You should also see the three skill CLIs on `PATH`:
@@ -129,6 +129,43 @@ What that means for running CRAFT:
 
 Interactive Claude Code, Cowork, and web/desktop/mobile chat are
 **not** affected by this change.
+
+## Runtime configuration with `craft configure`
+
+CRAFT v0.3.0 turns the manual provider wiring below into one command. You
+declare the provider + credential in `<BERIL_ROOT>/.env`, then run:
+
+```bash
+craft configure <BERIL_ROOT>
+```
+
+which runs each installed skill's `configure` (CRAFT-CONTRACT §3.4): it selects
+the provider, discovers the model list, pins a model per tier, **generates
+`<BERIL_ROOT>/.claude/settings.{json,local.json}`** (so `claude -p` is wired
+without hand-editing), and runs a validation ping that confirms a real call works.
+
+**Provider** — set `ACTIVE_PROVIDER` in `.env` to one of:
+
+| `ACTIVE_PROVIDER` | Audience | What `configure` wires for `claude -p` |
+|---|---|---|
+| `anthropic` | Anyone, incl. external/public | `ANTHROPIC_API_KEY` (direct Anthropic Platform; pay-as-you-go, unaffected by the 2026-06-15 credit split) |
+| `cborg` | LBL/KBase | `ANTHROPIC_BASE_URL=https://api.cborg.lbl.gov` (bare host) + `ANTHROPIC_AUTH_TOKEN=<CBORG key>`; free on the Hub, needs LBL VPN locally |
+| `subscription` | Fallback (no key) | nothing — ambient Claude Code login, capped by the monthly Agent SDK credit |
+
+If `ACTIVE_PROVIDER` is unset it is **inferred** for backward compatibility: a
+`CBORG_API_KEY` → `cborg`, an `ANTHROPIC_API_KEY` → `anthropic`, neither →
+`subscription`. So an existing BERIL `.env` keeps working with no change.
+`anthropic` is a **co-equal profile**, not merely a CBORG fallback — a direct
+Anthropic key works uniformly across `claude -p` and the skills' app-internal
+calls.
+
+**Model tiers** — three logical tiers (`reasoning` / `standard` / `fast`)
+instead of hardcoded model ids; `configure` discovers the provider's models and
+pins a concrete, visible model per tier, so a model swap is an explicit re-pin
+(`MODEL_{REASONING,STANDARD,FAST}` in `.env`), not silent drift.
+
+The detail below explains what `configure` writes for the `cborg` case — useful
+background, and the manual path if you prefer to wire it by hand.
 
 **LBL/KBase operators** have a cleaner option: point `claude -p`
 itself at CBORG, which serves Claude (incl. Opus 4-6) and

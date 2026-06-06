@@ -232,6 +232,7 @@ table is the snapshot of currently-pinned versions.
 | Date | Reviewer | Changes | Action items |
 |---|---|---|---|
 | 2026-06-03 | Initial draft | Created document with current state | None (snapshot) |
+| 2026-06-06 | CRAFT v0.3.0 release | Bumped skill pins to tagged versions (v0.7.1 / v1.1.0 / v1.1.0); §3.4 adopted; CI tag-pin re-armed. No upstream-dep changes in this release. | None (release-time snapshot) |
 
 (Future entries appended on each quarterly review or coordinated
 release.)

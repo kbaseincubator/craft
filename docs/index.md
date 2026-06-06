@@ -18,6 +18,8 @@ into a coherent Tier-0 research assessment workflow:
 The platform provides:
 
 - **Unified install** via `pipx install craft` + `craft install-platform <BERIL_ROOT>`
+- **Runtime-config bootstrap** via `craft configure <BERIL_ROOT>` (provider, model
+  tiers, validation ping — CRAFT-CONTRACT §3.4)
 - **Cross-skill interface contract** ensuring the three skills
   stay compositionally coherent
 - **Coordinated upstream-change response** for Anthropic / KBase | BERIL /

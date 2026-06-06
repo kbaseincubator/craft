@@ -3,11 +3,11 @@
 **Platform:** CRAFT (Co-Scientist Research Assessment & Framing
 Tools)
 **Date:** 2026-06-03 (initial draft)
-**Status:** Initial draft. Captures the cross-skill contract
-that exists implicitly across the three production skills as
-of their current versions (adversarial v0.7.0.8, paper-writer
-v1.0.0, presentation-maker v1.0.0). Live document; updated when
-contract surface changes.
+**Status:** Active. §3.4 runtime-config contract v2 is **adopted** as of
+CRAFT v0.3.0 (2026-06) and ships across adversarial v0.7.1, paper-writer
+v1.1.0, presentation-maker v1.1.0; atlas v0.4.0 conforms on its own
+ArkinLaboratory track. Live document; updated when contract surface
+changes.
 
 **Audience:** (1) maintainers of the three CRAFT skills, (2)
 authors of new skills proposing to join the platform, (3)
@@ -38,7 +38,7 @@ load-bearing piece that lets each skill release independently
 without breaking the others.
 
 **Versioning:** the contract itself is versioned at the platform
-level. Today: **CRAFT contract v0.1**. Bumping the contract
+level. Today: **CRAFT contract v0.2**. Bumping the contract
 version requires platform-level review + a dual-version
 support window (typically 1-2 minor releases per skill).
 
@@ -250,7 +250,7 @@ skill's `.claude/skills/<name>/` deployment dir.
 > through to ambient Claude Code login. Contract v2 (below)
 > replaces this with an explicit, provider-aware model.
 
-#### Runtime configuration contract v2 — PROPOSED (pending review + coordinated rollout)
+#### Runtime configuration contract v2 — adopted (CRAFT v0.3.0, 2026-06)
 
 **Two config classes.** Every config value is exactly one of:
 
@@ -536,6 +536,7 @@ reference) can be removed from CRAFT. Process:
 | Version | Date | Change |
 |---|---|---|
 | v0.1 (draft) | 2026-06-03 | Initial draft. Captures the contract as it exists across adversarial v0.7.0.8, paper-writer v1.0.0, presentation-maker v1.0.0. |
+| v0.2 | 2026-06 | §3.4 runtime-config contract v2 adopted (provider abstraction + reasoning/standard/fast tiers + additive-only .env + configure bootstrap + app_internal_base_url). Shipped: CRAFT v0.3.0, adversarial v0.7.1, paper-writer v1.1.0, presentation-maker v1.1.0, atlas v0.4.0. |
 
 (Future entries appended as the contract evolves.)
 
