@@ -1213,10 +1213,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#entry-1-future" class="md-nav__link">
+  <a href="#entry-1-2026-06-06-craft-v030-runtime-config-standardization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Entry 1 — (future)
+        Entry 1 — 2026-06-06 — CRAFT v0.3.0 — runtime-config standardization
       
     </span>
   </a>
@@ -1783,10 +1783,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#entry-1-future" class="md-nav__link">
+  <a href="#entry-1-2026-06-06-craft-v030-runtime-config-standardization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Entry 1 — (future)
+        Entry 1 — 2026-06-06 — CRAFT v0.3.0 — runtime-config standardization
       
     </span>
   </a>
@@ -2153,8 +2153,32 @@ three skills at their current production versions:</p>
 </ul>
 <p>No cross-skill PRs; just the platform repo setup. Documented
 here as the baseline.</p>
-<h3 id="entry-1-future">Entry 1 — (future)<a class="headerlink" href="#entry-1-future" title="Permanent link">&para;</a></h3>
-<p>(Appended on first coordinated release.)</p>
+<h3 id="entry-1-2026-06-06-craft-v030-runtime-config-standardization">Entry 1 — 2026-06-06 — CRAFT v0.3.0 — runtime-config standardization<a class="headerlink" href="#entry-1-2026-06-06-craft-v030-runtime-config-standardization" title="Permanent link">&para;</a></h3>
+<p>First real coordinated release. Adopted the runtime-configuration contract
+(CRAFT-CONTRACT §3.4 v2: provider abstraction <code>anthropic</code>/<code>cborg</code>/<code>subscription</code>,
+three model tiers <code>reasoning</code>/<code>standard</code>/<code>fast</code>, additive-only <code>.env</code>, <code>configure</code>
+bootstrap + validation ping, <code>app_internal_base_url</code> helper). Tags:</p>
+<ul>
+<li>beril-adversarial-skill <strong>v0.7.1</strong> (<code>24063e1</code>, kbaseincubator)</li>
+<li>beril-paper-writer-skill <strong>v1.1.0</strong> (<code>0aa62ef</code>, kbaseincubator)</li>
+<li>beril-presentation-maker-skill <strong>v1.1.0</strong> (<code>c7156e5</code>, kbaseincubator)</li>
+<li>CRAFT platform <strong>v0.3.0</strong> (<code>23fe599</code>) — submodules re-pinned to the above; CI
+  tag-pin check re-armed; §3.4 flipped PROPOSED→adopted; contract bumped v0.1→v0.2.</li>
+<li>beril-atlas-skill <strong>v0.4.0</strong> (<code>d71809c</code>, ArkinLaboratory) — conforms to §3.4 on its
+  own track (separate product; not a CRAFT submodule).</li>
+</ul>
+<p>New cross-skill machinery: <code>craft configure &lt;BERIL_ROOT&gt;</code> umbrella + a cross-skill
+conformance fixture (Family A behavioral / B compose / C source identity) in CI.</p>
+<p><strong>Recorded deviation:</strong> the Phase-D full-content cross-skill smoke (adversarial→
+paper-writer→presentation-maker end-to-end) was <strong>intentionally skipped</strong> — the arc
+changed runtime-config only (no §2.1 schema, no content behavior), so the conformance
+fixture + the cold <code>craft configure</code> umbrella + an old-<code>.env</code> backward-compat check were
+the proportionate verification.</p>
+<p><strong>Phase-H live verification (2026-06-06, KBase Hub):</strong> <code>pipx install craft@v0.3.0</code> →
+<code>install-platform</code> synced 3/3 skills to the pinned tags → <code>doctor</code> 3/3 pin matches →
+<code>craft configure</code> resolved <code>cborg</code>, wrote settings.{json,local.json}, and the reasoning-
+tier validation ping returned <code>ok</code> (claude-opus-4-8) for all three; additive-<code>.env</code>
+no-change confirmed on an already-configured deployment. PASS.</p>
 <hr />
 <p><em>This document is the runbook. When a coordinated release is in
 progress, the platform maintainer follows this sequence + logs
