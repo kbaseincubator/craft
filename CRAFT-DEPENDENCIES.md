@@ -47,7 +47,8 @@ substrate.
 | stream-json output shape | Stable | 2026-06-03 | Low | Schema additions are non-breaking; renames/removals are. Each skill has a `stream_progress.py` parser that would break on a shape change. |
 | Model availability (Sonnet 4.6, Opus 4.7) | Stable | 2026-06-03 | Medium | Model deprecations; CBORG mirror lag (~1-2 weeks behind direct Anthropic). |
 | MCP tool surface | Evolving | 2026-06-03 | Low for CRAFT | The three skills don't currently consume MCP tools at runtime; if a skill adopts MCP, this row becomes load-bearing. |
-| Auth model (Anthropic direct + CBORG gateway) | Stable | 2026-06-03 | Low | CBORG token policy changes; per-user quota shifts. |
+| Auth model (Anthropic direct + CBORG gateway) | Changing — see billing-split row | 2026-06-05 | Medium | CBORG token policy changes; per-user quota shifts; subscription-vs-API-key path now has billing consequences (next row). |
+| **Agent SDK billing split (effective 2026-06-15)** | **ACTIVE 2026-06-15** | 2026-06-05 | **Medium-High** | `claude -p` usage moves OFF subscription usage limits onto a separate, per-user monthly "Agent SDK credit" ($20 Pro / $100 Max 5x / $200 Max 20x, no rollover), then API-rate overage if usage credits enabled, else hard-stop until refresh. Hits every operator running CRAFT on a personal Pro/Max subscription. Mitigations: (1) claim the credit (one-time opt-in); (2) for heavy/shared/production use, route Claude Code at an API endpoint instead of the subscription. **Best path for LBL/KBase: route `claude -p` through CBORG** — CBORG documents a Claude Code integration (`ANTHROPIC_BASE_URL=https://api.cborg.lbl.gov` + `ANTHROPIC_AUTH_TOKEN=$CBORG_API_KEY`) and serves Opus 4-6 / Sonnet 4-6 at API rates, so the subscription split stops mattering AND it uses the CBORG key CRAFT already requires. Remaining unknowns: whether `claude -p` (non-interactive) honors the override (near-certain; smoke-test), CBORG throttling under a full multi-stage run, and CBORG budget allocation. Non-LBL operators use a direct `ANTHROPIC_API_KEY`. [Anthropic billing](https://support.claude.com/en/articles/15036540-use-the-claude-agent-sdk-with-your-claude-plan) · [CBORG Claude Code](https://cborg.lbl.gov/tools_claudecode/) |
 | `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` env var | **DEPRECATED 06/01/2026** | 2026-06-03 | None | Removed; no CRAFT skill uses this env var, so no action needed. Listed here as a historical example of Anthropic's 30-90 day deprecation cadence. |
 
 ### Anthropic-side coordination notes
@@ -59,6 +60,20 @@ substrate.
   table above.
 - If a deprecation lands that affects CRAFT skills, the
   `CROSS-SKILL-RELEASE.md` runbook coordinates the response.
+- **Agent SDK billing split (2026-06-15):** operator-facing cost
+  warning added to `docs/quick-start/install.md` on 2026-06-05.
+  Leading fix for LBL/KBase: have CRAFT export
+  `ANTHROPIC_BASE_URL=https://api.cborg.lbl.gov` +
+  `ANTHROPIC_AUTH_TOKEN=$CBORG_API_KEY` around its `claude -p`
+  calls (CBORG documents this for Claude Code and serves Opus
+  4-6). CRAFT already requires the CBORG key, so this is a small
+  change, not a new dependency. Open: smoke-test that `claude -p`
+  honors the override end-to-end + CBORG throttling under a full
+  run. Note the skills currently pin `--model claude-sonnet-4-6`
+  on several stages — via CBORG you can set
+  `ANTHROPIC_DEFAULT_OPUS_MODEL=claude-opus-4-6` and lift quality
+  stages to Opus; model tier is now both a billing lever and a
+  quality choice.
 
 ---
 
