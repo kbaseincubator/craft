@@ -1,0 +1,57 @@
+{
+  "schema_version": "run-record.v1",
+  "skill": "adversarial",
+  "skill_version": "0.8.0",
+  "run_id": "run-1",
+  "draft_dir": "/projects/ibd_phage_targeting/papers/draft_3",
+  "mode": null,
+  "status": "completed",
+  "started_at": "2026-06-07T20:00:00Z",
+  "finished_at": "2026-06-07T20:08:30Z",
+  "exit_code": 2,
+  "current_stage": null,
+  "stages": [
+    {
+      "id": "review",
+      "status": "completed",
+      "model": "claude-opus-4-7",
+      "started_at": "2026-06-07T20:00:00Z",
+      "finished_at": "2026-06-07T20:08:00Z",
+      "elapsed_seconds": 480.0,
+      "input_tokens": 38000,
+      "output_tokens": 6500,
+      "cache_read_tokens": 1500,
+      "cache_creation_tokens": 0,
+      "cost_usd": 1.18,
+      "subrecord": null
+    },
+    {
+      "id": "critic_fix",
+      "status": "completed",
+      "model": "claude-sonnet-4-6",
+      "started_at": "2026-06-07T20:08:00Z",
+      "finished_at": "2026-06-07T20:08:30Z",
+      "elapsed_seconds": 30.0,
+      "input_tokens": 2200,
+      "output_tokens": 800,
+      "cache_read_tokens": 0,
+      "cache_creation_tokens": 0,
+      "cost_usd": 0.04,
+      "subrecord": null
+    }
+  ],
+  "totals": {
+    "cost_usd": 1.22,
+    "input_tokens": 40200,
+    "output_tokens": 7300,
+    "cache_read_tokens": 1500,
+    "cache_creation_tokens": 0,
+    "elapsed_seconds": 510.0
+  },
+  "models_used": ["claude-opus-4-7", "claude-sonnet-4-6"],
+  "artifacts": {
+    "user_intent": null,
+    "deliverable_validation": null,
+    "deliverable": "review.md"
+  }
+}

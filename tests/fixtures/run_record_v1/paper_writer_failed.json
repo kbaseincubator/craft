@@ -1,0 +1,57 @@
+{
+  "schema_version": "run-record.v1",
+  "skill": "paper-writer",
+  "skill_version": "1.3.0",
+  "run_id": "run-2",
+  "draft_dir": "/projects/ibd_phage_targeting/papers/draft_4",
+  "mode": "report",
+  "status": "failed",
+  "started_at": "2026-06-07T22:00:00Z",
+  "finished_at": "2026-06-07T22:14:00Z",
+  "exit_code": 1,
+  "current_stage": null,
+  "stages": [
+    {
+      "id": "extract",
+      "status": "completed",
+      "model": null,
+      "started_at": "2026-06-07T22:00:00Z",
+      "finished_at": "2026-06-07T22:03:00Z",
+      "elapsed_seconds": 180.0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_creation_tokens": 0,
+      "cost_usd": 0.0,
+      "subrecord": null
+    },
+    {
+      "id": "drafting",
+      "status": "failed",
+      "model": "claude-opus-4-7",
+      "started_at": "2026-06-07T22:03:00Z",
+      "finished_at": "2026-06-07T22:14:00Z",
+      "elapsed_seconds": 660.0,
+      "input_tokens": 28000,
+      "output_tokens": 4100,
+      "cache_read_tokens": 0,
+      "cache_creation_tokens": 0,
+      "cost_usd": 1.05,
+      "subrecord": null
+    }
+  ],
+  "totals": {
+    "cost_usd": 1.05,
+    "input_tokens": 28000,
+    "output_tokens": 4100,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "elapsed_seconds": 840.0
+  },
+  "models_used": ["claude-opus-4-7"],
+  "artifacts": {
+    "user_intent": "audit/user_intent.json",
+    "deliverable_validation": null,
+    "deliverable": null
+  }
+}

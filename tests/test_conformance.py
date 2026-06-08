@@ -61,6 +61,7 @@ from __future__ import annotations
 import ast
 import dataclasses
 import inspect
+import json
 import os
 from pathlib import Path
 from textwrap import dedent
@@ -610,3 +611,110 @@ def test_familyD_user_intent_copy_byte_identical():
         f"  paperwriter: {p_path}\n"
         "Diff them and re-sync the copies before tagging."
     )
+
+
+# ---------------------------------------------------------------------------
+# Family E — `run-record.v1` golden-sample schema conformance (Cycle 3, DP1)
+# ---------------------------------------------------------------------------
+#
+# Cycle 3 introduces a uniform run-record (`audit/run_record.json`) emitted
+# by the 3 kbaseincubator skills. The *emitters* differ per skill (they
+# project from each skill's existing run-end state — finalize_run for
+# presmaker, save_state for paper-writer, aggregate_metadata for
+# adversarial), but the *record* itself is a shared schema. Unlike
+# Families A-D, this is **shape**-not-source-identity: each skill ships
+# golden sample `run_record.json` files under its own tests; this family
+# discovers and validates them against the single shared validator in
+# `craft.run_record.validate_run_record`.
+#
+# Per-skill goldens land in Steps 2 (presmaker), 4 (paper-writer), and 5
+# (adversarial) of Cycle 3. Until they ship, this family graceful-skips per
+# skill (the same discipline as the Family A-D editable-install skip);
+# CI fails-loud once they're expected to be present (via the same `CI=true`
+# escape valve used at module top).
+#
+# Discovery convention:
+#   <skill_pkg_root>/../../../tests/fixtures/run_record_v1/*.json
+# i.e. each skill's repo carries a `tests/fixtures/run_record_v1/` dir
+# containing one-or-more golden run_record.json samples. Family E iterates
+# over every *.json there, asserting:
+#   1. it parses as JSON;
+#   2. `validate_run_record(parsed) == []`.
+#
+# This is intentionally lightweight — the load-bearing per-skill positive
+# coverage is in `tests/test_run_record_validator.py` (platform-owned
+# goldens). Family E catches the case where a skill's emitter drifts from
+# the contract but its own test suite missed it.
+
+
+def _skill_repo_root(llm_config_module) -> Path:
+    """Walk up from a skill's `llm_config.py` to its repo root.
+
+    Layout: <repo>/src/<pkg>/llm_config.py → repo = parents[2].
+    """
+    return Path(llm_config_module.__file__).resolve().parents[2]
+
+
+def _find_skill_goldens(repo_root: Path) -> list[Path]:
+    """Return all *.json files under `<repo>/tests/fixtures/run_record_v1/`,
+    or an empty list if the directory is absent."""
+    fixture_dir = repo_root / "tests" / "fixtures" / "run_record_v1"
+    if not fixture_dir.is_dir():
+        return []
+    return sorted(fixture_dir.glob("*.json"))
+
+
+@pytest.mark.parametrize("skill_label,llm_config_module", [
+    ("presentation-maker", m_lc),
+    ("paper-writer",       p_lc),
+    ("adversarial",        a_lc),
+], ids=["presmaker", "paper-writer", "adversarial"])
+def test_familyE_run_record_goldens_validate(skill_label, llm_config_module):
+    """Family E: every skill-shipped golden `run_record.json` validates
+    against the shared `run-record.v1` validator.
+
+    GRACEFUL-SKIP when the skill hasn't yet shipped goldens. They land in
+    Cycle-3 Steps 2/4/5 — until then, this assertion vacuously passes.
+    CI must NOT silently skip once the version threshold below is met;
+    we tie the skip to the absence of the fixture directory, not to a
+    version comparison, because the version-floor handshake (which
+    skill versions are required to carry goldens) lives in
+    `CROSS-SKILL-RELEASE.md`, not here.
+    """
+    from craft.run_record import validate_run_record  # noqa: E402
+
+    repo_root = _skill_repo_root(llm_config_module)
+    goldens = _find_skill_goldens(repo_root)
+
+    if not goldens:
+        pytest.skip(
+            f"{skill_label}: no goldens at "
+            f"{repo_root}/tests/fixtures/run_record_v1/ "
+            f"(Cycle 3 Steps 2/4/5 ship these; pre-Step they're absent)."
+        )
+
+    for golden_path in goldens:
+        try:
+            record = json.loads(golden_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            pytest.fail(
+                f"{skill_label} golden {golden_path.name}: "
+                f"not valid JSON ({exc})"
+            )
+        errors = validate_run_record(record)
+        # Optional cross-check: a skill's goldens should declare
+        # `"skill": <skill_label>` (they could in principle ship a
+        # golden for a different skill, but that would be a smell).
+        if isinstance(record, dict) and "skill" in record:
+            assert record["skill"] == skill_label, (
+                f"{skill_label} shipped a golden under its own "
+                f"tests/fixtures/run_record_v1/ that claims "
+                f"`skill: {record['skill']!r}`. If this is "
+                f"intentional (cross-skill comparison fixture), move "
+                f"it to craft-platform/tests/fixtures/run_record_v1/."
+            )
+        assert errors == [], (
+            f"{skill_label} golden {golden_path.name} failed "
+            f"validation ({len(errors)} error(s)):\n  "
+            + "\n  ".join(errors)
+        )

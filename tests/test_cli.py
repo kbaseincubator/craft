@@ -325,3 +325,220 @@ def test_sync_skill_force_installs_on_drift(monkeypatch) -> None:
         c[0] == "pipx" and "--force" in c and any("@v0.7.0.10" in x for x in c)
         for c in call_log
     )
+
+
+# ===========================================================================
+# craft status (Cycle 3 / DP1)
+# ===========================================================================
+#
+# `craft status` reads <draft_dir>/audit/run_record.json and renders a
+# compact surface. It MUST NEVER traceback — the brief calls this out
+# as the read-side validator of the contract. These tests exercise:
+#   - clean records of each status (running / halted / completed / failed)
+#   - missing record (no traceback; clear "no run record" message;
+#     exit 2 so scripts can branch on it)
+#   - malformed JSON (no traceback; error message; exit 2)
+#   - --json dumps verbatim including for halted / running records
+#   - validator-failure surface (still renders, prints warnings, exits 2)
+#   - missing draft_dir (clear error, exit 2)
+#
+# Fixtures are platform-owned (in tests/fixtures/run_record_v1/) — same
+# goldens the validator unit tests use. They're copied into a tmp_path
+# layout per test so the fixture dir isn't mutated.
+
+import json  # noqa: E402
+import shutil  # noqa: E402
+
+_FIXTURES_DIR = Path(__file__).parent / "fixtures" / "run_record_v1"
+
+
+def _make_draft_with_record(tmp_path: Path, golden_name: str) -> Path:
+    """Build a <draft_dir>/audit/run_record.json tmp layout pointing at
+    the named golden. Returns the draft_dir path."""
+    draft_dir = tmp_path / "draft"
+    audit_dir = draft_dir / "audit"
+    audit_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy(
+        _FIXTURES_DIR / golden_name,
+        audit_dir / "run_record.json",
+    )
+    return draft_dir
+
+
+def test_status_missing_draft_dir_exits_2(tmp_path, capsys):
+    rc = cli.main(["status", str(tmp_path / "no_such_dir")])
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "draft_dir not found" in err
+
+
+def test_status_missing_record_exits_2_with_clear_message(tmp_path, capsys):
+    """The no-run-yet case. No traceback; rc=2 distinguishes "no record"
+    from "running cleanly" (rc=0)."""
+    draft_dir = tmp_path / "draft"
+    draft_dir.mkdir()  # exists, no audit/ yet
+    rc = cli.main(["status", str(draft_dir)])
+    assert rc == 2
+    captured = capsys.readouterr()
+    out = captured.out + captured.err
+    assert "no run record" in out
+    # Stretch: the message tells the operator what's happening.
+    assert "Cycle 3" in out or "no run has started" in out
+
+
+def test_status_malformed_json_exits_2_with_clear_message(tmp_path, capsys):
+    draft_dir = tmp_path / "draft"
+    audit = draft_dir / "audit"
+    audit.mkdir(parents=True)
+    (audit / "run_record.json").write_text("{not valid json", encoding="utf-8")
+    rc = cli.main(["status", str(draft_dir)])
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "not valid JSON" in err
+    # Hints at the producer-side discipline so an operator knows
+    # who to file a bug against.
+    assert "atomic-write" in err
+
+
+def test_status_completed_render_includes_expected_fields(
+    tmp_path, capsys,
+):
+    draft_dir = _make_draft_with_record(
+        tmp_path, "presentation_maker_completed.json",
+    )
+    rc = cli.main(["status", str(draft_dir)])
+    assert rc == 0
+    out = capsys.readouterr().out
+    # Each field from the brief's example surface should appear.
+    assert "skill:" in out
+    assert "presentation-maker" in out
+    assert "status:     completed" in out
+    assert "started:" in out
+    assert "elapsed:" in out
+    assert "cost:" in out
+    assert "tokens:" in out
+    # Terminal extras.
+    assert "exit_code=0" in out
+    assert "deliverable: deliverable/draft.pptx" in out
+
+
+def test_status_running_render_shows_current_stage(tmp_path, capsys):
+    draft_dir = _make_draft_with_record(
+        tmp_path, "presentation_maker_running.json",
+    )
+    rc = cli.main(["status", str(draft_dir)])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "status:     running" in out
+    # Running record's current_stage was "slide_compose" in the golden.
+    assert "stage: slide_compose" in out
+    # No exit_code line for a running record.
+    assert "exit_code" not in out
+
+
+def test_status_halted_render_surfaces_gate_and_resume_hint(
+    tmp_path, capsys,
+):
+    draft_dir = _make_draft_with_record(
+        tmp_path, "presentation_maker_halted.json",
+    )
+    rc = cli.main(["status", str(draft_dir)])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "status:     halted" in out
+    assert "stage: throughline_pick" in out
+    assert "halt:" in out
+    assert "throughline_pick" in out
+    # The resume hint guides the operator without baking in a
+    # skill-specific command (the per-skill `continue` does it).
+    assert "continue" in out
+
+
+def test_status_failed_render_shows_exit_code(tmp_path, capsys):
+    draft_dir = _make_draft_with_record(
+        tmp_path, "paper_writer_failed.json",
+    )
+    rc = cli.main(["status", str(draft_dir)])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "status:     failed" in out
+    # paper_writer_failed.json has exit_code=1.
+    assert "exit_code=1" in out
+
+
+def test_status_json_dumps_record_verbatim(tmp_path, capsys):
+    draft_dir = _make_draft_with_record(
+        tmp_path, "paper_writer_completed.json",
+    )
+    rc = cli.main(["status", str(draft_dir), "--json"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    record = json.loads(out)
+    assert record["schema_version"] == "run-record.v1"
+    assert record["skill"] == "paper-writer"
+    assert record["status"] == "completed"
+
+
+def test_status_json_on_missing_record_emits_error_envelope(tmp_path, capsys):
+    """`--json` is the power-user surface; on missing record it MUST
+    still produce parseable JSON so a script's `jq` pipeline doesn't
+    choke."""
+    draft_dir = tmp_path / "draft"
+    draft_dir.mkdir()
+    rc = cli.main(["status", str(draft_dir), "--json"])
+    assert rc == 2
+    out = capsys.readouterr().out
+    payload = json.loads(out)
+    assert "error" in payload
+    assert payload["draft_dir"] == str(draft_dir.resolve())
+
+
+def test_status_validator_failure_renders_surface_and_warns(
+    tmp_path, capsys,
+):
+    """An out-of-contract record (e.g. extra top-level key from a
+    producer running ahead of the schema) renders WHAT IT CAN +
+    surfaces validator warnings + exits 2. The renderer is
+    intentionally permissive about missing keys for this reason —
+    the operator wants the surface even when the record is iffy."""
+    draft_dir = _make_draft_with_record(
+        tmp_path, "presentation_maker_completed.json",
+    )
+    # Doctor the record: add a top-level key the v1 validator rejects.
+    rec_path = draft_dir / "audit" / "run_record.json"
+    record = json.loads(rec_path.read_text(encoding="utf-8"))
+    record["surprise_key"] = "from the future"
+    rec_path.write_text(json.dumps(record, indent=2), encoding="utf-8")
+
+    rc = cli.main(["status", str(draft_dir)])
+    assert rc == 2
+    captured = capsys.readouterr()
+    # Surface still rendered (default-render branch ran).
+    assert "skill:" in captured.out
+    # Warning was emitted to stderr.
+    assert "WARNING" in captured.err
+    assert "surprise_key" in captured.err
+
+
+def test_status_never_raises_on_arbitrary_garbage(tmp_path, capsys):
+    """Defensive: the read-side cannot traceback on a malformed
+    record (the renderer is meant to render `?` for unknown
+    fields). Try a JSON object with NO known keys."""
+    draft_dir = tmp_path / "draft"
+    audit = draft_dir / "audit"
+    audit.mkdir(parents=True)
+    (audit / "run_record.json").write_text(
+        json.dumps({"random": "shape"}), encoding="utf-8",
+    )
+    # No exception should propagate; main returns an int.
+    rc = cli.main(["status", str(draft_dir)])
+    assert isinstance(rc, int)
+
+
+def test_status_help_includes_run_record_phrasing(capsys):
+    """The help text should signal the contract this subcommand reads."""
+    with pytest.raises(SystemExit):
+        cli.main(["status", "--help"])
+    out = capsys.readouterr().out
+    assert "run_record.json" in out
+    assert "run-record.v1" in out

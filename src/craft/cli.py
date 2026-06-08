@@ -7,6 +7,10 @@ Subcommands:
                                           interactively (CRAFT-CONTRACT §3.4
                                           runtime-config bootstrap)
   craft doctor [<BERIL_ROOT>]           — verify platform health
+  craft status <draft_dir>              — read audit/run_record.json
+                                          (run-record.v1; Cycle-3 DP1) and
+                                          render a compact status surface.
+                                          --json dumps the raw record.
   craft version                         — print CRAFT + skill versions
 
 Each subcommand is a thin coordinator over the underlying per-skill
@@ -18,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import importlib.metadata
+import json
 import re
 import shutil
 import subprocess
@@ -26,6 +31,7 @@ from pathlib import Path
 from typing import Optional
 
 from craft import __version__
+from craft.run_record import validate_run_record
 
 
 # The three CRAFT skills + their pipx-installed CLI names. Listed
@@ -547,6 +553,225 @@ def cmd_version(args: argparse.Namespace) -> int:
 
 
 # ---------------------------------------------------------------------------
+# craft status (Cycle 3 / DP1) — read-only run-record.v1 surface
+# ---------------------------------------------------------------------------
+#
+# Reads <draft_dir>/audit/run_record.json (the canonical pollable path
+# the per-skill emitters maintain — Steps 2 / 4 / 5 of Cycle 3). Renders
+# a single-screen status surface that distinguishes the four `status`
+# values (running / halted / completed / failed) plus the missing-record
+# case. NEVER raises a traceback — if `craft status` ever does, the
+# contract is wrong (this is the reader that validates the contract on
+# a real run).
+#
+# Two render modes:
+#   default — single-line-per-field human surface (the Cycle-3 brief's
+#             "compact, single-screen status" example).
+#   --json  — emit the raw record verbatim (for scripting / the driver
+#             poll loop / piping to jq).
+#
+# Exit codes:
+#   0 — the record is parseable + validates clean against
+#       run-record.v1 (the run may be running/halted/completed/
+#       failed; status is rendered, no opinion).
+#   2 — missing record OR malformed JSON OR validator reports
+#       errors. The render still happens (in --json mode the
+#       partial record dumps; in default mode the missing/error
+#       case prints a clear message). Distinct from skill exit
+#       codes so a script can disambiguate "no run yet" from
+#       "run failed."
+
+
+def _load_run_record(draft_dir: Path) -> tuple[Optional[dict], Optional[str]]:
+    """Read <draft_dir>/audit/run_record.json. Returns
+    (record, error_message). Both may be None: a clean missing-file
+    returns (None, None); a parse error returns (None, message);
+    a successful parse returns (record, None)."""
+    path = draft_dir / "audit" / "run_record.json"
+    if not path.is_file():
+        return None, None
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError as exc:
+        return None, f"could not read {path}: {exc}"
+    try:
+        record = json.loads(text)
+    except json.JSONDecodeError as exc:
+        return None, (
+            f"{path} is not valid JSON ({exc}). The atomic-write "
+            f"discipline should prevent half-written files; if you "
+            f"see this on a live run, the producer's tempfile + "
+            f"os.replace path is broken."
+        )
+    if not isinstance(record, dict):
+        return None, f"{path}: expected JSON object, got {type(record).__name__}"
+    return record, None
+
+
+def _fmt_cost(usd: float) -> str:
+    """`$1.84` formatting — two decimals, $-prefixed, never scientific."""
+    return f"${usd:,.2f}"
+
+
+def _fmt_tokens(n: int) -> str:
+    """Compact token count: `412k`, `88k`, `1.2M`. Falls back to the
+    raw number for tiny counts."""
+    if n >= 1_000_000:
+        return f"{n / 1_000_000:.1f}M"
+    if n >= 1_000:
+        return f"{n // 1_000}k"
+    return f"{n}"
+
+
+def _fmt_elapsed(seconds: float) -> str:
+    """Human-readable elapsed: `42s`, `12m`, `1h 14m`."""
+    total = int(seconds)
+    if total < 60:
+        return f"{total}s"
+    if total < 3600:
+        return f"{total // 60}m"
+    h = total // 3600
+    m = (total % 3600) // 60
+    return f"{h}h {m}m" if m else f"{h}h"
+
+
+def _render_status_surface(record: dict) -> str:
+    """Render the compact human-readable status. Defensive about
+    missing keys (a half-written record shouldn't crash the
+    renderer); fields the record doesn't carry render as `?`.
+
+    Layout (matches the Cycle-3 brief):
+        skill:      paper-writer v1.2.0     mode: report
+        status:     running                 stage: drafting
+        started:    2026-06-07 18:00Z       elapsed: 12m
+        cost:       $1.84                   tokens: 412k in / 88k out
+
+    For halted: stage shows the gate name; a "halt note" line tells
+    the operator how to resume. For terminal (completed/failed):
+    exit_code shown; a "deliverable:" line points at the artifact.
+    """
+    skill = record.get("skill", "?")
+    skill_version = record.get("skill_version", "?")
+    mode = record.get("mode") or "—"
+    status = record.get("status", "?")
+    current_stage = record.get("current_stage")
+    stage_render = current_stage or "—"
+    started_at = record.get("started_at", "?")
+    finished_at = record.get("finished_at")
+    exit_code = record.get("exit_code")
+    totals = record.get("totals") or {}
+    cost = float(totals.get("cost_usd", 0.0) or 0.0)
+    elapsed = float(totals.get("elapsed_seconds", 0.0) or 0.0)
+    in_toks = int(totals.get("input_tokens", 0) or 0)
+    out_toks = int(totals.get("output_tokens", 0) or 0)
+    artifacts = record.get("artifacts") or {}
+    deliverable = artifacts.get("deliverable")
+
+    # Strip the seconds suffix from started_at for the surface render
+    # (full ISO stays in --json). "2026-06-07T18:00:00Z" → "2026-06-07 18:00Z".
+    started_short = started_at
+    if isinstance(started_at, str) and len(started_at) >= 16:
+        started_short = started_at[:10] + " " + started_at[11:16] + "Z"
+
+    lines = [
+        f"  skill:      {skill} v{skill_version}     mode: {mode}",
+        f"  status:     {status:<22} stage: {stage_render}",
+        f"  started:    {started_short:<22} elapsed: {_fmt_elapsed(elapsed)}",
+        f"  cost:       {_fmt_cost(cost):<22} tokens: {_fmt_tokens(in_toks)} in / {_fmt_tokens(out_toks)} out",
+    ]
+
+    if status == "halted":
+        gate = current_stage or "?"
+        lines.append("")
+        lines.append(
+            f"  halt:       awaiting operator input at gate {gate!r}."
+        )
+        # Best-effort hint: presmaker's throughline_pick gate writes
+        # .handoff.json — if it's there, surface the resume command.
+        # This is read-only (we don't open the file), so it's safe.
+        lines.append(
+            f"              the per-skill handoff (.handoff.json if "
+            f"present) carries the prompt; resume via the skill's "
+            f"`continue` subcommand."
+        )
+    elif status in ("completed", "failed"):
+        if isinstance(exit_code, int):
+            lines.append(f"  finished:   exit_code={exit_code}")
+        if deliverable:
+            lines.append(f"  deliverable: {deliverable}")
+    return "\n".join(lines)
+
+
+def cmd_status(args: argparse.Namespace) -> int:
+    draft_dir = Path(args.draft_dir).expanduser().resolve()
+    if not draft_dir.is_dir():
+        print(
+            f"craft status: draft_dir not found: {draft_dir}",
+            file=sys.stderr,
+        )
+        return 2
+
+    record, err = _load_run_record(draft_dir)
+
+    if args.json:
+        if record is None:
+            # Emit a tiny error-envelope (still valid JSON for scripts).
+            payload = {
+                "error": err or "no run_record.json found",
+                "draft_dir": str(draft_dir),
+            }
+            print(json.dumps(payload, indent=2))
+            return 2
+        # Dump verbatim; do NOT validate here — `--json` is the
+        # power-user surface that wants the raw record even if it's
+        # half-written or pre-contract.
+        print(json.dumps(record, indent=2))
+        return 0
+
+    if record is None:
+        if err is not None:
+            print(f"craft status: {err}", file=sys.stderr)
+            return 2
+        # Clean missing-record case: not a runtime error, but
+        # status-of-nothing isn't a `status 0` either. Distinguish:
+        # 2 = "no run record" so scripts can branch on it.
+        print(
+            f"craft status: no run record at "
+            f"{draft_dir / 'audit' / 'run_record.json'}"
+        )
+        print(
+            "  Either this draft predates the run-record.v1 contract "
+            "(skill version < Cycle 3) or no run has started yet."
+        )
+        return 2
+
+    # Validate. If the record is malformed-in-detail, render what we
+    # can AND surface the validator errors as a warning. We do NOT
+    # refuse to render — the operator wants the surface even when
+    # the record is iffy.
+    errors = validate_run_record(record)
+    print(_render_status_surface(record))
+    if errors:
+        print("")
+        print(
+            f"  WARNING: run_record.json fails {len(errors)} "
+            f"validation check(s) — the producer is out of contract:",
+            file=sys.stderr,
+        )
+        # Limit to first 10 to avoid console-flooding.
+        for e in errors[:10]:
+            print(f"    - {e}", file=sys.stderr)
+        if len(errors) > 10:
+            print(
+                f"    ... and {len(errors) - 10} more "
+                f"(re-run with --json to inspect the raw record)",
+                file=sys.stderr,
+            )
+        return 2
+    return 0
+
+
+# ---------------------------------------------------------------------------
 # argparse setup + dispatch
 # ---------------------------------------------------------------------------
 
@@ -625,6 +850,35 @@ def main(argv: Optional[list[str]] = None) -> int:
         help="Print CRAFT + each skill's version.",
     )
     p_version.set_defaults(func=cmd_version)
+
+    # status (Cycle 3 / DP1)
+    p_status = subparsers.add_parser(
+        "status",
+        help=(
+            "Read <draft_dir>/audit/run_record.json (run-record.v1) "
+            "and render a compact status surface. --json dumps raw."
+        ),
+        description=(
+            "Cycle 3 / DP1: read <draft_dir>/audit/run_record.json "
+            "(the run-record.v1 contract emitted by every CRAFT skill) "
+            "and render a compact status surface — distinguishes the "
+            "four run states (running / halted / completed / failed) "
+            "plus the missing-record case. Never tracebacks. --json "
+            "dumps the raw record for scripting; exit code 0 on a "
+            "clean parse, 2 on missing/malformed/out-of-contract."
+        ),
+    )
+    p_status.add_argument(
+        "draft_dir",
+        help="Path to a skill's draft directory (e.g. "
+             "papers/draft_2 or talks/draft_3).",
+    )
+    p_status.add_argument(
+        "--json",
+        action="store_true",
+        help="Dump the raw run_record.json verbatim (for scripts).",
+    )
+    p_status.set_defaults(func=cmd_status)
 
     args = parser.parse_args(argv)
     return args.func(args)
