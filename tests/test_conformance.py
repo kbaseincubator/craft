@@ -566,3 +566,47 @@ def test_familyC_constant_source_identical_across_skills(const_name):
             f"--- {ref_name}\n{ref_src}\n"
             f"+++ {name}\n{src}"
         )
+
+
+# ---------------------------------------------------------------------------
+# Family D — user_intent.py copy byte-identity (presentation-maker ↔ paper-writer)
+# ---------------------------------------------------------------------------
+#
+# `user_intent.py` (schema user-intent.v1: mode/tier/audience + *_explicit flags)
+# is COPIED verbatim into the two drafting skills that halt-and-handoff on the
+# user's mode pick — presentation-maker (Cycle 1) and paper-writer (Cycle 2).
+# Per the copy-not-share convention (same as llm_config, Family C) the copies
+# MUST stay byte-identical. adversarial + atlas have no user_intent (they don't
+# persist a user mode pick), so this pair is the entire matrix — hence its own
+# family rather than a row in the 3-skill SKILLS matrix.
+#
+# Unlike Family C we compare the *file* source, not inspect.getsource of named
+# symbols: the skills load this module via importlib-by-path, not as a clean
+# package path (presmaker's skill/tools/ has no __init__.py), so we locate each
+# copy relative to its installed package root (the llm_config module's dir).
+
+
+def _user_intent_path(llm_config_module) -> Path:
+    """Locate user_intent.py relative to a skill's installed package root.
+    llm_config lives at <pkg>/llm_config.py, so its parent is the package
+    root; user_intent lives at <pkg>/skill/tools/user_intent.py."""
+    return Path(llm_config_module.__file__).parent / "skill" / "tools" / "user_intent.py"
+
+
+def test_familyD_user_intent_copy_byte_identical():
+    """user_intent.py is byte-identical (after strict normalization) between
+    presentation-maker and paper-writer. A drift here means a one-sided edit to
+    a copied module — re-sync before tagging (md5-equal as of v1.2.0/v1.2.0)."""
+    m_path = _user_intent_path(m_lc)
+    p_path = _user_intent_path(p_lc)
+    assert m_path.is_file(), f"presentation-maker user_intent.py missing at {m_path}"
+    assert p_path.is_file(), f"paper-writer user_intent.py missing at {p_path}"
+    m_src = _normalize_source(m_path.read_text(encoding="utf-8"))
+    p_src = _normalize_source(p_path.read_text(encoding="utf-8"))
+    assert m_src == p_src, (
+        "user_intent.py drifted between presentation-maker and paper-writer.\n"
+        "The two copies must stay byte-identical (copy-not-share convention).\n"
+        f"  presmaker:   {m_path}\n"
+        f"  paperwriter: {p_path}\n"
+        "Diff them and re-sync the copies before tagging."
+    )
