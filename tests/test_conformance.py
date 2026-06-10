@@ -718,3 +718,153 @@ def test_familyE_run_record_goldens_validate(skill_label, llm_config_module):
             f"validation ({len(errors)} error(s)):\n  "
             + "\n  ".join(errors)
         )
+
+
+# ---------------------------------------------------------------------------
+# Family F — chrome.py vendored-copy BYTE-IDENTITY (Cycle-4, DP6)
+# ---------------------------------------------------------------------------
+#
+# Cycle 4 introduces `chrome.py` — the CRAFT output-signature renderer
+# (STAGE / DECISION / RESULT + the per-skill glyph signature). The canonical
+# source lives in craft-platform at `src/craft/chrome.py`; each skill VENDORS
+# a byte-identical COPY (same copy-not-share discipline as llm_config Family-C
+# and user_intent Family-D). chrome.py is deliberately dependency-free
+# (stdlib-only display-width via `unicodedata`, no `wcwidth`/`rich`) PRECISELY
+# so it can vendor clean into every skill — including the presmaker SHELL copy,
+# which must emit identical bytes (the glyphs are multi-byte Unicode, so a
+# locale/encoding slip would diverge them).
+#
+# WIRING SCHEDULE: the vendored copies land in **Phase 2** (skill wiring).
+# This Cycle-4 PHASE-1 commit ships the canonical chrome.py + this armed-but-
+# dormant family. Until a skill vendors its copy, this family GRACEFUL-SKIPS
+# per skill (exactly as Family E did pre-Cycle-3-Steps and Family A-D do
+# without the editable install). Once Phase 2 vendors them, drift fails loud.
+#
+# Discovery convention (mirrors how skills vendor the run-record emitter):
+#   <skill_pkg_root>/chrome.py
+# i.e. each skill carries a top-of-package `chrome.py` copy alongside its
+# `llm_config.py`. If a skill places it elsewhere in Phase 2, update
+# `_skill_chrome_path` to match the chosen vendoring location.
+
+_CANONICAL_CHROME = Path(__file__).resolve().parents[1] / "src" / "craft" / "chrome.py"
+
+
+def _skill_chrome_path(llm_config_module) -> Path:
+    """Locate a skill's vendored chrome.py relative to its package root.
+
+    llm_config lives at <pkg>/llm_config.py, so its parent is the package
+    root; the vendored chrome.py sits beside it at <pkg>/chrome.py. (Phase 2
+    finalizes the vendoring location — adjust here if it differs.)"""
+    return Path(llm_config_module.__file__).parent / "chrome.py"
+
+
+def test_familyF_canonical_chrome_exists():
+    """Anti-vacuity: the canonical chrome.py must exist in craft-platform.
+    If it's gone, every per-skill byte-identity check below would compare
+    against nothing and the family would be meaningless."""
+    assert _CANONICAL_CHROME.is_file(), (
+        f"canonical chrome.py missing at {_CANONICAL_CHROME} — Cycle-4 "
+        f"Phase-1 must ship it before any skill vendors a copy."
+    )
+
+
+@pytest.mark.parametrize("skill_label,llm_config_module", [
+    ("presentation-maker", m_lc),
+    ("paper-writer",       p_lc),
+    ("adversarial",        a_lc),
+], ids=["presmaker", "paper-writer", "adversarial"])
+def test_familyF_chrome_copy_byte_identical(skill_label, llm_config_module):
+    """Family F: each skill's vendored chrome.py is byte-identical (after
+    strict normalization) to craft-platform's canonical chrome.py.
+
+    GRACEFUL-SKIP until the skill vendors its copy (Cycle-4 Phase 2). Tying
+    the skip to the absence of the file (not a version compare) keeps the
+    version-floor handshake in CROSS-SKILL-RELEASE.md, same as Family E."""
+    skill_chrome = _skill_chrome_path(llm_config_module)
+    if not skill_chrome.is_file():
+        pytest.skip(
+            f"{skill_label}: no vendored chrome.py at {skill_chrome} "
+            f"(Cycle-4 Phase 2 vendors it; pre-wiring it's absent)."
+        )
+    canonical = _normalize_source(_CANONICAL_CHROME.read_text(encoding="utf-8"))
+    vendored = _normalize_source(skill_chrome.read_text(encoding="utf-8"))
+    assert vendored == canonical, (
+        f"{skill_label} chrome.py drifted from craft-platform's canonical.\n"
+        f"The vendored copy must stay byte-identical (copy-not-share).\n"
+        f"  canonical: {_CANONICAL_CHROME}\n"
+        f"  vendored:  {skill_chrome}\n"
+        f"Diff them and re-sync from the canonical before tagging.\n"
+        f"NOTE: the glyphs are multi-byte UTF-8 — a locale/encoding slip "
+        f"can diverge them invisibly; copy the file verbatim."
+    )
+
+
+# ---------------------------------------------------------------------------
+# Family G — `decision.v1` per-skill golden conformance (Cycle-4, DP6)
+# ---------------------------------------------------------------------------
+#
+# decision.v1 is the halt-and-handoff presentation contract (the renderer is
+# chrome.render_decision; the shape contract is craft.decision). It EXTENDS
+# the existing `.handoff.json` — retaining the keys the continue CLI reads
+# (phase authorizes --pick) and adding the presentation fields. Like Family E
+# (run-record), the *emitters* differ per skill (each skill's halt writes its
+# own .handoff.json + decision fields) but the *shape* is one shared schema.
+#
+# The load-bearing positive coverage is craft-platform's own goldens in
+# `tests/test_decision.py` (validated there directly). This family is the
+# cross-skill catch: once a skill ships decision.v1 goldens in Phase 2, they
+# must validate against the single shared validator. GRACEFUL-SKIP until then.
+#
+# Discovery convention (mirrors Family E):
+#   <skill_repo>/tests/fixtures/decision_v1/*.json
+
+
+def _find_skill_decision_goldens(repo_root: Path) -> list[Path]:
+    fixture_dir = repo_root / "tests" / "fixtures" / "decision_v1"
+    if not fixture_dir.is_dir():
+        return []
+    return sorted(fixture_dir.glob("*.json"))
+
+
+@pytest.mark.parametrize("skill_label,llm_config_module", [
+    ("presentation-maker", m_lc),
+    ("paper-writer",       p_lc),
+    ("adversarial",        a_lc),
+], ids=["presmaker", "paper-writer", "adversarial"])
+def test_familyG_decision_goldens_validate(skill_label, llm_config_module):
+    """Family G: every skill-shipped golden `decision.v1` payload validates
+    against the shared `validate_decision` contract.
+
+    GRACEFUL-SKIP until the skill ships decision goldens (Cycle-4 Phase 2)."""
+    from craft.decision import validate_decision  # noqa: E402
+
+    repo_root = _skill_repo_root(llm_config_module)
+    goldens = _find_skill_decision_goldens(repo_root)
+
+    if not goldens:
+        pytest.skip(
+            f"{skill_label}: no goldens at "
+            f"{repo_root}/tests/fixtures/decision_v1/ "
+            f"(Cycle-4 Phase 2 ships these; pre-wiring they're absent)."
+        )
+
+    for golden_path in goldens:
+        try:
+            decision = json.loads(golden_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            pytest.fail(
+                f"{skill_label} decision golden {golden_path.name}: "
+                f"not valid JSON ({exc})"
+            )
+        if isinstance(decision, dict) and "skill" in decision:
+            assert decision["skill"] == skill_label, (
+                f"{skill_label} shipped a decision golden claiming "
+                f"`skill: {decision['skill']!r}`. Move cross-skill "
+                f"fixtures to craft-platform/tests/fixtures/decision_v1/."
+            )
+        errors = validate_decision(decision)
+        assert errors == [], (
+            f"{skill_label} decision golden {golden_path.name} failed "
+            f"validation ({len(errors)} error(s)):\n  "
+            + "\n  ".join(errors)
+        )

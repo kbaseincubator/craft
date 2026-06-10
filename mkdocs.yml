@@ -129,5 +129,6 @@ nav:
       - Adding a skill: extending/adding-a-skill.md
       - External contributors: extending/external-contributors.md
   - Reference:
+      - Chrome / interaction contract: reference/chrome-interaction-contract.md
       - Release notes: reference/release-notes.md
       - Platform proposal: reference/platform-proposal.md

@@ -10,3 +10,6 @@ dist/
 build/
 # MkDocs build output
 site/
+# Cycle-4 chrome prototype: generated scratch run artifacts (the harness
+# source IS committed; its synthetic .handoff.json output is not)
+prototypes/cycle4-chrome/scratch-draft/

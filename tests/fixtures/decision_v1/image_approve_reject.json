@@ -1,0 +1,30 @@
+{
+  "phase": "image_approval",
+  "draft_dir": "/projects/functional_dark_matter/talks/draft_4",
+  "candidates": [
+    {"id": "approve", "label": "Use the generated image on slide 8"},
+    {"id": "reject", "label": "Skip the image; keep the slide text-only"}
+  ],
+  "candidates_md": "1. approve — use the image\n2. reject — keep text-only",
+  "next_command": "beril-presentation-maker continue /projects/functional_dark_matter/talks/draft_4 --pick approve|reject",
+  "schema_version": "decision.v1",
+  "skill": "presentation-maker",
+  "gate": "image_approval",
+  "prompt": "An illustrative image was generated for the big-idea slide (slide 8). Approve it for the deck, or skip and keep the slide text-only?",
+  "kind": "approve_reject",
+  "options": [
+    {
+      "id": "approve",
+      "summary": "Use the generated image on slide 8",
+      "detail": "The image is a stylized schematic of a microbial community gradient mapping onto the functional-dark-matter framing. The cost ($0.04) is already spent — approving only places it. It reads as on-topic and metaphor-appropriate, with no embedded text that could leak a downstream finding."
+    },
+    {
+      "id": "reject",
+      "summary": "Skip the image; keep the slide text-only",
+      "detail": "Discards the generated image and leaves slide 8 as the composed text layout. Choose this if the image feels generic or if a text-only big-idea slide fits the venue better. No further spend either way — the generation already happened."
+    }
+  ],
+  "default": "approve",
+  "confirm": false,
+  "continue": {"cmd": "beril-presentation-maker continue /projects/functional_dark_matter/talks/draft_4 --pick {id}"}
+}

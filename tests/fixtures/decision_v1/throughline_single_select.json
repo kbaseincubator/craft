@@ -1,0 +1,36 @@
+{
+  "phase": "throughline_pick",
+  "draft_dir": "/projects/ibd_phage_targeting/talks/draft_7",
+  "candidates": [
+    {"id": "TL1", "label": "Δfur is the demonstrable driver of phage susceptibility"},
+    {"id": "TL2", "label": "Iron-limitation reprograms the phage-defense regulon"},
+    {"id": "TL3", "label": "A two-gene switch gates the whole susceptibility phenotype"}
+  ],
+  "candidates_md": "1. TL1 — Δfur is the demonstrable driver\n2. TL2 — Iron-limitation reprograms the regulon\n3. TL3 — A two-gene switch gates susceptibility",
+  "next_command": "beril-presentation-maker continue /projects/ibd_phage_targeting/talks/draft_7 --pick TLN",
+  "schema_version": "decision.v1",
+  "skill": "presentation-maker",
+  "gate": "throughline_pick",
+  "prompt": "Pick the throughline for the deck — it sets every downstream slide. Which single claim should the talk argue?",
+  "kind": "single_select",
+  "options": [
+    {
+      "id": "TL1",
+      "summary": "Δfur is the demonstrable driver of phage susceptibility",
+      "detail": "Strongest evidence chain: the Δfur knockout shows a 4.1× shift in plaque-forming efficiency (fig 3), the effect reverses on complementation, and the regulon analysis ties it to three susceptibility genes. This is the claim the data most directly supports; the deck would build TL1 → mechanism → the two confirming figures → implications."
+    },
+    {
+      "id": "TL2",
+      "summary": "Iron-limitation reprograms the phage-defense regulon",
+      "detail": "Broader framing that subsumes TL1 but leans on the transcriptomic survey (fig 5) more than the knockout. More novel-sounding, less airtight — the regulon-wide claim has two genes whose direction of effect is ambiguous. Choose this only if the talk's audience rewards breadth over a single clean causal result."
+    },
+    {
+      "id": "TL3",
+      "summary": "A two-gene switch gates the whole susceptibility phenotype",
+      "detail": "Tightest, most provocative claim, but the second gene's role rests on a single epistasis experiment (fig 6) that was not replicated. High risk: a sharp reviewer will press on n=1. Best reserved for a venue where the provocative framing is worth the exposure."
+    }
+  ],
+  "default": "TL1",
+  "confirm": true,
+  "continue": {"cmd": "beril-presentation-maker continue /projects/ibd_phage_targeting/talks/draft_7 --pick {id}"}
+}

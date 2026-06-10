@@ -61,6 +61,7 @@ support window (typically 1-2 minor releases per skill).
 | `layout-overlaps.v1` | presentation-maker | v1 (v0.8.0 G.10-A) | (cascade Tier-1; external integrators) | Stable through CRAFT v1.x |
 | `content-overflow.v1` | presentation-maker | v1 (v0.8.0 G.10-C) | (cascade Tier-1 + revise_loop) | Stable through CRAFT v1.x |
 | `review-cascade.v1` | paper-writer + presentation-maker | v1 (M4b pattern) | (external integrators; future review systems) | Stable through CRAFT v1.x |
+| `decision.v1` | presentation-maker, paper-writer, adversarial | v1 (Cycle-4 DP6; foundation v0.x, wired Phase 2) | the invoking Claude session (chrome/interaction layer) | Stable through CRAFT v1.x |
 
 ### 2.2 Schema-bump policy
 
@@ -445,6 +446,48 @@ should flow through the cascade, write them to a versioned
 audit JSON at `audit/<your-skill>.json`. The platform's existing
 cascade readers will (eventually) lift them at Tier 1 via
 the read-if-present pattern.
+
+### 3.7 The chrome / interaction layer (Cycle-4, DP6)
+
+Skills run as subprocesses of an invoking Claude session. Two facts
+shape how their output reaches the user (both proven in the Cycle-4
+Phase-0 harness):
+
+1. **The message body is the legible signal — not stdout.** A skill's
+   stdout is non-TTY (no color) and the transcript folds long output,
+   so the user sees the skill's progress/decisions only if Claude
+   **re-renders the structured contract as message text.**
+2. **`decision.v1` extends `.handoff.json`.** A halt-and-handoff gate
+   writes a `decision.v1` payload that RETAINS the handoff keys the
+   `continue` CLI reads (notably `phase`, which authorizes `--pick`)
+   and ADDS presentation fields; `gate` must equal `phase`.
+
+The platform provides three pieces, all dependency-free / stdlib-only
+so they vendor cleanly into every skill:
+
+- **`craft.chrome`** — the output-signature renderer (`STAGE` /
+  `DECISION` / `RESULT` boxes + the per-skill glyph signature
+  `◆`/`✎`/`⚔`; a single `_color()` seam that no-ops off-TTY; padding by
+  **display width**, not `len()`). Each skill vendors a **byte-identical
+  copy** (Family-F conformance — same copy-not-share discipline as
+  `llm_config` and `user_intent`).
+- **`craft.decision`** — `validate_decision(payload) -> list[str]`, the
+  `decision.v1` shape contract (checks both the retained handoff keys
+  and the presentation fields).
+- **The SKILL.md chrome contract text** — the Claude-facing instruction
+  block each skill carries, telling the session to re-render decisions
+  completely inline, honor the `confirm` flag (echo-and-confirm on
+  consequential gates; act directly on cheap/already-spent ones), report
+  stage/cost at boundaries from the run-record, and suppress orchestrator
+  NOISE to `audit/orchestrator.log`.
+
+Full specification + the canonical SKILL.md text:
+`docs/reference/chrome-interaction-contract.md`.
+
+**Phasing:** Cycle-4 Phase 1 ships the foundation (the two modules,
+their goldens, the contract text, and armed-but-dormant Family-F /
+Family-G conformance). Phase 2 vendors the copies into each skill and
+flips the conformance families live.
 
 ---
 
