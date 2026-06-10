@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kbaseincubator.github.io/craft/architecture/platform-structure/">
+        <link rel="canonical" href="https://kbaseincubator.github.io/craft/reference/chrome-interaction-contract/">
       
       
-        <link rel="prev" href="../../quick-start/verify/">
+        <link rel="prev" href="../../extending/external-contributors/">
       
       
-        <link rel="next" href="../contract/">
+        <link rel="next" href="../release-notes/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Platform structure - CRAFT</title>
+        <title>Chrome / interaction contract - CRAFT</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#platform-structure" class="md-skip">
+        <a href="#craft-chrome-interaction-layer-contract-canonical" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Platform structure
+              Chrome / interaction contract
             
           </span>
         </div>
@@ -262,13 +262,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../architecture/platform-structure/" class="md-tabs__link">
           
   
   
@@ -344,11 +342,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../reference/chrome-interaction-contract/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -581,31 +581,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
@@ -623,7 +620,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -638,37 +635,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Platform structure
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../architecture/platform-structure/" class="md-nav__link">
         
   
   
@@ -684,120 +654,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-three-tiers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The three tiers
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The three tiers">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tier-1-substrate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tier 1 — substrate
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-2-coordination" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tier 2 — coordination
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-3-unified-presentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tier 3 — unified presentation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-repository-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The repository layout
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-lives-where" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What lives where
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#skill-independence-is-preserved" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Skill independence is preserved
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See also
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -810,7 +666,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contract/" class="md-nav__link">
+      <a href="../../architecture/contract/" class="md-nav__link">
         
   
   
@@ -838,7 +694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../relationships/" class="md-nav__link">
+      <a href="../../architecture/relationships/" class="md-nav__link">
         
   
   
@@ -866,7 +722,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../retrospective/" class="md-nav__link">
+      <a href="../../architecture/retrospective/" class="md-nav__link">
         
   
   
@@ -1333,28 +1189,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
-        
-          
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
             
   
   
@@ -1372,7 +1231,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1387,10 +1246,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../reference/chrome-interaction-contract/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chrome / interaction contract
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1406,6 +1292,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-contract-exists-the-two-facts-it-is-built-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this contract exists (the two facts it is built on)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-signature-classes-what-the-orchestrator-emits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three signature classes (what the orchestrator emits)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decisionv1-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decision.v1 shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contract-text-for-skillmd-vendor-this-block-into-each-skill-phase-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contract text for SKILL.md (vendor this block into each skill, Phase 2)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contract text for SKILL.md (vendor this block into each skill, Phase 2)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#craft-interaction-layer-how-to-surface-this-skills-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CRAFT interaction layer — how to surface this skill's output
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conformance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conformance
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1418,7 +1396,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/release-notes/" class="md-nav__link">
+      <a href="../release-notes/" class="md-nav__link">
         
   
   
@@ -1446,7 +1424,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/platform-proposal/" class="md-nav__link">
+      <a href="../platform-proposal/" class="md-nav__link">
         
   
   
@@ -1501,44 +1479,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-three-tiers" class="md-nav__link">
+  <a href="#why-this-contract-exists-the-two-facts-it-is-built-on" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The three tiers
+        Why this contract exists (the two facts it is built on)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The three tiers">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-signature-classes-what-the-orchestrator-emits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three signature classes (what the orchestrator emits)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decisionv1-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decision.v1 shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contract-text-for-skillmd-vendor-this-block-into-each-skill-phase-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contract text for SKILL.md (vendor this block into each skill, Phase 2)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contract text for SKILL.md (vendor this block into each skill, Phase 2)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tier-1-substrate" class="md-nav__link">
+  <a href="#craft-interaction-layer-how-to-surface-this-skills-output" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tier 1 — substrate
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-2-coordination" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tier 2 — coordination
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-3-unified-presentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tier 3 — unified presentation
+        CRAFT interaction layer — how to surface this skill's output
       
     </span>
   </a>
@@ -1551,43 +1540,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-repository-layout" class="md-nav__link">
+  <a href="#conformance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The repository layout
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-lives-where" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What lives where
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#skill-independence-is-preserved" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Skill independence is preserved
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See also
+        Conformance
       
     </span>
   </a>
@@ -1611,7 +1567,7 @@
 
 
   
-    <a href="https://github.com/kbaseincubator/craft/edit/main/docs/architecture/platform-structure.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/kbaseincubator/craft/edit/main/docs/reference/chrome-interaction-contract.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1619,209 +1575,224 @@
   
 
 
-<h1 id="platform-structure">Platform structure<a class="headerlink" href="#platform-structure" title="Permanent link">&para;</a></h1>
-<p>CRAFT is a <strong>three-tier wrapper</strong> around the three production
-skills. Each tier exists for a specific reason — substrate
-(install + meta-package), coordination (contract + release
-runbook), and presentation (this docs site).</p>
-<h2 id="the-three-tiers">The three tiers<a class="headerlink" href="#the-three-tiers" title="Permanent link">&para;</a></h2>
-<div class="mermaid">flowchart TB
-    subgraph T3["Tier 3 — Unified presentation"]
-        D[Docs site]
-        I[Install runbook]
-        A[Architecture diagrams]
-    end
-    subgraph T2["Tier 2 — Coordination"]
-        C[CRAFT-CONTRACT.md]
-        DEP[CRAFT-DEPENDENCIES.md]
-        REL[CROSS-SKILL-RELEASE.md]
-        CI[Cross-skill smoke CI]
-    end
-    subgraph T1["Tier 1 — Substrate"]
-        M[Meta-package&lt;br/&gt;pyproject.toml]
-        CLI[craft CLI&lt;br/&gt;install-platform + doctor]
-        S1[skills/beril-adversarial&lt;br/&gt;submodule]
-        S2[skills/beril-paper-writer&lt;br/&gt;submodule]
-        S3[skills/beril-presentation-maker&lt;br/&gt;submodule]
-    end
-
-    T1 --&gt; T2 --&gt; T3
-
-    classDef tier fill:#e8e8ff,stroke:#333
-    classDef artifact fill:#fff,stroke:#333
-    class T1,T2,T3 tier</div>
-<h3 id="tier-1-substrate">Tier 1 — substrate<a class="headerlink" href="#tier-1-substrate" title="Permanent link">&para;</a></h3>
-<p>The thing you <code>pipx install</code>. Lives in this repo's
-<code>pyproject.toml</code>, <code>src/craft/</code>, and the three git submodules
-under <code>skills/</code>.</p>
-<ul>
-<li><strong><code>pyproject.toml</code></strong> — meta-package. Lists the three skills as
-  pinned <code>pip</code> dependencies (<code>beril-adversarial-skill @ git+https://...@v0.7.0.9</code>
-  etc.). <code>pipx install craft</code> transitively installs all three.</li>
-<li><strong><code>src/craft/cli.py</code></strong> — provides <code>craft install-platform</code>,
-  <code>craft doctor</code>, <code>craft version</code>. The install-platform command
-  runs the three per-skill <code>install-skill</code> invocations in
-  sequence and reports a summary.</li>
-<li><strong><code>skills/</code> git submodules</strong> — each skill stays in its own
-  repo with its own release cycle, tags, and issue tracker. CRAFT
-  references each at a <strong>specific tagged commit</strong> (e.g.,
-  <code>beril-presentation-maker-skill @ v1.0.0</code>).</li>
-</ul>
-<p><strong>Key choice: git submodules, NOT mono-repo subdirs.</strong> Per-skill
-release independence is the load-bearing requirement; the
-platform layer adds coordination without forcing a single
-release cycle. Bumping a submodule pin is an explicit,
-reviewable PR — exactly when you want coordinated cross-skill
-release attention.</p>
-<h3 id="tier-2-coordination">Tier 2 — coordination<a class="headerlink" href="#tier-2-coordination" title="Permanent link">&para;</a></h3>
-<p>The substantive new capability beyond the three skills'
-existing operational surface. Four components, all in the
-platform repo root:</p>
-<ul>
-<li><strong><a href="../contract/">Cross-skill contract</a></strong> (<code>CRAFT-CONTRACT.md</code>)
-  — codifies every interface contract the three skills share:
-  schema versioning, the 4-zone draft layout, the audit-JSON
-  shape, the <code>claude -p</code> subagent invocation pattern, the
-  <code>.claude/skills/</code> deployment convention, the env-var contract.</li>
-<li><strong>Dependencies watchlist</strong> (<code>CRAFT-DEPENDENCIES.md</code>) — lists
-  every external dependency (Anthropic Claude Code, KBase | BERIL,
-  Python ecosystem, image-gen providers) + a "last verified
-  working with" date + quarterly review cadence.</li>
-<li><strong><a href="../../operations/release-runbook/">Release runbook</a></strong>
-  (<code>CROSS-SKILL-RELEASE.md</code>) — coordinated runbook for changes
-  that touch all three skills (e.g., adversarial schema bump).</li>
-<li><strong>Cross-skill smoke CI</strong> (<code>.github/workflows/cross-skill-smoke.yml</code>)
-  — GitHub Action that exercises the full Tier-0 workflow
-  against a real BERIL project. Runs on manual dispatch +
-  quarterly schedule. Catches integration breakage within hours
-  of any submodule bumping its pin.</li>
-</ul>
-<h3 id="tier-3-unified-presentation">Tier 3 — unified presentation<a class="headerlink" href="#tier-3-unified-presentation" title="Permanent link">&para;</a></h3>
-<p>This docs site. Built with MkDocs Material; deployed to GitHub
-Pages on push to main.</p>
-<ul>
-<li><strong>Platform landing</strong> (<a href="../../">Home</a>) — what is this
-  platform, what does it do, where to go from here.</li>
-<li><strong>Quick start</strong> (<a href="../../quick-start/install/">Install</a> →
-  <a href="../../quick-start/first-run/">First run</a> →
-  <a href="../../quick-start/verify/">Verify</a>).</li>
-<li><strong>Per-skill pages</strong> (<a href="../../skills/adversarial/">adversarial</a>,
-  <a href="../../skills/paper-writer/">paper-writer</a>,
-  <a href="../../skills/presentation-maker/">presentation-maker</a>) — pull
-  from each submodule's README via the <code>include-markdown</code>
-  plugin. Per-skill maintenance unchanged.</li>
-<li><strong>Architecture diagrams</strong> (this section) — product-facing,
-  not dev-process framing.</li>
-<li><strong>Extension path</strong> (<a href="../../extending/adding-a-skill/">Adding a skill</a>)
-  — for future contributors.</li>
-</ul>
-<h2 id="the-repository-layout">The repository layout<a class="headerlink" href="#the-repository-layout" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>craft/
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── README.md                       # platform-level entry doc
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── CRAFT-CONTRACT.md               # cross-skill interface pin
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── CRAFT-DEPENDENCIES.md           # upstream-change watchlist
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── CROSS-SKILL-RELEASE.md          # coordinated release runbook
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├── PLATFORM-PROPOSAL.md            # original architectural argument
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── AUGMENTATION-STREAM-RETROSPECTIVE.md  # dev-process context
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>├── RELEASE_NOTES.md                # per-version platform release notes
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>├── pyproject.toml                  # meta-package; pins 3 skills
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>├── mkdocs.yml                      # docs site config
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>├── src/craft/
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│   ├── __init__.py
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│   └── cli.py                      # craft install-platform / doctor / version
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>├── skills/                         # git submodules
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│   ├── beril-adversarial-skill/    → submodule @ pinned tag
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│   ├── beril-paper-writer-skill/   → submodule @ pinned tag
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│   └── beril-presentation-maker-skill/ → submodule @ pinned tag
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>├── docs/                           # MkDocs source (this site)
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│   ├── index.md
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│   ├── quick-start/
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│   ├── architecture/
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│   ├── skills/
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│   ├── operations/
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│   ├── extending/
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│   └── reference/
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>├── tests/                          # platform CLI unit tests
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>└── .github/workflows/
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    ├── platform-ci.yml             # platform unit-tests on PRs
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    ├── cross-skill-smoke.yml       # end-to-end smoke against real BERIL
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>    └── docs.yml                    # mkdocs gh-deploy
-</span></code></pre></div>
-<h2 id="what-lives-where">What lives where<a class="headerlink" href="#what-lives-where" title="Permanent link">&para;</a></h2>
+<h1 id="craft-chrome-interaction-layer-contract-canonical">CRAFT chrome / interaction-layer contract (canonical)<a class="headerlink" href="#craft-chrome-interaction-layer-contract-canonical" title="Permanent link">&para;</a></h1>
+<p><strong>Schema:</strong> <code>decision.v1</code> (the halt-and-handoff presentation contract) + the
+CRAFT output-signature blocks (<code>STAGE</code> / <code>DECISION</code> / <code>RESULT</code>).
+<strong>Renderer:</strong> <code>craft.chrome</code> (canonical at <code>craft-platform/src/craft/chrome.py</code>;
+each skill VENDORS a byte-identical copy — Family-F conformance).
+<strong>Validator:</strong> <code>craft.decision.validate_decision</code>.
+<strong>Status:</strong> Cycle-4 (DP6) Phase 1 — foundation. Wired into skills in Phase 2.</p>
+<p>This is the <strong>source of record</strong> for the chrome section that each CRAFT skill
+carries in its <code>SKILL.md</code>. Phase 2 vendors the "Contract text for SKILL.md"
+block below into each skill verbatim. Keep this doc and the per-skill SKILL.md
+copies in sync (they are a copy-not-share pair, like the chrome.py vendoring).</p>
+<hr />
+<h2 id="why-this-contract-exists-the-two-facts-it-is-built-on">Why this contract exists (the two facts it is built on)<a class="headerlink" href="#why-this-contract-exists-the-two-facts-it-is-built-on" title="Permanent link">&para;</a></h2>
+<p>Both were proven empirically in the Cycle-4 Phase-0 synthetic harness
+(<code>prototypes/cycle4-chrome/</code>):</p>
+<ol>
+<li>
+<p><strong>Inside Claude, the message body is the legible signal — not the box.</strong>
+   A skill's orchestrator runs as a non-TTY subprocess, so (a) its stdout
+   carries <strong>zero color</strong> (the <code>chrome._color()</code> seam correctly no-ops when
+   piped) and (b) the Claude transcript <strong>folds</strong> long tool output. The boxed
+   STAGE/DECISION/RESULT blocks are real and useful at a bare terminal, but
+   <strong>inside Claude the user sees them only if Claude re-renders them as message
+   text.</strong> So the contract is: <em>Claude reconstructs the structured contract
+   (decision.v1 / run-record) as its own message, in a consistent presentation
+   style.</em> "Pass the box through verbatim" is NOT enough — folded output hides
+   it.</p>
+</li>
+<li>
+<p><strong><code>decision.v1</code> EXTENDS the existing <code>.handoff.json</code> — it does not replace
+   it.</strong> The <code>continue</code> CLI reads the handoff's own keys (notably <strong><code>phase</code></strong>,
+   which authorizes <code>--pick</code>). A decision payload therefore RETAINS those keys
+   and ADDS the presentation fields on top. <code>gate</code> MUST equal <code>phase</code>. This is
+   why <code>validate_decision</code> checks both contracts at once.</p>
+</li>
+</ol>
+<hr />
+<h2 id="the-three-signature-classes-what-the-orchestrator-emits">The three signature classes (what the orchestrator emits)<a class="headerlink" href="#the-three-signature-classes-what-the-orchestrator-emits" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Concern</th>
-<th>Where</th>
-<th>Why</th>
+<th>Class</th>
+<th>Box</th>
+<th>When</th>
+<th>Prominence</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Per-skill code, prompts, tests</td>
-<td><code>&lt;skill-repo&gt;</code> (submodule)</td>
-<td>Skill release independence</td>
+<td><code>STAGE</code></td>
+<td>single rule <code>┌─┐</code></td>
+<td>a pipeline stage starts/updates</td>
+<td>quiet, present</td>
 </tr>
 <tr>
-<td>Per-skill operator docs (README, TUTORIAL, HUB_INSTALL)</td>
-<td><code>&lt;skill-repo&gt;</code> (submodule)</td>
-<td>Skill author owns them</td>
+<td><code>DECISION</code></td>
+<td>double rule <code>╔═╗</code></td>
+<td>a halt-and-handoff gate</td>
+<td><strong>loudest</strong></td>
 </tr>
 <tr>
-<td>Cross-skill interface contract</td>
-<td><code>craft/CRAFT-CONTRACT.md</code></td>
-<td>Shared across all 3 skills</td>
-</tr>
-<tr>
-<td>Cross-skill release runbook</td>
-<td><code>craft/CROSS-SKILL-RELEASE.md</code></td>
-<td>Coordinated multi-skill work</td>
-</tr>
-<tr>
-<td>Cross-skill smoke test</td>
-<td><code>craft/.github/workflows/cross-skill-smoke.yml</code></td>
-<td>Tests integration, not per-skill</td>
-</tr>
-<tr>
-<td>Unified install</td>
-<td><code>craft/src/craft/cli.py</code> (<code>install-platform</code>)</td>
-<td>Single entry point</td>
-</tr>
-<tr>
-<td>Unified health check</td>
-<td><code>craft/src/craft/cli.py</code> (<code>doctor</code>)</td>
-<td>Single entry point</td>
-</tr>
-<tr>
-<td>Platform-level docs site</td>
-<td><code>craft/docs/</code> (this site)</td>
-<td>Single user-facing surface</td>
+<td><code>RESULT</code></td>
+<td>no box, terse glyph line</td>
+<td>a stage/run produces a deliverable</td>
+<td>terse</td>
 </tr>
 </tbody>
 </table>
-<h2 id="skill-independence-is-preserved">Skill independence is preserved<a class="headerlink" href="#skill-independence-is-preserved" title="Permanent link">&para;</a></h2>
-<p>Each skill repo continues to:</p>
-<ul>
-<li>Release at its own cadence with its own tags.</li>
-<li>Own its own issue tracker + PR workflow.</li>
-<li>Maintain its own internal docs (<code>SPEC.md</code>, <code>LAYOUT.md</code>,
-  <code>DECISIONS.md</code>, <code>CONTRACT.md</code>).</li>
-<li>Be installable + usable <strong>independently</strong> of CRAFT (you can
-  still <code>pipx install git+https://github.com/.../beril-paper-writer-skill.git</code>
-  directly without going through CRAFT).</li>
+<p>Each carries the per-skill signature: a glyph + <code>CRAFT · &lt;skill&gt;</code> label.</p>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Glyph</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>presentation-maker</td>
+<td><code>◆</code></td>
+</tr>
+<tr>
+<td>paper-writer</td>
+<td><code>✎</code></td>
+</tr>
+<tr>
+<td>adversarial</td>
+<td><code>⚔</code></td>
+</tr>
+</tbody>
+</table>
+<p>Color is strictly additive (a bare-terminal bonus through the single
+<code>_color()</code> seam); the structural signature (box + glyph + label) carries the
+whole distinction with color stripped — which is the inside-Claude condition.</p>
+<hr />
+<h2 id="decisionv1-shape"><code>decision.v1</code> shape<a class="headerlink" href="#decisionv1-shape" title="Permanent link">&para;</a></h2>
+<p><code>decision.v1</code> is written to <code>&lt;draft_dir&gt;/.handoff.json</code> at a halt. It is the
+union of the real handoff keys and the presentation fields:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>{
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  // --- retained handoff keys (the continue CLI reads these) ---
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  &quot;phase&quot;: &quot;throughline_pick&quot;,     // the halt id; AUTHORIZES --pick (required)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  &quot;draft_dir&quot;: &quot;/abs/.../talks/draft_N&quot;,
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  // ... any other handoff fields the skill already wrote (candidates,
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  //     candidates_md, next_command, …) are retained, not stripped.
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  // --- decision.v1 presentation fields ---
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  &quot;schema_version&quot;: &quot;decision.v1&quot;,
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  &quot;skill&quot;: &quot;presentation-maker&quot;,   // presentation-maker | paper-writer | adversarial
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  &quot;gate&quot;: &quot;throughline_pick&quot;,      // MUST equal `phase`
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  &quot;prompt&quot;: &quot;Pick the throughline for the deck:&quot;,
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  &quot;kind&quot;: &quot;single_select&quot;,         // single_select | approve_reject | free_text
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  &quot;options&quot;: [
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    {&quot;id&quot;: &quot;TL1&quot;, &quot;summary&quot;: &quot;one-line&quot;, &quot;detail&quot;: &quot;FULL text — show completely&quot;}
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    // … empty list allowed only for free_text
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>  ],
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>  &quot;default&quot;: &quot;TL1&quot;,                // str | null; if set, must be an option id
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>  &quot;confirm&quot;: true,                 // bool — gates the echo-and-confirm beat (below)
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>  &quot;continue&quot;: {&quot;cmd&quot;: &quot;beril-presentation-maker continue {draft_dir} --pick {id}&quot;}
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>}
+</span></code></pre></div>
+<p><code>continue.cmd</code> MUST carry the <code>{id}</code> placeholder so Claude can splice the
+chosen option id. The user must NEVER see the raw <code>--pick</code> flag or the draft
+path.</p>
+<hr />
+<h2 id="contract-text-for-skillmd-vendor-this-block-into-each-skill-phase-2">Contract text for SKILL.md (vendor this block into each skill, Phase 2)<a class="headerlink" href="#contract-text-for-skillmd-vendor-this-block-into-each-skill-phase-2" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><em>(Substitute the skill's own name + glyph. The text below is for
+presentation-maker; paper-writer uses <code>✎ paper-writer</code>, adversarial uses
+<code>⚔ adversarial</code>.)</em></p>
+</blockquote>
+<h3 id="craft-interaction-layer-how-to-surface-this-skills-output">CRAFT interaction layer — how to surface this skill's output<a class="headerlink" href="#craft-interaction-layer-how-to-surface-this-skills-output" title="Permanent link">&para;</a></h3>
+<p>This skill's orchestrator runs as a subprocess. Inside this session its stdout
+is non-TTY (no color) and long output is folded out of view, so <strong>the
+user-facing signal is YOUR message, not the raw tool output.</strong> Your job is to
+re-render the skill's structured signals — STAGE progress, DECISION halts,
+RESULT deliverables — as clear, consistent message text. Follow these rules:</p>
+<ol>
+<li>
+<p><strong>Re-render the structured contract as message text — do not rely on the
+   raw box being visible.</strong> When a tool result contains a CRAFT <code>STAGE</code> /
+   <code>DECISION</code> / <code>RESULT</code> block (or the <code>decision.v1</code> / run-record JSON behind
+   it), reconstruct it in your own message in a consistent presentation style.
+   The boxed block in stdout is bare-terminal chrome and a data source; the
+   legible copy the user reads is the one you write. Keep your style consistent
+   run-to-run so the skill's "voice" is recognizable.</p>
+</li>
+<li>
+<p><strong>On a DECISION halt, render the choice completely + inline, honor
+   <code>confirm</code>, then act on the reply.</strong> When the orchestrator halts at a gate it
+   writes a <code>decision.v1</code> to <code>&lt;draft_dir&gt;/.handoff.json</code> and exits; the run is
+   paused waiting for the user. You MUST:</p>
+</li>
+<li>Present <strong>every</strong> option <strong>completely</strong> — show each option's full
+     <code>detail</code> text, not just the <code>summary</code>, and never a file path or a "see
+     <code>.handoff.json</code>". The user decides from what you show; show all of it.</li>
+<li>Make choosing trivial: list the option <code>id</code>s (e.g. <strong>TL1 / TL2 / TL3</strong>),
+     note which is the <code>default</code>, and ask the user to pick one.</li>
+<li><strong>Honor <code>confirm</code>:</strong><ul>
+<li><code>confirm: true</code> (consequential, hard-to-reverse gates — e.g. a
+   throughline pick that sets the whole deck): after the user picks, <strong>echo
+   the pick back and confirm once</strong> ("Resuming with <strong>TL1</strong> — go?") BEFORE
+   running <code>continue.cmd</code>. Do not silent-auto-run.</li>
+<li><code>confirm: false</code> (the choice is cheap or already-spent — e.g. an
+   image-approval where the cost is already incurred): run <code>continue.cmd</code>
+   directly on the stated choice; no extra confirmation beat needed.</li>
 </ul>
-<p>CRAFT adds a coordination layer + a presentation layer on top.
-It does NOT subsume the skills.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+</li>
+<li>When you act, invoke the command in <code>continue.cmd</code>, substituting the
+     chosen <code>id</code> for <code>{id}</code>. The user must NEVER see or type the raw <code>--pick</code>
+     flag or the draft path — you translate their plain choice into the
+     command and run it.</li>
+<li>
+<p>Do not invent options or change the <code>id</code>s; use exactly what <code>decision.v1</code>
+     carries. For <code>kind: free_text</code>, the user's typed reply fills the <code>{id}</code>
+     slot.</p>
+</li>
+<li>
+<p><strong>Report progress + cost at boundaries, from the run-record — not a
+   continuous tick.</strong> The STAGE banners mark stage boundaries; surface a brief
+   "Stage N/M (<stage>) — <state>" line at those boundaries, and read
+   stage/cost/tokens/model from the run-record (<code>audit/run_record.json</code>) when
+   reporting them. Do <strong>not</strong> narrate every internal step or invent a live
+   progress meter (continuous live ticking is deferred). A final cost/summary
+   line when the run completes is welcome; per-step "now I'll run the next
+   stage" narration is noise.</p>
+</li>
+<li>
+<p><strong>Suppress orchestrator NOISE.</strong> Lines the orchestrator marks as internal
+   (e.g. <code>[orchestrator] …</code> diagnostics) are written to
+   <code>&lt;audit_dir&gt;/orchestrator.log</code>, not to the user. Do not surface that log
+   content unless the user is debugging or an error/blocker requires it.</p>
+</li>
+<li>
+<p><strong>Speak up only when it carries signal.</strong> A DECISION (rule 2), an
+   error/blocker, a boundary report (rule 3), or a final summary the user asked
+   for. A bare "Stage 5 is running." with nothing else is worse than silence —
+   let the structured re-render do the work.</p>
+</li>
+</ol>
+<hr />
+<h2 id="conformance">Conformance<a class="headerlink" href="#conformance" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../contract/">Cross-skill contract</a> — the interface pin
-  itself.</li>
-<li><a href="../relationships/">Skill relationships</a> — who consumes whose
-  schema; how the Tier-0 workflow composes.</li>
-<li><a href="../retrospective/">Augmentation stream retrospective</a> —
-  dev-process context that produced these three skills.</li>
-<li><a href="../../reference/platform-proposal/">Platform proposal</a> — the
-  original architectural argument.</li>
+<li><strong>Family F</strong> (<code>tests/test_conformance.py</code>) — each skill's vendored
+  <code>chrome.py</code> is byte-identical to craft-platform's canonical. Graceful-skips
+  until Phase 2 vendors the copies; fails loud after. The glyphs are multi-byte
+  UTF-8 — copy the file verbatim (a locale/encoding slip diverges them
+  invisibly).</li>
+<li><strong>Family G</strong> (<code>tests/test_conformance.py</code>) — each skill's shipped
+  <code>decision.v1</code> goldens (<code>tests/fixtures/decision_v1/*.json</code>) validate against
+  the shared <code>validate_decision</code>. Graceful-skips until Phase 2.</li>
+<li><strong>Platform goldens</strong> (<code>tests/test_decision.py</code>) — the canonical
+  <code>decision.v1</code> goldens (<code>tests/fixtures/decision_v1/throughline_single_select.json</code>,
+  <code>image_approve_reject.json</code>) validate clean and are the worked examples of
+  the handoff-extension shape (single_select/confirm:true and
+  approve_reject/confirm:false).</li>
+<li><strong>Renderer</strong> (<code>tests/test_chrome.py</code>) — display-width alignment (the
+  must-fix: pad by visible glyph width, not <code>len()</code>), the color seam, the
+  signature content, and the no-path/no-flag-leak guarantee.</li>
 </ul>
 
 
@@ -1860,7 +1831,7 @@ It does NOT subsume the skills.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../quick-start/verify/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Verify">
+          <a href="../../extending/external-contributors/" class="md-footer__link md-footer__link--prev" aria-label="Previous: External contributors">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1870,20 +1841,20 @@ It does NOT subsume the skills.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Verify
+                External contributors
               </div>
             </div>
           </a>
         
         
           
-          <a href="../contract/" class="md-footer__link md-footer__link--next" aria-label="Next: Cross-skill contract">
+          <a href="../release-notes/" class="md-footer__link md-footer__link--next" aria-label="Next: Release notes">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Cross-skill contract
+                Release notes
               </div>
             </div>
             <div class="md-footer__button md-icon">

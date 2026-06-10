@@ -348,7 +348,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../reference/release-notes/" class="md-tabs__link">
+        <a href="../../reference/chrome-interaction-contract/" class="md-tabs__link">
           
   
   
@@ -900,6 +900,17 @@
     <span class="md-ellipsis">
       
         3.6 The tiered review cascade pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-the-chrome-interaction-layer-cycle-4-dp6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 The chrome / interaction layer (Cycle-4, DP6)
       
     </span>
   </a>
@@ -1551,6 +1562,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/chrome-interaction-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chrome / interaction contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/release-notes/" class="md-nav__link">
         
   
@@ -1805,6 +1844,17 @@
     <span class="md-ellipsis">
       
         3.6 The tiered review cascade pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-the-chrome-interaction-layer-cycle-4-dp6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 The chrome / interaction layer (Cycle-4, DP6)
       
     </span>
   </a>
@@ -2067,6 +2117,13 @@ support window (typically 1-2 minor releases per skill).</p>
 <td>paper-writer + presentation-maker</td>
 <td>v1 (M4b pattern)</td>
 <td>(external integrators; future review systems)</td>
+<td>Stable through CRAFT v1.x</td>
+</tr>
+<tr>
+<td><code>decision.v1</code></td>
+<td>presentation-maker, paper-writer, adversarial</td>
+<td>v1 (Cycle-4 DP6; foundation v0.x, wired Phase 2)</td>
+<td>the invoking Claude session (chrome/interaction layer)</td>
 <td>Stable through CRAFT v1.x</td>
 </tr>
 </tbody>
@@ -2465,6 +2522,45 @@ should flow through the cascade, write them to a versioned
 audit JSON at <code>audit/&lt;your-skill&gt;.json</code>. The platform's existing
 cascade readers will (eventually) lift them at Tier 1 via
 the read-if-present pattern.</p>
+<h3 id="37-the-chrome-interaction-layer-cycle-4-dp6">3.7 The chrome / interaction layer (Cycle-4, DP6)<a class="headerlink" href="#37-the-chrome-interaction-layer-cycle-4-dp6" title="Permanent link">&para;</a></h3>
+<p>Skills run as subprocesses of an invoking Claude session. Two facts
+shape how their output reaches the user (both proven in the Cycle-4
+Phase-0 harness):</p>
+<ol>
+<li><strong>The message body is the legible signal — not stdout.</strong> A skill's
+   stdout is non-TTY (no color) and the transcript folds long output,
+   so the user sees the skill's progress/decisions only if Claude
+   <strong>re-renders the structured contract as message text.</strong></li>
+<li><strong><code>decision.v1</code> extends <code>.handoff.json</code>.</strong> A halt-and-handoff gate
+   writes a <code>decision.v1</code> payload that RETAINS the handoff keys the
+   <code>continue</code> CLI reads (notably <code>phase</code>, which authorizes <code>--pick</code>)
+   and ADDS presentation fields; <code>gate</code> must equal <code>phase</code>.</li>
+</ol>
+<p>The platform provides three pieces, all dependency-free / stdlib-only
+so they vendor cleanly into every skill:</p>
+<ul>
+<li><strong><code>craft.chrome</code></strong> — the output-signature renderer (<code>STAGE</code> /
+  <code>DECISION</code> / <code>RESULT</code> boxes + the per-skill glyph signature
+  <code>◆</code>/<code>✎</code>/<code>⚔</code>; a single <code>_color()</code> seam that no-ops off-TTY; padding by
+  <strong>display width</strong>, not <code>len()</code>). Each skill vendors a <strong>byte-identical
+  copy</strong> (Family-F conformance — same copy-not-share discipline as
+  <code>llm_config</code> and <code>user_intent</code>).</li>
+<li><strong><code>craft.decision</code></strong> — <code>validate_decision(payload) -&gt; list[str]</code>, the
+  <code>decision.v1</code> shape contract (checks both the retained handoff keys
+  and the presentation fields).</li>
+<li><strong>The SKILL.md chrome contract text</strong> — the Claude-facing instruction
+  block each skill carries, telling the session to re-render decisions
+  completely inline, honor the <code>confirm</code> flag (echo-and-confirm on
+  consequential gates; act directly on cheap/already-spent ones), report
+  stage/cost at boundaries from the run-record, and suppress orchestrator
+  NOISE to <code>audit/orchestrator.log</code>.</li>
+</ul>
+<p>Full specification + the canonical SKILL.md text:
+<code>docs/reference/chrome-interaction-contract.md</code>.</p>
+<p><strong>Phasing:</strong> Cycle-4 Phase 1 ships the foundation (the two modules,
+their goldens, the contract text, and armed-but-dormant Family-F /
+Family-G conformance). Phase 2 vendors the copies into each skill and
+flips the conformance families live.</p>
 <hr />
 <h2 id="4-joining-the-platform-for-future-skills">4. Joining the platform (for future skills)<a class="headerlink" href="#4-joining-the-platform-for-future-skills" title="Permanent link">&para;</a></h2>
 <p>A new skill joins CRAFT when:</p>
