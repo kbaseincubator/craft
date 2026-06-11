@@ -31,6 +31,11 @@ import chrome
 _THROUGHLINE_DECISION = {
     "schema_version": "decision.v1",
     "skill": "presentation-maker",
+    # `phase` MUST equal `gate` — the real emitter (presentation_maker.sh
+    # emit_throughline_handoff) writes both, and the continue CLI +
+    # command-md Step 5 branch on `phase`. Omitting it makes the cold-retest
+    # misfire on the Step-5 phase check (false negative).
+    "phase": "throughline_pick",
     "gate": "throughline_pick",
     "prompt": "Choose the throughline for your talk:",
     "kind": "single_select",
@@ -74,6 +79,8 @@ _THROUGHLINE_DECISION = {
 _IMAGE_DECISION = {
     "schema_version": "decision.v1",
     "skill": "presentation-maker",
+    # `phase` MUST equal `gate` (see _THROUGHLINE_DECISION note above).
+    "phase": "image_approval",
     "gate": "image_approval",
     "prompt": "Approve this AI-generated concept image for slide 5?",
     "kind": "approve_reject",
