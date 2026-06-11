@@ -772,6 +772,47 @@ def cmd_status(args: argparse.Namespace) -> int:
 
 
 # ---------------------------------------------------------------------------
+# craft inspect telemetry (C1 / DP D) — the read surface over the egress sink
+# ---------------------------------------------------------------------------
+#
+# Unions <root>/telemetry/craft/**/*.jsonl (all users, all months) and
+# summarizes: per-stage p50/p95 COST (+ tokens + duration), status counts,
+# error-class rates (empty-until-populated), and per-draft (draft_hash×user)
+# run timelines + total cost — the "which draft cost what, when" view C2's
+# cost model consumes. Default render is human text; --json dumps the raw
+# summary. The root defaults to CRAFT_TELEMETRY_ROOT (or /global_share).
+
+
+def cmd_inspect_telemetry(args: argparse.Namespace) -> int:
+    from craft.telemetry import egress as _tx_egress
+    from craft.telemetry import read as _tx_read
+
+    # Root precedence: explicit --root, else the egress config (env or
+    # default). A disabled egress config (off) still allows an explicit
+    # --root for reading a sink written elsewhere.
+    root = args.root
+    if root is None:
+        root = _tx_egress.egress_root()
+    if root is None:
+        print(
+            "craft inspect telemetry: telemetry is disabled "
+            f"({_tx_egress.TELEMETRY_ROOT_ENV}=off) and no --root was given. "
+            "Pass --root <path> to inspect a sink, or set "
+            f"{_tx_egress.TELEMETRY_ROOT_ENV} to the shared root.",
+            file=sys.stderr,
+        )
+        return 2
+
+    rows = _tx_read.union_telemetry(root)
+    summary = _tx_read.summarize(rows)
+    if args.json:
+        print(json.dumps(summary, indent=2, sort_keys=True))
+    else:
+        print(_tx_read.render_text(summary), end="")
+    return 0
+
+
+# ---------------------------------------------------------------------------
 # argparse setup + dispatch
 # ---------------------------------------------------------------------------
 
@@ -879,6 +920,43 @@ def main(argv: Optional[list[str]] = None) -> int:
         help="Dump the raw run_record.json verbatim (for scripts).",
     )
     p_status.set_defaults(func=cmd_status)
+
+    # inspect (C1 / DP D) — read surfaces over the shared telemetry sink.
+    p_inspect = subparsers.add_parser(
+        "inspect",
+        help="Read surfaces over CRAFT's shared telemetry sink.",
+    )
+    inspect_sub = p_inspect.add_subparsers(dest="inspect_cmd", required=True)
+    p_telemetry = inspect_sub.add_parser(
+        "telemetry",
+        help=(
+            "Union <root>/telemetry/craft/**/*.jsonl and report per-stage "
+            "p50/p95 cost + tokens + duration, status/error-class counts, "
+            "and per-draft run timelines. --json dumps the raw summary."
+        ),
+        description=(
+            "C1 Workstream D: the read surface over the telemetry egress "
+            "sink. Unions every per-user/per-month JSONL written by the "
+            "skills' record_finalize, then summarizes the CRAFT cost axis "
+            "(p50/p95 cost per stage) + the opaque draft_hash×user run "
+            "timelines C2's cost model consumes. Best-effort: torn lines + "
+            "unreadable files are skipped, never raised."
+        ),
+    )
+    p_telemetry.add_argument(
+        "--root",
+        default=None,
+        help=(
+            "Telemetry root to read (default: CRAFT_TELEMETRY_ROOT or "
+            "/global_share). Reads <root>/telemetry/craft/**/*.jsonl."
+        ),
+    )
+    p_telemetry.add_argument(
+        "--json",
+        action="store_true",
+        help="Dump the raw summary dict (for scripting) instead of text.",
+    )
+    p_telemetry.set_defaults(func=cmd_inspect_telemetry)
 
     args = parser.parse_args(argv)
     return args.func(args)

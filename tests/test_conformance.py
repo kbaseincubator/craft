@@ -983,3 +983,81 @@ def test_familyH_completeness_guard_behavioral_identity(
             f"{len(ven_out)} error(s), canonical {len(can_out)} — the "
             f"vendored copy has drifted from craft's logic. Re-sync."
         )
+
+
+# ---------------------------------------------------------------------------
+# Family I — telemetry egress vendored-copy BYTE-IDENTITY (C1 Workstream D)
+# ---------------------------------------------------------------------------
+#
+# C1-D adds `craft.telemetry.egress` — the projecting consumer of the
+# corrected run-record (strict drop-by-default whitelist + best-effort batch
+# write). The canonical lives in craft-platform at
+# `src/craft/telemetry/egress.py`; ALL THREE skills VENDOR a byte-identical
+# COPY at `<pkg>/telemetry.py` (beside the chrome.py vendor), which their
+# `record_finalize` imports. Same copy-not-share constraint as chrome
+# (Family-F) and the run-record emitter — the skills ship standalone on the
+# hub with no `craft` on PYTHONPATH.
+#
+# adversarial IS included (Adam, 2026-06-11): it emits the same run-record.v1
+# and bears real, otherwise-invisible cost (~$9.35/review) — including it gives
+# the first telemetry complete cost coverage (C2's cost model needs that
+# spend). Its egress is UNCONDITIONAL (adversarial never halts — no A1/A2
+# resume class), and its draft_hash is computed from the REVIEWED draft, so it
+# matches the producer's draft_hash for that draft (a draft's full cost,
+# review included, groups under one hash). So the matrix is all three skills.
+#
+# Byte-identity (not behavioral like Family-H) because the egress.py copy IS a
+# verbatim file copy — the strongest anti-drift guarantee. GRACEFUL-SKIP until
+# a skill vendors its copy (the submodule re-pins in the coordinated release,
+# same discipline as Family-F/G/H).
+
+_CANONICAL_TELEMETRY = (
+    Path(__file__).resolve().parents[1] / "src" / "craft" / "telemetry"
+    / "egress.py")
+
+
+def _skill_telemetry_path(llm_config_module) -> Path:
+    """Locate a skill's vendored telemetry.py relative to its package root
+    (beside chrome.py / llm_config.py)."""
+    return Path(llm_config_module.__file__).parent / "telemetry.py"
+
+
+def test_familyI_canonical_telemetry_exists():
+    """Anti-vacuity: the canonical telemetry egress must exist in
+    craft-platform, else every per-skill byte-identity check is vacuous."""
+    assert _CANONICAL_TELEMETRY.is_file(), (
+        f"canonical telemetry egress missing at {_CANONICAL_TELEMETRY} — "
+        f"C1-D ships it before any skill vendors a copy."
+    )
+
+
+@pytest.mark.parametrize("skill_label,llm_config_module", [
+    ("presentation-maker", m_lc),
+    ("paper-writer",       p_lc),
+    ("adversarial",        a_lc),
+], ids=["presmaker", "paper-writer", "adversarial"])
+def test_familyI_telemetry_copy_byte_identical(skill_label, llm_config_module):
+    """Family I: each skill's vendored telemetry.py is byte-identical (after
+    strict normalization) to craft-platform's canonical telemetry/egress.py —
+    a 3-way pin (adversarial included: it emits the same run-record + bears
+    real review cost).
+
+    GRACEFUL-SKIP until the skill vendors its copy (C1-D lands at re-pin)."""
+    skill_tx = _skill_telemetry_path(llm_config_module)
+    if not skill_tx.is_file():
+        pytest.skip(
+            f"{skill_label}: no vendored telemetry.py at {skill_tx} "
+            f"(C1-D vendors it; pre-re-pin it's absent)."
+        )
+    canonical = _normalize_source(
+        _CANONICAL_TELEMETRY.read_text(encoding="utf-8"))
+    vendored = _normalize_source(skill_tx.read_text(encoding="utf-8"))
+    assert vendored == canonical, (
+        f"{skill_label} telemetry.py drifted from craft-platform's "
+        f"canonical telemetry/egress.py.\n"
+        f"The vendored copy must stay byte-identical (copy-not-share — the "
+        f"whitelist is the safety property; a drift could widen it).\n"
+        f"  canonical: {_CANONICAL_TELEMETRY}\n"
+        f"  vendored:  {skill_tx}\n"
+        f"Re-copy from the canonical before tagging."
+    )
