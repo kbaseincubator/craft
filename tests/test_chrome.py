@@ -236,3 +236,74 @@ def test_note_noise_never_raises_on_bad_dir(tmp_path):
     bad = tmp_path / "a_file"
     bad.write_text("x")
     chrome.note_noise(bad / "nope", "msg")  # parent is a file → OSError swallowed
+
+
+# ---------------------------------------------------------------------------
+# CLI surface — the shell orchestrator emits banners from its vendored copy
+# ---------------------------------------------------------------------------
+
+def _run_cli(*args, env_extra=None):
+    import os
+    env = dict(os.environ)
+    env.pop("NO_COLOR", None)
+    env.pop("CRAFT_FORCE_COLOR", None)
+    env["PYTHONPATH"] = str(_SRC)
+    if env_extra:
+        env.update(env_extra)
+    return subprocess.run([sys.executable, str(_CHROME_PY), *args],
+                          capture_output=True, text=True, env=env)
+
+
+def test_cli_stage_prints_banner():
+    r = _run_cli("stage", "--skill", "presentation-maker", "--n", "5",
+                 "--total", "14", "--stage", "slide_compose", "--model", "opus",
+                 "--state", "running", "--elapsed", "2m18s", "--cost", "3.42")
+    assert r.returncode == 0
+    assert "◆ CRAFT · presentation-maker · STAGE 5/14" in r.stdout
+    assert "slide_compose" in r.stdout and "$3.42" in r.stdout
+    assert r.stdout.startswith("┌")  # single-rule box
+
+
+def test_cli_result_prints_line():
+    r = _run_cli("result", "--skill", "paper-writer", "--summary",
+                 "manuscript drafted", "--cost", "5.18")
+    assert r.returncode == 0
+    assert "✎ CRAFT · paper-writer · RESULT · manuscript drafted" in r.stdout
+    assert "$5.18" in r.stdout
+
+
+def test_cli_decision_renders_file(tmp_path):
+    import json
+    payload = {
+        "phase": "throughline_pick", "draft_dir": "/x/talks/draft_3",
+        "schema_version": "decision.v1", "skill": "presentation-maker",
+        "gate": "throughline_pick", "prompt": "Pick one:",
+        "kind": "single_select",
+        "options": [{"id": "TL1", "summary": "s1", "detail": "FULLTOKEN d1"},
+                    {"id": "TL2", "summary": "s2", "detail": "d2"}],
+        "default": "TL1", "confirm": True,
+        "continue": {"cmd": "x {draft_dir} --pick {id}"},
+    }
+    f = tmp_path / "decision.json"
+    f.write_text(json.dumps(payload), encoding="utf-8")
+    r = _run_cli("decision", "--file", str(f))
+    assert r.returncode == 0
+    assert r.stdout.startswith("╔")  # double-rule box
+    assert "FULLTOKEN" in r.stdout            # full detail rendered
+    assert "--pick" not in r.stdout           # no raw flag leaked
+    assert "/x/talks/draft_3" not in r.stdout  # no draft path leaked
+
+
+def test_cli_noise_writes_log_not_stdout(tmp_path):
+    r = _run_cli("noise", "--audit-dir", str(tmp_path),
+                 "--message", "[orchestrator] internal detail")
+    assert r.returncode == 0
+    assert r.stdout == ""  # nothing on stdout
+    log = (tmp_path / "orchestrator.log").read_text(encoding="utf-8")
+    assert "internal detail" in log
+
+
+def test_cli_demo_still_works():
+    r = _run_cli("--demo")
+    assert r.returncode == 0
+    assert "◆ CRAFT · presentation-maker" in r.stdout

@@ -868,3 +868,118 @@ def test_familyG_decision_goldens_validate(skill_label, llm_config_module):
             f"validation ({len(errors)} error(s)):\n  "
             + "\n  ".join(errors)
         )
+
+
+# ---------------------------------------------------------------------------
+# Family H — `check_no_dropped_stages` BEHAVIORAL identity (C1-A2)
+# ---------------------------------------------------------------------------
+#
+# The C1-A2 completeness guard is canonical in craft.run_record.
+# check_no_dropped_stages, but each skill ships STANDALONE on the hub (no
+# craft-platform on PYTHONPATH), so the function is VENDORED into each
+# skill's emitter (presmaker finalize_run.py, paper-writer
+# run_record_emitter.py) — same copy-not-share constraint as the run-record
+# emitter itself. Unlike chrome.py (byte-identity, Family-F), the three
+# copies legitimately differ in TYPE ANNOTATIONS (`craft` uses
+# `Any`/`set[str]`; the skills avoid `Any` to stay import-light), so we pin
+# BEHAVIOR not source — the same discipline as Family-A for the resolver.
+#
+# Every copy MUST return identical output to the canonical across an input
+# matrix that exercises: complete-superset (pass), the C1-A drop (fail),
+# the self-snapshot skip, running-not-completed, multi-archive, and
+# malformed inputs. A logic drift in any copy fails loud here.
+
+import importlib.util as _ilu  # noqa: E402
+
+
+def _load_module_by_path(name: str, path: Path):
+    spec = _ilu.spec_from_file_location(name, path)
+    assert spec is not None and spec.loader is not None, (
+        f"could not build import spec for {path}")
+    mod = _ilu.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _skill_emitter_path(llm_config_module, filename: str) -> Path:
+    """Locate a skill's vendored emitter (which carries the vendored
+    completeness guard) under <pkg>/skill/tools/<filename>."""
+    return (Path(llm_config_module.__file__).parent
+            / "skill" / "tools" / filename)
+
+
+# (input, expected-error-count) — behavior the canonical defines.
+def _completeness_matrix():
+    def stage(sid, status="completed"):
+        return {"id": sid, "status": status}
+
+    def rec(run_id, ids, status="completed", running=()):
+        stages = [stage(s) for s in ids] + [stage(s, "running") for s in running]
+        return {"run_id": run_id, "status": status, "stages": stages}
+
+    return [
+        # complete superset → 0
+        (rec("run-1", ["plan", "substory_design", "qa_prep"]),
+         [rec("run-1", ["plan", "substory_design"])], 0),
+        # self-snapshot (same run_id) skipped → 0
+        (rec("run-1", ["plan", "substory_design"]),
+         [rec("run-1", ["plan", "substory_design"])], 0),
+        # the C1-A drop → 1
+        (rec("run-2", ["qa_prep", "merge"]),
+         [rec("run-1", ["plan", "substory_design", "curate_figures"],
+              status="failed")], 1),
+        # running-in-archive not required → 0
+        (rec("run-1", ["plan", "substory_design", "qa_prep"]),
+         [rec("run-1", ["plan", "substory_design"], status="failed",
+              running=["qa_prep"])], 0),
+        # multi-archive, each flags → 2
+        (rec("run-3", ["plan", "qa_prep"]),
+         [rec("run-1", ["plan", "substory_design"], status="failed"),
+          rec("run-2", ["plan", "substory_design", "curate_figures"],
+              status="failed")], 2),
+        # no archives → 0
+        (rec("run-1", ["plan", "merge"]), [], 0),
+        # malformed → 0 (never raises)
+        ({}, [], 0),
+        ({"stages": "nope"}, [{"stages": None}], 0),
+        (rec("run-1", ["plan"]), [None, 42], 0),
+    ]
+
+
+@pytest.mark.parametrize("skill_label,llm_config_module,filename", [
+    ("presentation-maker", m_lc, "finalize_run.py"),
+    ("paper-writer",       p_lc, "run_record_emitter.py"),
+], ids=["presmaker", "paper-writer"])
+def test_familyH_completeness_guard_behavioral_identity(
+    skill_label, llm_config_module, filename,
+):
+    """Family H: the skill's vendored check_no_dropped_stages returns the
+    SAME error-count as craft's canonical across the matrix. (Behavioral,
+    not source — the copies differ only in type annotations.)"""
+    from craft.run_record import check_no_dropped_stages as canonical
+
+    emitter_path = _skill_emitter_path(llm_config_module, filename)
+    if not emitter_path.is_file():
+        pytest.skip(f"{skill_label}: no emitter at {emitter_path}")
+    mod = _load_module_by_path(f"_c1a2_{skill_label}", emitter_path)
+    vendored = getattr(mod, "check_no_dropped_stages", None)
+    if not callable(vendored):
+        # GRACEFUL-SKIP until the skill vendors the C1-A2 guard (it lands
+        # in this round; the conformance submodule re-pins in the
+        # coordinated release — same discipline as Family-F/G pre-re-pin).
+        pytest.skip(
+            f"{skill_label}: emitter {filename} has no vendored "
+            f"check_no_dropped_stages yet (C1-A2 lands at re-pin)."
+        )
+    for i, (canonical_rec, archives, expected_n) in enumerate(
+            _completeness_matrix()):
+        can_out = canonical(canonical_rec, archives)
+        ven_out = vendored(canonical_rec, archives)
+        assert len(can_out) == expected_n, (
+            f"matrix[{i}]: canonical returned {len(can_out)} errs, "
+            f"expected {expected_n}")
+        assert len(ven_out) == len(can_out), (
+            f"{skill_label} matrix[{i}]: vendored guard returned "
+            f"{len(ven_out)} error(s), canonical {len(can_out)} — the "
+            f"vendored copy has drifted from craft's logic. Re-sync."
+        )

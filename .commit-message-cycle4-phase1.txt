@@ -1,0 +1,76 @@
+feat(cycle4-phase1): chrome.py + decision.v1 foundation (DP6, no skill wiring)
+
+CRAFT Cycle-4 (chrome/legibility, DP6) Phase 1 — the craft-side
+foundation + the SKILL.md contract text. NO skill repos are touched and
+NO conformance family fires live yet; Phase 2 vendors the copies and
+flips Family-F / Family-G on as a coordinated release. No tag this phase.
+
+Two facts (proven in the Phase-0 synthetic harness) shape the design:
+  1. Inside Claude the orchestrator's stdout is non-TTY (no color) and
+     long output folds — so the legible signal is Claude's MESSAGE BODY
+     re-rendering the structured contract as text, not the raw box.
+  2. decision.v1 EXTENDS .handoff.json: it retains the keys the continue
+     CLI reads (notably `phase`, which authorizes --pick) and adds the
+     presentation fields; `gate` must equal `phase`.
+
+New — src/craft/chrome.py (canonical output-signature renderer):
+  - STAGE (single-rule box) / DECISION (double-rule, loudest) / RESULT
+    (terse) + per-skill glyph signature (◆ presentation-maker · ✎
+    paper-writer · ⚔ adversarial) and `CRAFT · <skill>` label.
+  - MUST-FIX honored: pads by DISPLAY WIDTH (stdlib unicodedata, NOT
+    len(), NOT external wcwidth) so glyph-heavy / em-dash / CJK lines
+    align to the border. Dependency-free so it vendors clean (Family-F).
+  - Single _color() seam: TTY-gated (isatty), NO_COLOR-aware,
+    CRAFT_FORCE_COLOR=1 test hook; no-op when piped (i.e. inside Claude).
+  - render_decision never leaks the raw --pick flag or the draft path;
+    shows every option's FULL detail; ★ marks default; clean "tell me
+    TL1 / TL2" choice prompt. note_noise() appends orchestrator NOISE to
+    audit/orchestrator.log off stdout.
+
+New — src/craft/decision.py (decision.v1 shape contract):
+  - validate_decision(payload) -> list[str]; never raises; substring-
+    stable messages (sibling of run_record.validate_run_record).
+  - Checks BOTH contracts: retained handoff keys (phase, draft_dir) AND
+    the decision.v1 presentation fields; cross-checks gate==phase,
+    default∈option ids, confirm is a real bool, continue.cmd carries the
+    {id} placeholder.
+
+New — tests:
+  - tests/test_chrome.py (15): display-width basics + alignment on
+    glyph/em-dash/CJK lines (the must-fix), color seam via subprocess
+    (0 ANSI piped, ANSI under force, NO_COLOR overrides), signature
+    content, no path/flag leak, note_noise append-and-never-raise.
+  - tests/test_decision.py (51): golden validation + full negative-case
+    matrix over the handoff-extension contract.
+  - tests/fixtures/decision_v1/: two platform goldens, each a realistic
+    handoff-extension — throughline (single_select, confirm:true) +
+    image (approve_reject, confirm:false).
+
+New conformance (armed but dormant — graceful-skip until Phase 2):
+  - Family F: each skill's vendored chrome.py is byte-identical to the
+    canonical (same copy-not-share discipline as llm_config / user_intent;
+    glyphs are multi-byte UTF-8 — copy verbatim).
+  - Family G: each skill's decision.v1 goldens validate against the shared
+    validator.
+
+Docs:
+  - docs/reference/chrome-interaction-contract.md — canonical spec + the
+    SKILL.md chrome contract text Phase 2 vendors into each skill (re-render
+    decision.v1 completely inline as message text; honor `confirm`
+    [echo-and-confirm on consequential gates, act directly on
+    cheap/already-spent ones]; report stage/cost at boundaries from the
+    run-record, no continuous tick; suppress orchestrator NOISE).
+  - CRAFT-CONTRACT.md: §2.1 decision.v1 producer row + new §3.7 (the chrome
+    / interaction layer) pointing at the canonical doc.
+  - mkdocs.yml: Reference nav entry for the new doc.
+  - prototypes/cycle4-chrome/: Phase-0 synthetic harness preserved as
+    reference (the canonical doc + memory cite it); its generated
+    scratch-draft/.handoff.json is gitignored.
+
+Verify: pytest 218 passed, 7 skipped (the dormant Family-F/G rows + the
+pre-existing adversarial run-record golden skip); ruff clean.
+
+Note for Adam: the stale .commit-message-craft-v0.4.1.txt (already-used
+Cycle-3 follow-up message) can be deleted — `git rm` or just remove it.
+
+Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>

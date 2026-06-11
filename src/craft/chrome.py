@@ -357,9 +357,74 @@ def _demo() -> None:
     print()
 
 
-if __name__ == "__main__":
-    if "--demo" in sys.argv:
+# ---------------------------------------------------------------------------
+# CLI — so a shell orchestrator can emit banners from its own vendored copy.
+#   python3 chrome.py stage   --skill S --n N --total T --stage NAME \
+#                             --model M --state running --elapsed 2m18s --cost 3.42
+#   python3 chrome.py result  --skill S --summary "..." [--deliverable P] [--cost C]
+#   python3 chrome.py decision --file <decision.v1.json>      (renders to stdout)
+#   python3 chrome.py noise   --audit-dir DIR --message "[orchestrator] ..."
+#   python3 chrome.py --demo
+# Renderers print to stdout; `noise` writes to the audit log and prints
+# nothing. argparse is stdlib — chrome.py stays dependency-free (Family-F).
+# ---------------------------------------------------------------------------
+
+def _main(argv: list[str]) -> int:
+    import argparse
+
+    if "--demo" in argv:
         _demo()
-    else:
-        print("chrome.py — run with --demo to print sample blocks.",
-              file=sys.stderr)
+        return 0
+
+    p = argparse.ArgumentParser(prog="chrome.py", add_help=True)
+    sub = p.add_subparsers(dest="cmd")
+
+    ps = sub.add_parser("stage", help="print a STAGE banner")
+    ps.add_argument("--skill", required=True)
+    ps.add_argument("--n", type=int, required=True)
+    ps.add_argument("--total", type=int, required=True)
+    ps.add_argument("--stage", required=True)
+    ps.add_argument("--model", default="")
+    ps.add_argument("--state", default="running")
+    ps.add_argument("--elapsed", default="")
+    ps.add_argument("--cost", default="")
+
+    pr = sub.add_parser("result", help="print a RESULT line")
+    pr.add_argument("--skill", required=True)
+    pr.add_argument("--summary", required=True)
+    pr.add_argument("--deliverable", default=None)
+    pr.add_argument("--cost", default=None)
+
+    pd = sub.add_parser("decision", help="render a decision.v1 JSON file")
+    pd.add_argument("--file", required=True)
+
+    pn = sub.add_parser("noise", help="append an orchestrator NOISE line to the audit log")
+    pn.add_argument("--audit-dir", required=True)
+    pn.add_argument("--message", required=True)
+
+    args = p.parse_args(argv)
+
+    if args.cmd == "stage":
+        print(render_stage(args.skill, args.n, args.total, args.stage,
+                           args.model, args.state, args.elapsed, args.cost))
+        return 0
+    if args.cmd == "result":
+        print(render_result(args.skill, args.summary,
+                            deliverable=args.deliverable, cost=args.cost))
+        return 0
+    if args.cmd == "decision":
+        import json
+        with open(args.file, encoding="utf-8") as f:
+            print(render_decision(json.load(f)))
+        return 0
+    if args.cmd == "noise":
+        note_noise(args.audit_dir, args.message)
+        return 0
+
+    print("chrome.py — subcommands: stage | result | decision | noise | --demo",
+          file=sys.stderr)
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(_main(sys.argv[1:]))

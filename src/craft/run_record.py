@@ -598,3 +598,72 @@ def validate_run_record(record: Any) -> list[str]:
     _check_totals_reconciliation(record, errors)
 
     return errors
+
+
+def _completed_stage_ids(record: Any) -> set[str]:
+    """The set of stage ids a record marks `completed`. Tolerant of a
+    malformed record (returns what it can) — this is a defense-in-depth
+    cross-record check, not the schema validator."""
+    out: set[str] = set()
+    if not isinstance(record, dict):
+        return out
+    stages = record.get("stages")
+    if not isinstance(stages, list):
+        return out
+    for s in stages:
+        if (isinstance(s, dict) and s.get("status") == "completed"
+                and isinstance(s.get("id"), str) and s["id"]):
+            out.add(s["id"])
+    return out
+
+
+def check_no_dropped_stages(
+    canonical: dict, archived_runs: list[dict]
+) -> list[str]:
+    """Cross-record completeness guard (C1-A2, defense-in-depth).
+
+    A resume must NEVER lose a stage a prior run completed. This is the
+    invariant that the per-record `validate_run_record` cannot see: its
+    reconciliation only checks `totals == sum(stages present)`, so an
+    incomplete record reconciles perfectly ("passes the check but the
+    number's wrong"). The C1-A drop — a `--resume-from` after a failure
+    opening a fresh empty run that lost the already-completed
+    substory_design/curate_figures — is exactly this class.
+
+    Contract: the canonical's set of `completed` stage ids MUST be a
+    SUPERSET of every archived `runs/run-N/run_record.json`'s `completed`
+    stage ids. Returns a list of human-readable error strings naming any
+    stage a prior run completed that the canonical lacks; empty list =
+    complete. **Manifest-free** — no per-mode expected-stage list needed;
+    it compares only against what runs actually completed.
+
+    Call this at finalize, BEFORE writing status=completed. A non-empty
+    return is a hard, loud failure: do NOT finalize as completed.
+
+    Intentionally NOT folded into `validate_run_record` — that's a
+    single-record schema validator; this is a cross-record comparison and
+    stays a separate callable (the finalize path supplies both inputs).
+    """
+    errors: list[str] = []
+    canon_completed = _completed_stage_ids(canonical)
+    canon_run_id = (canonical.get("run_id")
+                    if isinstance(canonical, dict) else None)
+
+    for archived in archived_runs:
+        arch_run_id = (archived.get("run_id")
+                       if isinstance(archived, dict) else None)
+        # The canonical's own archived snapshot is itself — skip the
+        # trivially-equal self-comparison (it can't drop its own stages).
+        if arch_run_id is not None and arch_run_id == canon_run_id:
+            continue
+        arch_completed = _completed_stage_ids(archived)
+        dropped = arch_completed - canon_completed
+        if dropped:
+            errors.append(
+                f"completeness: canonical (run_id={canon_run_id!r}) is "
+                f"missing {len(dropped)} stage(s) that archived run "
+                f"{arch_run_id!r} completed: {sorted(dropped)} — a resume "
+                f"must never drop a completed stage (C1-A). Refusing to "
+                f"finalize as completed."
+            )
+    return errors
